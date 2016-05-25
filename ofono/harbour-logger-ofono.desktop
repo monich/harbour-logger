@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Ofono Log
+Name[ru]=Журнал ofono
+X-Nemo-Application-Type=silica-qt5
+Icon=harbour-logger-ofono
+Exec=harbour-logger-ofono

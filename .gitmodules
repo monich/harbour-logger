@@ -1,0 +1,9 @@
+[submodule "harbour-lib"]
+	path = harbour-lib
+	url = https://github.com/monich/harbour-lib.git
+[submodule "libdbuslog"]
+	path = logger/src/libdbuslog
+	url = https://git.merproject.org/mer-core/libdbuslog.git
+[submodule "logger/src/libglibutil"]
+	path = logger/src/libglibutil
+	url = https://git.merproject.org/mer-core/libglibutil.git
