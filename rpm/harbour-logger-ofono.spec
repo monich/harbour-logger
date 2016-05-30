@@ -4,7 +4,7 @@ Version:    1.0.0
 Release:    1
 Group:      Applications/System
 License:    BSD
-URL:        http://github.com/monich/harbour-logger-ofono
+URL:        http://github.com/monich/harbour-logger
 Source0:    %{name}-%{version}.tar.bz2
 
 Requires:   sailfishsilica-qt5 >= 0.10.9
@@ -57,3 +57,7 @@ rm -fr %{buildroot}/%{_datarootdir}/logger
 %{_datadir}/%{name}/translations
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
+
+%changelog
+* Wed May 25 2016 Slava Monich <slava.monich@jolla.com> 1.0.0
+- Initial release
