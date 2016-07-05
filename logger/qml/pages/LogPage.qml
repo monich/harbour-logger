@@ -77,7 +77,6 @@ SilicaFlickable {
 
     PullDownMenu {
         id: pullDownMenu
-        visible: logModel.connected
         MenuItem {
             //% "Clear log"
             text: qsTrId("logger-logpage-pm-clear-log")
