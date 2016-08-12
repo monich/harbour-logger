@@ -108,7 +108,7 @@ LoggerLogSaver::LoggerLogSaver(QString aName, QObject* aParent) :
     iBuffer(-1),
     iThreadPool(new QThreadPool),
     iArchiveType("application/x-gzip"),
-    iArchiveName(aName + QDateTime::currentDateTime().toString("_yyyy-dd-MM_hhmmss")),
+    iArchiveName(aName + QDateTime::currentDateTime().toString("_yyyy-MM-dd_hhmmss")),
     iArchiveFile(iArchiveName + ".tar.gz"),
     iTempDir(QString("/tmp/") + aName + "_XXXXXX"),
     iRootDir(iTempDir.path() + "/" + iArchiveName),
