@@ -56,6 +56,7 @@ Page {
         orientation: ListView.Horizontal
         snapMode: ListView.SnapOneItem
         model: pages
+        clip: true
         delegate: Item {
             width: scroller.width
             height: scroller.height
