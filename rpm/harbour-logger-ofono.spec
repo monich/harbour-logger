@@ -1,13 +1,13 @@
 Name:       harbour-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.0
+Version:    1.0.1
 Release:    1
 Group:      Applications/System
 License:    BSD
 URL:        http://github.com/monich/harbour-logger
 Source0:    %{name}-%{version}.tar.bz2
 
-Requires:   sailfishsilica-qt5 >= 0.10.9
+Requires:   sailfishsilica-qt5
 BuildRequires: pkgconfig(sailfishapp)
 BuildRequires: pkgconfig(Qt5Quick)
 BuildRequires: pkgconfig(Qt5Qml)
@@ -59,5 +59,10 @@ rm -fr %{buildroot}/%{_datarootdir}/logger
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 
 %changelog
+* Thu Sep  8 2016 Slava Monich <slava.monich@jolla.com> 1.0.1
+- Fixed a few visual glitches
+- Made screen buffer size configurable
+- Added openrepos build with settings plugin
+
 * Wed May 25 2016 Slava Monich <slava.monich@jolla.com> 1.0.0
 - Initial release
