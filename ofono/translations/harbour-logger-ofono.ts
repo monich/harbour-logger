@@ -99,6 +99,10 @@
         <source>Logger</source>
         <translation>Ofono Log</translation>
     </message>
+    <message id="logger-settings-section-header-display">
+        <source>Display</source>
+        <translation>Display</translation>
+    </message>
     <message id="logger-settings-logsizelimit">
         <source>Screen buffer size</source>
         <translation>Screen buffer size</translation>
@@ -110,6 +114,10 @@
     <message id="logger-settings-logsizelimit-unlimited">
         <source>Unlimited</source>
         <translation>Unlimited</translation>
+    </message>
+    <message id="logger-settings-fontsize-label">
+        <source>Font size</source>
+        <translation>Font size</translation>
     </message>
 </context>
 </TS>

@@ -40,7 +40,8 @@ SOURCES += \
     src/LoggerHints.cpp \
     src/LoggerLogModel.cpp \
     src/LoggerLogSaver.cpp \
-    src/LoggerMain.cpp
+    src/LoggerMain.cpp \
+    src/LoggerSettings.cpp
 
 HEADERS += \
     include/LoggerMain.h \
@@ -50,7 +51,8 @@ HEADERS += \
     src/LoggerEntry.h \
     src/LoggerHints.h \
     src/LoggerLogModel.h \
-    src/LoggerLogSaver.h
+    src/LoggerLogSaver.h \
+    src/LoggerSettings.h
 
 SOURCES += \
     $${LIBDBUSLOG_COMMON_SRC}/dbuslog_category.c \

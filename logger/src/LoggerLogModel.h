@@ -40,8 +40,8 @@
 #include "dbuslog_message.h"
 
 #include <QAbstractListModel>
-#include <MGConfItem>
 
+class LoggerSettings;
 class LoggerLogModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -57,7 +57,7 @@ public:
         TextRole
     };
 
-    LoggerLogModel(QString aAppName, DBusLogClient* aClient, QObject* aParent);
+    LoggerLogModel(LoggerSettings* aSettings, DBusLogClient* aClient, QObject* aParent);
     ~LoggerLogModel();
 
     virtual QHash<int,QByteArray> roleNames() const;
@@ -99,11 +99,11 @@ private:
         DBusLogClientSignalCount
     };
 
+    LoggerSettings* iSettings;
     DBusLogClient* iClient;
     gulong iClientSignals[DBusLogClientSignalCount];
     QHash<guint32,LoggerCategory> iCategories;
     LoggerBuffer iBuffer;
-    MGConfItem* iLogSizeLimitConf;
     int iLogSizeLimit;
     int iLogRemoveCount;
 };

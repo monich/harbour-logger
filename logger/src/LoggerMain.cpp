@@ -34,6 +34,7 @@
 #include "LoggerHints.h"
 #include "LoggerLogModel.h"
 #include "LoggerLogSaver.h"
+#include "LoggerSettings.h"
 #include "LoggerCategoryListModel.h"
 
 #include "HarbourDebug.h"
@@ -101,7 +102,8 @@ int Logger::Main(int aArgc, char* aArgv[], const char* aService,
     // Log client and models
     DBusLogClient* client = dbus_log_client_new(G_BUS_TYPE_SYSTEM,
         aService, "/", DBUSLOG_CLIENT_FLAG_AUTOSTART);
-    LoggerLogModel* logModel = new LoggerLogModel(fullAppName, client, app);
+    LoggerSettings* logSettings = new LoggerSettings(fullAppName, app);
+    LoggerLogModel* logModel = new LoggerLogModel(logSettings, client, app);
     LoggerCategoryListModel* categoryModel = new LoggerCategoryListModel(client, app);
     LoggerLogSaver* logSaver = new LoggerLogSaver(aPackage, app);
     logSaver->connect(logModel, SIGNAL(entryAdded(LoggerEntry)), SLOT(addEntry(LoggerEntry)));
@@ -126,6 +128,7 @@ int Logger::Main(int aArgc, char* aArgv[], const char* aService,
     // Create and show the view
     QQuickView* view = SailfishApp::createView();
     QQmlContext* context = view->rootContext();
+    context->setContextProperty("LogSettings", logSettings);
     context->setContextProperty("LogModel", logModel);
     context->setContextProperty("LogSaver", logSaver);
     context->setContextProperty("CategoryModel", categoryModel);

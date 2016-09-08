@@ -32,6 +32,7 @@
 
 #include "LoggerLogModel.h"
 #include "LoggerEntry.h"
+#include "LoggerSettings.h"
 #include "HarbourDebug.h"
 
 #undef signals
@@ -39,24 +40,19 @@
 
 #define SUPER QAbstractListModel
 
-#define DCONF_PATH(app)             QString("/apps/") + app + "/"
-#define DCONF_KEY(app,key)          DCONF_PATH(app) + key
-#define DCONF_LOG_SIZE_LIMIT(app)   DCONF_KEY(app, "logSizeLimit")
-
 #define LOG_REMOVE_COUNT_MAX        (100)
-#define LOG_SIZE_LIMIT_DEFAULT      (1000)
 #define LOG_SIZE_LIMIT_MIN          (100)
 #define LOG_SIZE_LIMIT_NONE         (0)
 
-LoggerLogModel::LoggerLogModel(QString aAppName, DBusLogClient* aClient,
+LoggerLogModel::LoggerLogModel(LoggerSettings* aSettings, DBusLogClient* aClient,
     QObject* aParent) : SUPER(aParent),
+    iSettings(aSettings),
     iClient(dbus_log_client_ref(aClient)),
-    iBuffer(LOG_SIZE_LIMIT_DEFAULT),
-    iLogSizeLimitConf(new MGConfItem(DCONF_LOG_SIZE_LIMIT(aAppName), this))
+    iBuffer(LoggerSettings::DEFAULT_LOG_SIZE_LIMIT)
 {
     // updateLogSizeLimit() will initialize iLogSizeLimit and iLogRemoveCount:
     updateLogSizeLimit();
-    connect(iLogSizeLimitConf, SIGNAL(valueChanged()), SLOT(updateLogSizeLimit()));
+    connect(iSettings, SIGNAL(logSizeLimitChanged()), SLOT(updateLogSizeLimit()));
     memset(iClientSignals, 0, sizeof(iClientSignals));
     iClientSignals[DBusLogClientSignalConnected] =
         dbus_log_client_add_connected_handler(iClient, connectedProc, this);
@@ -75,20 +71,14 @@ LoggerLogModel::~LoggerLogModel()
 
 void LoggerLogModel::updateLogSizeLimit()
 {
-    iLogSizeLimit = LOG_SIZE_LIMIT_DEFAULT;
-    QVariant value = iLogSizeLimitConf->value();
-    if (value.isValid()) {
-        bool ok = false;
-        int ival = value.toInt(&ok);
-        if (ok) {
-            if (ival <= 0) {
-                iLogSizeLimit = LOG_SIZE_LIMIT_NONE;
-            } else if (ival < LOG_SIZE_LIMIT_MIN) {
-                iLogSizeLimit = LOG_SIZE_LIMIT_MIN;
-            } else {
-                iLogSizeLimit = ival;
-            }
-        }
+    iLogSizeLimit = LoggerSettings::DEFAULT_LOG_SIZE_LIMIT;
+    int value = iSettings->logSizeLimit();
+    if (value <= 0) {
+        iLogSizeLimit = LOG_SIZE_LIMIT_NONE;
+    } else if (value < LOG_SIZE_LIMIT_MIN) {
+        iLogSizeLimit = LOG_SIZE_LIMIT_MIN;
+    } else {
+        iLogSizeLimit = value;
     }
     if (iLogSizeLimit > 0) {
         // Truncate the buffer if necessary

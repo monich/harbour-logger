@@ -99,9 +99,13 @@
         <source>Logger</source>
         <translation>Журнал ofono</translation>
     </message>
+    <message id="logger-settings-section-header-display">
+        <source>Display</source>
+        <translation>Вывод на экран</translation>
+    </message>
     <message id="logger-settings-logsizelimit">
         <source>Screen buffer size</source>
-        <translation>Количество строк на экране</translation>
+        <translation>Количество строк</translation>
     </message>
     <message id="logger-settings-logsizelimit-description">
         <source>Don&apos;t worry, everything will be written to the log file regardless of the screen buffer size.</source>
@@ -110,6 +114,10 @@
     <message id="logger-settings-logsizelimit-unlimited">
         <source>Unlimited</source>
         <translation>Неограниченное</translation>
+    </message>
+    <message id="logger-settings-fontsize-label">
+        <source>Font size</source>
+        <translation>Размер шрифта</translation>
     </message>
 </context>
 </TS>

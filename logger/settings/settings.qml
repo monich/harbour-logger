@@ -34,6 +34,9 @@ import Sailfish.Silica 1.0
 import org.nemomobile.configuration 1.0
 
 Page {
+    id: page
+    readonly property string rootPath: "/apps/harbour-logger-conf/"
+
     SilicaFlickable {
         anchors.fill: parent
         contentHeight: content.height
@@ -45,6 +48,11 @@ Page {
             PageHeader {
                 //% "Logger"
                 title: qsTrId("logger-settings-page-header")
+            }
+
+            SectionHeader {
+                //% "Display"
+                text: qsTrId("logger-settings-section-header-display")
             }
 
             ComboBox {
@@ -92,11 +100,32 @@ Page {
                         currentItem = null // Non-standard value
                     }
                 }
+
                 ConfigurationValue {
                     id: logSizeLimit
-                    key: "/apps/harbour-logger-conf/logSizeLimit"
+                    key: rootPath + "logSizeLimit"
                     onValueChanged: logSizeLimitComboBox.updateSelection(value)
                     defaultValue: 1000
+                }
+            }
+
+            Slider {
+                id: fontSizeSlider
+                width: parent.width
+                minimumValue: Theme.fontSizeTiny
+                maximumValue: Theme.fontSizeLarge
+                stepSize: 1
+                //% "Font size"
+                label: qsTrId("logger-settings-fontsize-label")
+                valueText: minimumValue + sliderValue
+                onSliderValueChanged: fontSizeAdjustment.value = sliderValue - minimumValue
+                Component.onCompleted: value = minimumValue + fontSizeAdjustment.value
+
+                ConfigurationValue {
+                    id: fontSizeAdjustment
+                    key: rootPath + "fontSizeAdjustment"
+                    onValueChanged: fontSizeSlider.value = fontSizeSlider.minimumValue + value
+                    defaultValue: 0
                 }
             }
         }

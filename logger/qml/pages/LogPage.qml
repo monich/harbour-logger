@@ -96,17 +96,19 @@ SilicaFlickable {
         anchors.fill: parent
         clip: true
 
+        readonly property int rawTextSize: Theme.fontSizeTiny + LogSettings.fontSizeAdjustment
+        readonly property int textSize: Math.min(Math.max(Theme.fontSizeTiny, rawTextSize), Theme.fontSizeHuge)
+
         //% "Log"
         header: PageHeader { title: qsTrId("logger-logpage-title") }
         delegate: Item {
             width: parent.width
             height: textLabel.height
-            property color textColor: Logger.textColor(messageType, messageLevel)
-            property int textSize: Theme.fontSizeTiny
+            readonly property color textColor: Logger.textColor(messageType, messageLevel)
             Label {
                 id: timeLabel
                 text: (messageType === Logger.TypeLog) ? messageTime : ""
-                font.pixelSize: textSize
+                font.pixelSize: list.textSize
                 color: textColor
                 anchors {
                     top: parent.top
@@ -118,7 +120,7 @@ SilicaFlickable {
             Label {
                 id: textLabel
                 text: messageCategory ? messageCategory + ": " + messageText : messageText
-                font.pixelSize: textSize
+                font.pixelSize: list.textSize
                 font.family: page.fontFamily
                 wrapMode: Text.WordWrap
                 color: textColor
