@@ -1,6 +1,6 @@
 Name:       openrepos-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.1
+Version:    1.0.2
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -62,6 +62,9 @@ rm -fr %{buildroot}/%{_datarootdir}/logger
 %{_datadir}/jolla-settings/entries/%{name}.json
 
 %changelog
+* Thu Sep  8 2016 Slava Monich <slava.monich@jolla.com> 1.0.2
+- Made font size configurable
+
 * Thu Sep  8 2016 Slava Monich <slava.monich@jolla.com> 1.0.1
 - Fixed a few visual glitches
 - Made screen buffer size configurable
