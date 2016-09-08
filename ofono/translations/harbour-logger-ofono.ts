@@ -97,7 +97,7 @@
     </message>
     <message id="logger-settings-page-header">
         <source>Logger</source>
-        <translation>Ofono logger</translation>
+        <translation>Ofono Log</translation>
     </message>
     <message id="logger-settings-logsizelimit">
         <source>Screen buffer size</source>
