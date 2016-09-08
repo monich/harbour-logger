@@ -95,5 +95,21 @@
         <source>Please wait</source>
         <translation>Секундочку</translation>
     </message>
+    <message id="logger-settings-page-header">
+        <source>Logger</source>
+        <translation>Журнал ofono</translation>
+    </message>
+    <message id="logger-settings-logsizelimit">
+        <source>Screen buffer size</source>
+        <translation>Количество строк на экране</translation>
+    </message>
+    <message id="logger-settings-logsizelimit-description">
+        <source>Don&apos;t worry, everything will be written to the log file regardless of the screen buffer size.</source>
+        <translation>Не волнуйтесь, в любом случае всё будет записано в файл ― даже то, что пропало с экрана.</translation>
+    </message>
+    <message id="logger-settings-logsizelimit-unlimited">
+        <source>Unlimited</source>
+        <translation>Неограниченное</translation>
+    </message>
 </context>
 </TS>

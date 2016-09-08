@@ -28,6 +28,10 @@ CONFIG(debug, debug|release) {
   DEFINES += DEBUG=1
 }
 
+openrepos {
+    DEFINES += OPENREPOS
+}
+
 SOURCES += \
     src/LoggerBuffer.cpp \
     src/LoggerCategory.cpp \
@@ -71,7 +75,9 @@ INCLUDEPATH += \
 
 OTHER_FILES += \
   qml/pages/*.js \
-  qml/pages/*.qml
+  qml/pages/*.qml \
+  settings/*.qml \
+  settings/*.json
 
 DBUS_SPEC_DIR = $$_PRO_FILE_PWD_/src/libdbuslog/spec
 

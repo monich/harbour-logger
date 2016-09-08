@@ -95,5 +95,21 @@
         <source>Please wait</source>
         <translation>Please wait</translation>
     </message>
+    <message id="logger-settings-page-header">
+        <source>Logger</source>
+        <translation>Ofono logger</translation>
+    </message>
+    <message id="logger-settings-logsizelimit">
+        <source>Screen buffer size</source>
+        <translation>Screen buffer size</translation>
+    </message>
+    <message id="logger-settings-logsizelimit-description">
+        <source>Don&apos;t worry, everything will be written to the log file regardless of the screen buffer size.</source>
+        <translation>Don&apos;t worry, everything will be written to the log file regardless of the screen buffer size.</translation>
+    </message>
+    <message id="logger-settings-logsizelimit-unlimited">
+        <source>Unlimited</source>
+        <translation>Unlimited</translation>
+    </message>
 </context>
 </TS>

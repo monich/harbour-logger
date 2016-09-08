@@ -1,10 +1,11 @@
-Name:       harbour-logger-ofono
+Name:       openrepos-logger-ofono
 Summary:    Ofono logger
 Version:    1.0.0
 Release:    1
 Group:      Applications/System
 License:    BSD
 URL:        http://github.com/monich/harbour-logger
+Vendor:     slava
 Source0:    %{name}-%{version}.tar.bz2
 
 Requires:   sailfishsilica-qt5 >= 0.10.9
@@ -32,7 +33,7 @@ Application for gathering ofono logs
 %setup -q -n %{name}-%{version}
 
 %build
-%qtc_qmake5 CONFIG+=ofono
+%qtc_qmake5 CONFIG+=ofono CONFIG+=openrepos CONFIG+=app_settings
 %qtc_make %{?_smp_mflags}
 
 %install
@@ -54,9 +55,11 @@ rm -fr %{buildroot}/%{_datarootdir}/logger
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
 %{_datadir}/%{name}/qml
-%{_datadir}/%{name}/translations
+%{_datadir}/%{name}/settings
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
+%{_datadir}/translations/%{name}*.qm
+%{_datadir}/jolla-settings/entries/%{name}.json
 
 %changelog
 * Wed May 25 2016 Slava Monich <slava.monich@jolla.com> 1.0.0

@@ -1,0 +1,14 @@
+{
+    "translation_catalog" : "harbour-logger",
+    "entries": [
+        {
+            "path": "applications/harbour-logger.desktop",
+            "title": "MMS Logger",
+            "type": "page",
+            "icon": "harbour-mmslog",
+            "params": {
+                "source": "/usr/share/harbour-logger/settings/settings.qml"
+            }
+        }
+    ]
+}

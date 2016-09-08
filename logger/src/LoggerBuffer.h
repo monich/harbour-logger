@@ -44,6 +44,8 @@ public:
     ~LoggerBuffer();
 
     int size() const;
+    int maxSize() const;
+    void setMaxSize(int aMaxSize);
     bool isEmpty() const;
     bool put(LoggerEntry aEntry);
     LoggerEntry get();
@@ -67,6 +69,10 @@ inline LoggerBuffer::~LoggerBuffer()
     { gutil_ring_unref(iRingBuffer); }
 inline int LoggerBuffer::size() const
     { return gutil_ring_size(iRingBuffer); }
+inline int LoggerBuffer::maxSize() const
+    { return gutil_ring_max_size(iRingBuffer); }
+inline void LoggerBuffer::setMaxSize(int aMaxSize)
+    { gutil_ring_set_max_size(iRingBuffer, aMaxSize); }
 inline bool LoggerBuffer::isEmpty() const
     { return !gutil_ring_size(iRingBuffer); }
 inline bool LoggerBuffer::canPut(int aCount) const

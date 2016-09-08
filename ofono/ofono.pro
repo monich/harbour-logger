@@ -1,4 +1,20 @@
-TARGET = harbour-logger-ofono
+openrepos {
+    PREFIX = openrepos
+    DEFINES += OPENREPOS
+} else {
+    PREFIX = harbour
+}
+
+NAME = logger-ofono
+TARGET = $${PREFIX}-$${NAME}
+
+app_settings {
+    # This path is hardcoded in jolla-settings
+    TRANSLATIONS_PATH = /usr/share/translations
+} else {
+    TRANSLATIONS_PATH = /usr/share/$${TARGET}/translations
+}
+
 CONFIG += sailfishapp link_pkgconfig
 PKGCONFIG += sailfishapp mlite5 gio-2.0 gio-unix-2.0 glib-2.0
 #QT += dbus
@@ -33,80 +49,86 @@ LIBS += \
   $$HARBOUR_LIB
 
 OTHER_FILES += \
-  icons/harbour-logger-ofono.svg \
-  harbour-logger-ofono.desktop \
+  icons/harbour-$${NAME}.svg \
+  harbour-$${NAME}.desktop \
   qml/*.qml \
   translations/*.ts
 
-TARGET_DATA_DIR = /usr/share/harbour-logger-ofono
+TARGET_DATA_DIR = /usr/share/$${TARGET}
 TARGET_ICON_ROOT = /usr/share/icons/hicolor
 
 qml_pages.files = $${LOGGER_LIB_DIR}/qml/*
 qml_pages.path = $${TARGET_DATA_DIR}/qml
 INSTALLS += qml_pages
 
-icon86.files = icons/86x86/$${TARGET}.png
-icon86.path = $${TARGET_ICON_ROOT}/86x86/apps
-INSTALLS += icon86
+# Settings
+app_settings {
+    settings_json.files = $${LOGGER_LIB_DIR}/settings/$${TARGET}.json
+    settings_json.path = /usr/share/jolla-settings/entries/
+    settings_json.extra = sed s/harbour-logger/$${TARGET}/g $${LOGGER_LIB_DIR}/settings/harbour-logger.json > $$eval(settings_json.files)
+    settings_json.CONFIG += no_check_exist
+    settings_qml.files = $${LOGGER_LIB_DIR}/settings/settings.qml
+    settings_qml.path = /usr/share/$${TARGET}/settings/
+    settings_qml.extra = sed -i s/harbour-logger-conf/$${TARGET}/g $$eval(settings_qml.files)
+    INSTALLS += settings_qml settings_json
+}
 
-icon108.files = icons/108x108/$${TARGET}.png
-icon108.path = $${TARGET_ICON_ROOT}/108x108/apps
-INSTALLS += icon108
+# Desktop file
+equals(PREFIX, "openrepos") {
+    desktop.extra = sed s/harbour/openrepos/g harbour-$${NAME}.desktop > $${TARGET}.desktop
+    desktop.CONFIG += no_check_exist
+}
 
-icon128.files = icons/128x128/$${TARGET}.png
-icon128.path = $${TARGET_ICON_ROOT}/128x128/apps
-INSTALLS += icon128
-
-icon256.files = icons/256x256/$${TARGET}.png
-icon256.path = $${TARGET_ICON_ROOT}/256x256/apps
-INSTALLS += icon256
+# Icons
+ICON_SIZES = 86 108 128 256
+for(s, ICON_SIZES) {
+    icon_target = icon$${s}
+    icon_dir = icons/$${s}x$${s}
+    $${icon_target}.files = $${icon_dir}/$${TARGET}.png
+    $${icon_target}.path = /usr/share/icons/hicolor/$${s}x$${s}/apps
+    equals(PREFIX, "openrepos") {
+        $${icon_target}.extra = cp $${icon_dir}/harbour-$${NAME}.png $$eval($${icon_target}.files)
+        $${icon_target}.CONFIG += no_check_exist
+    }
+    INSTALLS += $${icon_target}
+}
 
 INCLUDEPATH += \
   src \
-  $$LOGGER_LIB_DIR/include
+  $${LOGGER_LIB_DIR}/include
 
 SOURCES += \
   src/main.cpp
 
-TRANSLATIONS += \
-  translations/harbour-logger-ofono.ts \
-  translations/harbour-logger-ofono-ru.ts
-
 # Translations
-TS_FILE = \"$${_PRO_FILE_PWD_}/translations/$${TARGET}.ts\"
-HAVE_TRANSLATIONS = 0
+TRANSLATION_SOURCES = \
+  $${_PRO_FILE_PWD_}/qml \
+  $${LOGGER_LIB_DIR}/qml \
+  $${LOGGER_LIB_DIR}/settings
 
-# Translation source directories
-TRANSLATION_SOURCE_CANDIDATES = $${_PRO_FILE_PWD_}/src $${_PRO_FILE_PWD_}/qml $${LOGGER_LIB_DIR}/qml
-for(dir, TRANSLATION_SOURCE_CANDIDATES) {
-    exists($$dir) {
-        TRANSLATION_SOURCES += \"$$dir\"
-    }
+TRANSLATION_FILES = $${NAME} $${NAME}-ru
+
+for(t, TRANSLATION_FILES) {
+    suffix = $$replace(t,-,_)
+    in = $${_PRO_FILE_PWD_}/translations/harbour-$${t}
+    out = $${OUT_PWD}/translations/$${PREFIX}-$${t}
+
+    lupdate_target = lupdate_$$suffix
+    lrelease_target = lrelease_$$suffix
+
+    $${lupdate_target}.commands = lupdate -noobsolete -extensions qml $${TRANSLATION_SOURCES} -ts \"$${in}.ts\" && \
+        mkdir -p \"$${OUT_PWD}/translations\" &&  [ \"$${in}.ts\" != \"$${out}.ts\" ] && \
+        cp -af \"$${in}.ts\" \"$${out}.ts\" || :
+
+    $${lrelease_target}.target = \"$${out}.qm\"
+    $${lrelease_target}.depends = $${lupdate_target}
+    $${lrelease_target}.commands = lrelease -idbased \"$${out}.ts\"
+
+    QMAKE_EXTRA_TARGETS += $${lrelease_target} $${lupdate_target}
+    PRE_TARGETDEPS += \"$${out}.qm\"
+    qm.files += \"$${out}.qm\"
 }
 
-# prefix all TRANSLATIONS with the src dir
-# the qm files are generated from the ts files copied to out dir
-for(t, TRANSLATIONS) {
-    TRANSLATIONS_IN  += \"$${_PRO_FILE_PWD_}/$$t\"
-    TRANSLATIONS_OUT += \"$${OUT_PWD}/$$t\"
-    HAVE_TRANSLATIONS = 1
-}
-
-qm.files = $$replace(TRANSLATIONS_OUT, \.ts, .qm)
-qm.path = /usr/share/$${TARGET}/translations
+qm.path = $$TRANSLATIONS_PATH
 qm.CONFIG += no_check_exist
-
-# update the ts files in the src dir and then copy them to the out dir
-TRANSLATE_OBSOLETE = -noobsolete
-qm.commands += lupdate $${TRANSLATE_OBSOLETE} $${TRANSLATION_SOURCES} -ts $${TS_FILE} $$TRANSLATIONS_IN && \
-    mkdir -p translations && \
-    [ \"$${OUT_PWD}\" != \"$${_PRO_FILE_PWD_}\" -a $$HAVE_TRANSLATIONS -eq 1 ] && \
-    cp -af $${TRANSLATIONS_IN} \"$${OUT_PWD}/translations\" || :
-
-TRANSLATE_UNFINISHED = -nounfinished
-TRANSLATE_IDBASED = -idbased
-
-# create the qm files
-qm.commands +=  [ $$HAVE_TRANSLATIONS -eq 1 ] && lrelease $${TRANSLATE_IDBASED} $${TRANSLATE_UNFINISHED} $${TRANSLATIONS_OUT} || :
-
 INSTALLS += qm

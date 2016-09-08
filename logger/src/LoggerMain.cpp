@@ -61,22 +61,27 @@ static void register_types(const char* uri, int v1 = 1, int v2 = 0)
 int Logger::Main(int aArgc, char* aArgv[], const char* aService,
     QString aPackage, QString aQmlPath)
 {
-    QString pluginPrefix(QString("harbour.logger.") + aPackage);
-    QString fullAppName(QString("harbour-logger-") + aPackage);
-
     QGuiApplication* app = SailfishApp::application(aArgc, aArgv);
-    HarbourTransferMethodInfo::registerTypes();
+
+    QString pluginPrefix(QString("harbour.logger.") + aPackage);
     register_types(qPrintable(pluginPrefix));
+    HarbourTransferMethodInfo::registerTypes();
 
     // Load translations
     QLocale locale;
     QTranslator* translator = new QTranslator(app);
+#ifdef OPENREPOS
+    QString fullAppName(QString("openrepos-logger-") + aPackage);
+    QString transDir("/usr/share/translations");
+#else
+    QString fullAppName(QString("harbour-logger-") + aPackage);
     QString transDir = SailfishApp::pathTo("translations").toLocalFile();
+#endif
     if (translator->load(locale, fullAppName, "-", transDir) ||
         translator->load(fullAppName, transDir)) {
         app->installTranslator(translator);
     } else {
-        HDEBUG("Failed to load translations for" << locale);
+        HWARN("Failed to load" << qPrintable(fullAppName) << "translations for" << locale);
         HDEBUG("Translation directory" << transDir);
         HDEBUG("App name" << fullAppName);
         delete translator;
@@ -96,7 +101,7 @@ int Logger::Main(int aArgc, char* aArgv[], const char* aService,
     // Log client and models
     DBusLogClient* client = dbus_log_client_new(G_BUS_TYPE_SYSTEM,
         aService, "/", DBUSLOG_CLIENT_FLAG_AUTOSTART);
-    LoggerLogModel* logModel = new LoggerLogModel(client, app);
+    LoggerLogModel* logModel = new LoggerLogModel(fullAppName, client, app);
     LoggerCategoryListModel* categoryModel = new LoggerCategoryListModel(client, app);
     LoggerLogSaver* logSaver = new LoggerLogSaver(aPackage, app);
     logSaver->connect(logModel, SIGNAL(entryAdded(LoggerEntry)), SLOT(addEntry(LoggerEntry)));

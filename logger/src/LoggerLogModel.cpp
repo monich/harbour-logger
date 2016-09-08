@@ -38,14 +38,25 @@
 #include "dbuslog_client.h"
 
 #define SUPER QAbstractListModel
-#define MAX_DEPTH 1000
-#define REMOVE_CHUNK 50
 
-LoggerLogModel::LoggerLogModel(DBusLogClient* aClient, QObject* aParent) :
-    SUPER(aParent),
+#define DCONF_PATH(app)             QString("/apps/") + app + "/"
+#define DCONF_KEY(app,key)          DCONF_PATH(app) + key
+#define DCONF_LOG_SIZE_LIMIT(app)   DCONF_KEY(app, "logSizeLimit")
+
+#define LOG_REMOVE_COUNT_MAX        (100)
+#define LOG_SIZE_LIMIT_DEFAULT      (1000)
+#define LOG_SIZE_LIMIT_MIN          (100)
+#define LOG_SIZE_LIMIT_NONE         (0)
+
+LoggerLogModel::LoggerLogModel(QString aAppName, DBusLogClient* aClient,
+    QObject* aParent) : SUPER(aParent),
     iClient(dbus_log_client_ref(aClient)),
-    iBuffer(MAX_DEPTH)
+    iBuffer(LOG_SIZE_LIMIT_DEFAULT),
+    iLogSizeLimitConf(new MGConfItem(DCONF_LOG_SIZE_LIMIT(aAppName), this))
 {
+    // updateLogSizeLimit() will initialize iLogSizeLimit and iLogRemoveCount:
+    updateLogSizeLimit();
+    connect(iLogSizeLimitConf, SIGNAL(valueChanged()), SLOT(updateLogSizeLimit()));
     memset(iClientSignals, 0, sizeof(iClientSignals));
     iClientSignals[DBusLogClientSignalConnected] =
         dbus_log_client_add_connected_handler(iClient, connectedProc, this);
@@ -60,6 +71,45 @@ LoggerLogModel::~LoggerLogModel()
 {
     dbus_log_client_remove_handlers(iClient, iClientSignals, G_N_ELEMENTS(iClientSignals));
     dbus_log_client_unref(iClient);
+}
+
+void LoggerLogModel::updateLogSizeLimit()
+{
+    iLogSizeLimit = LOG_SIZE_LIMIT_DEFAULT;
+    QVariant value = iLogSizeLimitConf->value();
+    if (value.isValid()) {
+        bool ok = false;
+        int ival = value.toInt(&ok);
+        if (ok) {
+            if (ival <= 0) {
+                iLogSizeLimit = LOG_SIZE_LIMIT_NONE;
+            } else if (ival < LOG_SIZE_LIMIT_MIN) {
+                iLogSizeLimit = LOG_SIZE_LIMIT_MIN;
+            } else {
+                iLogSizeLimit = ival;
+            }
+        }
+    }
+    if (iLogSizeLimit > 0) {
+        // Truncate the buffer if necessary
+        const int bufsize = iBuffer.size();
+        if (bufsize > iLogSizeLimit) {
+            const int dropCount = (bufsize - iLogSizeLimit);
+            beginRemoveRows(QModelIndex(), 0, dropCount-1);
+            iBuffer.drop(dropCount);
+            endRemoveRows();
+        }
+        HDEBUG("log size limit" << iLogSizeLimit);
+        iBuffer.setMaxSize(iLogSizeLimit);
+        iLogRemoveCount = iLogSizeLimit/50;
+        if (iLogRemoveCount > LOG_REMOVE_COUNT_MAX) {
+            iLogRemoveCount = LOG_REMOVE_COUNT_MAX;
+        }
+    } else {
+        HDEBUG("log size unlimited");
+        iLogRemoveCount = LOG_REMOVE_COUNT_MAX;
+        iBuffer.setMaxSize(GUTIL_RING_UNLIMITED_SIZE);
+    }
 }
 
 void LoggerLogModel::handleConnected()
@@ -95,8 +145,8 @@ void LoggerLogModel::addEntry(LoggerEntry aEntry)
 {
     const bool wasEmpty = isEmpty();
     if (!iBuffer.canPut(1)) {
-        beginRemoveRows(QModelIndex(), 0, REMOVE_CHUNK-1);
-        iBuffer.drop(REMOVE_CHUNK);
+        beginRemoveRows(QModelIndex(), 0, iLogRemoveCount-1);
+        iBuffer.drop(iLogRemoveCount);
         endRemoveRows();
     }
     const int count = iBuffer.size();
