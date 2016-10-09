@@ -34,21 +34,21 @@
 .import Sailfish.Silica 1.0 as Silica
 
 // These must match LoggerEntry::Type
-const TypeInvalid = 0
-const TypeLog = 1
-const TypeSkip = 2
-const TypeText = 3
-const TypeEmpty = 4
+var TypeInvalid = 0
+var TypeLog = 1
+var TypeSkip = 2
+var TypeText = 3
+var TypeEmpty = 4
 
 // These must match LoggerEntry::Level
-const LevelUndefined = 0
-const LevelCritical = 1
-const LevelError = 2
-const LevelWarning = 3
-const LevelNotice = 4
-const LevelInfo = 5
-const LevelDebug = 6
-const LevelVerbose = 7
+var LevelUndefined = 0
+var LevelCritical = 1
+var LevelError = 2
+var LevelWarning = 3
+var LevelNotice = 4
+var LevelInfo = 5
+var LevelDebug = 6
+var LevelVerbose = 7
 
 function textColor(type,level) {
     if (type === TypeLog) {
