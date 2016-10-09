@@ -1,6 +1,6 @@
 Name:       harbour-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.2
+Version:    1.0.3
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -59,10 +59,13 @@ rm -fr %{buildroot}/%{_datarootdir}/logger
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 
 %changelog
-* Thu Sep  8 2016 Slava Monich <slava.monich@jolla.com> 1.0.2
+* Sun Oct 09 2016 Slava Monich <slava.monich@jolla.com> 1.0.3
+- Compatibility with Qt 5.6
+
+* Thu Sep 08 2016 Slava Monich <slava.monich@jolla.com> 1.0.2
 - Made font size configurable
 
-* Thu Sep  8 2016 Slava Monich <slava.monich@jolla.com> 1.0.1
+* Thu Sep 08 2016 Slava Monich <slava.monich@jolla.com> 1.0.1
 - Fixed a few visual glitches
 - Made screen buffer size configurable
 - Added openrepos build with settings plugin
