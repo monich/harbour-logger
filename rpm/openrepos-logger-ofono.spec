@@ -1,6 +1,6 @@
 Name:       openrepos-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.3
+Version:    1.0.4
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -62,6 +62,9 @@ rm -fr %{buildroot}/%{_datarootdir}/logger
 %{_datadir}/jolla-settings/entries/%{name}.json
 
 %changelog
+* Mon Oct 10 2016 Slava Monich <slava.monich@jolla.com> 1.0.4
+- Added default email address
+
 * Sun Oct 09 2016 Slava Monich <slava.monich@jolla.com> 1.0.3
 - Compatibility with Qt 5.6
 
