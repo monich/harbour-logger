@@ -98,8 +98,10 @@ Page {
             id: shareMethods
             source: logSaver.archivePath
             type: logSaver.archiveType
+            //: Default email subject
             //% "Log"
             subject: qsTrId("logger-sharepage-default-subject")
+            //: Default email recipient
             //% ""
             emailTo: qsTrId("logger-sharepage-default-email")
             Behavior on opacity { FadeAnimation {} }

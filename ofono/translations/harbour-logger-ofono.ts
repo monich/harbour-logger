@@ -81,11 +81,13 @@
     </message>
     <message id="logger-sharepage-default-subject">
         <source>Log</source>
+        <extracomment>Default email subject</extracomment>
         <translation>ofono log</translation>
     </message>
     <message id="logger-sharepage-default-email">
         <source></source>
-        <translation> </translation>
+        <extracomment>Default email recipient</extracomment>
+        <translation>ofono-debug@jolla.com</translation>
     </message>
     <message id="logger-sharepage-warning">
         <source>Keep in mind that some of the information contained in this archive may be considered private. If you would like to check what you are about to send, please consider sending it to yourself and checking its contents first.</source>
