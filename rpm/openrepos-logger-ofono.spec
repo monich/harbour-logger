@@ -1,6 +1,6 @@
 Name:       openrepos-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.4
+Version:    1.0.5
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -62,6 +62,10 @@ rm -fr %{buildroot}/%{_datarootdir}/logger
 %{_datadir}/jolla-settings/entries/%{name}.json
 
 %changelog
+* Tue Oct 25 2016 Slava Monich <slava.monich@jolla.com> 1.0.5
+- Added "Fix mobile data" menu item
+- Collect more ofono information
+
 * Mon Oct 10 2016 Slava Monich <slava.monich@jolla.com> 1.0.4
 - Added default email address
 
