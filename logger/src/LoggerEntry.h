@@ -35,6 +35,7 @@
 
 #include <QString>
 #include <QDateTime>
+#include <QMetaType>
 
 #include "dbuslog_message.h"
 
