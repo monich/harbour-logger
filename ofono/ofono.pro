@@ -35,6 +35,7 @@ CONFIG(debug, debug|release) {
 # Directories
 HARBOUR_LIB_DIR = $$_PRO_FILE_PWD_/../harbour-lib
 LOGGER_LIB_DIR = $$_PRO_FILE_PWD_/../logger
+QOFONOEXT_LIB_DIR = $$_PRO_FILE_PWD_/src/libqofonoext
 
 # Libraries
 HARBOUR_LIB = $$OUT_PWD/../harbour-lib/libharbour-lib.a
@@ -64,10 +65,25 @@ INSTALLS += qml_pages
 INCLUDEPATH += \
   src \
   $${LOGGER_LIB_DIR}/include \
-  $${HARBOUR_LIB_DIR}/include
+  $${HARBOUR_LIB_DIR}/include \
+  $${QOFONOEXT_LIB_DIR}/src
+
+HEADERS += \
+  $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.h
 
 SOURCES += \
-  src/main.cpp
+  src/main.cpp \
+  $${QOFONOEXT_LIB_DIR}/src/qofonoext.cpp \
+  $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.cpp
+
+# D-Bus interfaces
+DBUS_INTERFACES += org_nemomobile_ofono_modem_manager
+org_nemomobile_ofono_modem_manager.files = $${QOFONOEXT_LIB_DIR}/src/dbus/org.nemomobile.ofono.ModemManager.xml
+org_nemomobile_ofono_modem_manager.header_flags = -N -c QOfonoExtModemManagerProxy -i qofonoext_p.h
+org_nemomobile_ofono_modem_manager.source_flags = -N -c QOfonoExtModemManagerProxy
+
+OTHER_FILES += \
+    $${org_nemomobile_ofono_modem_manager.files}
 
 # Settings
 app_settings {

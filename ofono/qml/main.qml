@@ -47,6 +47,27 @@ ApplicationWindow
         filter: LogSaver.archiveType
     }
     allowedOrientations: Orientation.Portrait | Orientation.Landscape | Orientation.LandscapeInverted
-    initialPage: Component { MainPage { } }
+    initialPage: Component {
+        MainPage {
+            customLogMenuItem:  MenuItem {
+                id: fixMobileDataMenuItem
+                property bool active
+                //: Pull-down menu item
+                //% "Fix mobile data"
+                text: qsTrId("ofono-logger-pm-fix-mobile-data")
+                onClicked: OfonoLogger.fixMobileData()
+                onActiveChanged: if (!active) visible = OfonoLogger.mobileDataBroken
+                Component.onCompleted: visible = OfonoLogger.mobileDataBroken
+            }
+            Connections {
+                target: OfonoLogger
+                onMobileDataBrokenChanged: {
+                    if (!fixMobileDataMenuItem.active) {
+                        fixMobileDataMenuItem.visible = OfonoLogger.mobileDataBroken
+                    }
+                }
+            }
+        }
+    }
     cover: Component { CoverPage { } }
 }

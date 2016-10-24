@@ -11,6 +11,11 @@
         <source>Swipe left to configure log categories</source>
         <translation>Там справа что-то есть</translation>
     </message>
+    <message id="ofono-logger-pm-fix-mobile-data">
+        <source>Fix mobile data</source>
+        <extracomment>Pull-down menu item</extracomment>
+        <translation>Починить мобильные данные</translation>
+    </message>
     <message id="logger-logpage-pm-clear-log">
         <source>Clear log</source>
         <translation>Очистить журнал</translation>

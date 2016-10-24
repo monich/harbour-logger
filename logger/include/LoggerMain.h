@@ -35,7 +35,9 @@
 
 #include <QString>
 #include <QObject>
-#include <QGuiApplication>
+
+class QQuickView;
+class QGuiApplication;
 
 class LoggerMain : public QObject {
     Q_OBJECT
@@ -62,6 +64,7 @@ protected:
     // These are invoked by run()
     virtual void loadTranslations();
     virtual void saveFilesAtStartup(QString aDir);
+    virtual void setupView(QQuickView* aView);
 
 protected:
     QGuiApplication* iApp;

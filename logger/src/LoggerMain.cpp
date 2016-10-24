@@ -49,6 +49,7 @@
 
 #include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
 
 #undef signals
 #include "dbuslog_client.h"
@@ -114,15 +115,19 @@ bool LoggerMain::saveOutput(const char* aExe, const char* const aArgv[],
 {
     int fd = open(qPrintable(aOut), O_WRONLY | O_CREAT, 0644);
     if (fd >= 0) {
-        if (fork() == 0) {
+        pid_t pid = fork();
+        if (!pid) {
             dup2(fd, STDOUT_FILENO);
             dup2(fd, STDERR_FILENO);
             execvp(aExe, (char**)aArgv);
         }
         close(fd);
+        HDEBUG(pid << qPrintable(aOut));
         return true;
+    } else {
+        HWARN(qPrintable(aOut) << strerror(errno));
+        return false;
     }
-    return false;
 }
 
 bool LoggerMain::saveOutput(const char* aExe, const char* aArg1,
@@ -162,6 +167,10 @@ void LoggerMain::saveFilesAtStartup(QString aDir)
         aDir + "/" + iPackage + "-version");
 }
 
+void LoggerMain::setupView(QQuickView* aView)
+{
+}
+
 int LoggerMain::run()
 {
     loadTranslations();
@@ -188,6 +197,8 @@ int LoggerMain::run()
     context->setContextProperty("LogSaver", logSaver);
     context->setContextProperty("CategoryModel", categoryModel);
     context->setContextProperty("AppName", iFullAppName);
+
+    setupView(view);
     view->setSource(SailfishApp::pathTo(iQmlPath));
     view->showFullScreen();
 

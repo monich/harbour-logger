@@ -36,6 +36,7 @@ import Sailfish.Silica 1.0
 Page {
     id: mainPage
     allowedOrientations: window.allowedOrientations
+    property var customLogMenuItem
 
     readonly property var pages: [ logPage, categoryPage ]
     readonly property bool swipeHintEnabled: loggerHints.categoryLeftSwipe < loggerHints.categoryLeftSwipeMax

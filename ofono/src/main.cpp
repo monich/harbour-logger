@@ -33,9 +33,10 @@
 #include "LoggerMain.h"
 #include "HarbourDebug.h"
 
-#include <QDBusConnection>
-#include <QDBusPendingReply>
-#include <QDBusPendingCallWatcher>
+#include "qofonoextmodemmanager.h"
+
+#include <QQuickView>
+#include <QQmlContext>
 
 #define OFONO_INTERFACE "org.ofono"
 #define OFONOEXT_INTERFACE "org.nemomobile.ofono"
@@ -45,25 +46,103 @@
 
 class OfonoLogger: public SUPER {
     Q_OBJECT
-
+    Q_PROPERTY(bool mobileDataBroken READ mobileDataBroken NOTIFY mobileDataBrokenChanged)
+    static const QString AUTO;
 public:
-    OfonoLogger(int* aArgc, char** aArgv) :
-        SUPER(aArgc, aArgv, "org.ofono", "ofono", "qml/main.qml") {}
+    OfonoLogger(int* aArgc, char** aArgv);
+    bool mobileDataBroken() const;
+    Q_INVOKABLE void fixMobileData();
 
 private:
-    void modemManagerCall(QString aMethod, const char* aSlot);
     void dumpOfonoInfo(QString aPath, QString aService);
+    void maybeSaveFiles();
+    void saveFiles();
 
 protected:
     virtual void saveFilesAtStartup(QString aDir);
+    virtual void setupView(QQuickView* aView);
 
 private Q_SLOTS:
-    void onGetInterfaceVersionFinished(QDBusPendingCallWatcher* aWatcher);
-    void onGetAvailableModemsFinished(QDBusPendingCallWatcher* aWatcher);
+    void updateState();
+
+Q_SIGNALS:
+    void mobileDataBrokenChanged();
 
 private:
     QString iSaveDir;
+    QOfonoExtModemManager* iModemManager;
+    bool iFilesSaved;
+    bool iMobileDataBroken;
 };
+
+const QString OfonoLogger::AUTO("auto");
+
+OfonoLogger::OfonoLogger(int* aArgc, char** aArgv) :
+    SUPER(aArgc, aArgv, "org.ofono", "ofono", "qml/main.qml"),
+    iModemManager(new QOfonoExtModemManager(this)),
+    iFilesSaved(false),
+    iMobileDataBroken(false)
+{
+    connect(iModemManager, SIGNAL(validChanged(bool)), SLOT(updateState()));
+    connect(iModemManager, SIGNAL(defaultDataSimChanged(QString)), SLOT(updateState()));
+    updateState();
+}
+
+inline bool OfonoLogger::mobileDataBroken() const
+{
+    return iMobileDataBroken;
+}
+
+void OfonoLogger::fixMobileData()
+{
+    HDEBUG("ok");
+    iModemManager->setDefaultDataSim(AUTO);
+}
+
+void OfonoLogger::updateState()
+{
+    maybeSaveFiles();
+    // On a single-SIM phone default data sim should be always set to "auto"
+    // because UI doesn't provide any way to change it.
+    bool broken = iModemManager->valid() &&
+        iModemManager->availableModems().count() == 1 &&
+        iModemManager->defaultDataSim() != AUTO;
+    if (iMobileDataBroken != broken) {
+        iMobileDataBroken = broken;
+        HDEBUG((broken ? "broken" : "ok"));
+        Q_EMIT mobileDataBrokenChanged();
+    }
+}
+
+void OfonoLogger::maybeSaveFiles()
+{
+    if (!iFilesSaved && !iSaveDir.isEmpty() && iModemManager->valid()) {
+        iFilesSaved = true;
+        saveFiles();
+    }
+}
+
+void OfonoLogger::saveFiles()
+{
+    // ModemManager.GetAll
+    const int ver = iModemManager->interfaceVersion();
+    QString dest = QString("--dest=%1").arg(iService);
+    QString call = QString(MODEM_MANAGER_INTERFACE ".GetAll%1").arg(ver);
+    QString fname = call.right(call.length() - sizeof(OFONOEXT_INTERFACE));
+    saveOutput("dbus-send", "--system", "--print-reply", "--type=method_call",
+        qPrintable(dest), "/", qPrintable(call),
+        iSaveDir + "/" + fname +".txt");
+
+    // Ofono information for each modem
+    QStringList modems = iModemManager->availableModems();
+    for (int i=0; i<modems.count(); i++) {
+        QString path(modems.at(i));
+        HDEBUG(path);
+        dumpOfonoInfo(path, "SimManager.GetProperties");
+        dumpOfonoInfo(path, "NetworkRegistration.GetProperties");
+        dumpOfonoInfo(path, "ConnectionManager.GetProperties");
+    }
+}
 
 void OfonoLogger::dumpOfonoInfo(QString aPath, QString aCall)
 {
@@ -75,49 +154,18 @@ void OfonoLogger::dumpOfonoInfo(QString aPath, QString aCall)
         iSaveDir + "/" + aCall + "." + suffix + ".txt");
 }
 
-void OfonoLogger::onGetAvailableModemsFinished(QDBusPendingCallWatcher* aWatcher)
-{
-    QDBusPendingReply<QList<QDBusObjectPath> > reply(*aWatcher);
-    QList<QDBusObjectPath> modems = reply.value();
-    for (int i=0; i<modems.count(); i++) {
-        QString path(modems.at(i).path());
-        HDEBUG(path);
-        dumpOfonoInfo(path, "SimManager.GetProperties");
-        dumpOfonoInfo(path, "NetworkRegistration.GetProperties");
-        dumpOfonoInfo(path, "ConnectionManager.GetProperties");
-    }
-    aWatcher->deleteLater();
-}
-
-void OfonoLogger::onGetInterfaceVersionFinished(QDBusPendingCallWatcher* aWatcher)
-{
-    QDBusPendingReply<int> reply(*aWatcher);
-    QString dest = QString("--dest=%1").arg(iService);
-    QString call = QString(MODEM_MANAGER_INTERFACE ".GetAll%1").arg(reply.value());
-    QString fname = call.right(call.length() - sizeof(OFONOEXT_INTERFACE));
-    HDEBUG(reply.value());
-    saveOutput("dbus-send", "--system", "--print-reply", "--type=method_call",
-        qPrintable(dest), "/", qPrintable(call),
-        iSaveDir + "/" + fname +".txt");
-    aWatcher->deleteLater();
-}
-
-void OfonoLogger::modemManagerCall(QString aMethod, const char* aSlot)
-{
-    connect(new QDBusPendingCallWatcher(QDBusConnection::systemBus().
-        asyncCall(QDBusMessage::createMethodCall(iService, "/",
-        MODEM_MANAGER_INTERFACE, aMethod)), this),
-        SIGNAL(finished(QDBusPendingCallWatcher*)), aSlot);
-}
-
 void OfonoLogger::saveFilesAtStartup(QString aDir)
 {
     iSaveDir = aDir;
-    modemManagerCall("GetInterfaceVersion",
-        SLOT(onGetInterfaceVersionFinished(QDBusPendingCallWatcher*)));
-    modemManagerCall("GetAvailableModems",
-        SLOT(onGetAvailableModemsFinished(QDBusPendingCallWatcher*)));
+    maybeSaveFiles();
     SUPER::saveFilesAtStartup(aDir);
+}
+
+void OfonoLogger::setupView(QQuickView* aView)
+{
+    QQmlContext* context = aView->rootContext();
+    context->setContextProperty("OfonoLogger", this);
+    SUPER::setupView(aView);
 }
 
 Q_DECL_EXPORT int main(int argc, char* argv[])

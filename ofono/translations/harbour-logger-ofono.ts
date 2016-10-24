@@ -11,6 +11,11 @@
         <source>Swipe left to configure log categories</source>
         <translation>Swipe left to configure log categories</translation>
     </message>
+    <message id="ofono-logger-pm-fix-mobile-data">
+        <source>Fix mobile data</source>
+        <extracomment>Pull-down menu item</extracomment>
+        <translation>Fix mobile data</translation>
+    </message>
     <message id="logger-logpage-pm-clear-log">
         <source>Clear log</source>
         <translation>Clear log</translation>

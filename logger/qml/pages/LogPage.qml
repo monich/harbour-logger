@@ -37,7 +37,7 @@ import "logger.js" as Logger
 SilicaFlickable {
     id: page
     property var logModel: LogModel
-    property string fontFamily: "Monospace"
+    readonly property string fontFamily: "Monospace"
 
     function packAndShare() {
         LogSaver.pack()
@@ -56,8 +56,44 @@ SilicaFlickable {
     }
 
     Component.onCompleted: {
+        // Dynamically bind custom menu item
+        if (customLogMenuItem) {
+            customMenuItem.clicked.connect(customLogMenuItem.clicked)
+            customLogMenuItemTextComponent.createObject(page)
+            customLogMenuItemVisibleComponent.createObject(page)
+            if (customLogMenuItem.active !== undefined) {
+                customLogMenuItemActiveComponent.createObject(page)
+            }
+        }
         if (logModel.connected) {
             connected()
+        }
+    }
+
+    Component {
+        id: customLogMenuItemTextComponent
+        Binding {
+            target: customMenuItem
+            property: "text"
+            value: customLogMenuItem.text
+        }
+    }
+
+    Component {
+        id: customLogMenuItemVisibleComponent
+        Binding {
+            target: customMenuItem
+            property: "visible"
+            value: customLogMenuItem.visible
+        }
+    }
+
+    Component {
+        id: customLogMenuItemActiveComponent
+        Binding {
+            target: customLogMenuItem
+            property: "active"
+            value: pullDownMenu.active
         }
     }
 
@@ -77,6 +113,10 @@ SilicaFlickable {
 
     PullDownMenu {
         id: pullDownMenu
+        MenuItem {
+            id: customMenuItem
+            visible: false
+        }
         MenuItem {
             //% "Clear log"
             text: qsTrId("logger-logpage-pm-clear-log")
