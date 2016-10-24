@@ -34,10 +34,43 @@
 #define LOGGER_MAIN_H
 
 #include <QString>
+#include <QObject>
+#include <QGuiApplication>
 
-namespace Logger {
-    int Main(int aArgc, char* aArgv[], const char* aService, QString aPackage,
-        QString aQmlPath);
-}
+class LoggerMain : public QObject {
+    Q_OBJECT
+
+public:
+    LoggerMain(int* aArgc, char** aArgv, const char* aService,
+        QString aPackage, QString aQmlPath);
+    virtual ~LoggerMain();
+
+    int run();
+
+    // Quick way to run the app
+    static int Run(int aArgc, char** aArgv, const char* aService,
+        QString aPackage, QString aQmlPath);
+
+protected:
+    bool saveOutput(const char* aExe, const char* const aArgv[], QString aOut);
+    bool saveOutput(const char* aExe, const char* aArg1, const char* aArg2,
+        QString aOut);
+    bool saveOutput(const char* aExe, const char* aArg1, const char* aArg2,
+        const char* aArg3, const char* aArg4, const char* aArg5,
+        const char* aArg6, QString aOut);
+
+    // These are invoked by run()
+    virtual void loadTranslations();
+    virtual void saveFilesAtStartup(QString aDir);
+
+protected:
+    QGuiApplication* iApp;
+    QString iService;
+    QString iPackage;
+    QString iQmlPath;
+    struct dbus_log_client* iClient;
+    QString iFullAppName;
+    QString iTransDir;
+};
 
 #endif // LOGGER_MAIN_H

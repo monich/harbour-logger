@@ -17,7 +17,7 @@ app_settings {
 
 CONFIG += sailfishapp link_pkgconfig
 PKGCONFIG += sailfishapp mlite5 gio-2.0 gio-unix-2.0 glib-2.0
-#QT += dbus
+QT += dbus
 
 WARNINGS = -Wall -Wno-unused-parameter -Wno-deprecated-declarations
 QMAKE_CXXFLAGS += $$WARNINGS -Wno-psabi
@@ -61,6 +61,14 @@ qml_pages.files = $${LOGGER_LIB_DIR}/qml/*
 qml_pages.path = $${TARGET_DATA_DIR}/qml
 INSTALLS += qml_pages
 
+INCLUDEPATH += \
+  src \
+  $${LOGGER_LIB_DIR}/include \
+  $${HARBOUR_LIB_DIR}/include
+
+SOURCES += \
+  src/main.cpp
+
 # Settings
 app_settings {
     settings_json.files = $${LOGGER_LIB_DIR}/settings/$${TARGET}.json
@@ -92,13 +100,6 @@ for(s, ICON_SIZES) {
     }
     INSTALLS += $${icon_target}
 }
-
-INCLUDEPATH += \
-  src \
-  $${LOGGER_LIB_DIR}/include
-
-SOURCES += \
-  src/main.cpp
 
 # Translations
 TRANSLATION_SOURCES = \

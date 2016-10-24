@@ -59,71 +59,126 @@ static void register_types(const char* uri, int v1 = 1, int v2 = 0)
     qmlRegisterType<HarbourTransferMethodsModel>(uri, v1, v2, "TransferMethodsModel");
 }
 
-int Logger::Main(int aArgc, char* aArgv[], const char* aService,
-    QString aPackage, QString aQmlPath)
+LoggerMain::LoggerMain(int* aArgc, char** aArgv, const char* aService,
+    QString aPackage, QString aQmlPath) :
+    iApp(SailfishApp::application(*aArgc, aArgv)),
+    iService(aService),
+    iPackage(aPackage),
+    iQmlPath(aQmlPath),
+    iClient(dbus_log_client_new(G_BUS_TYPE_SYSTEM, aService, "/",
+        DBUSLOG_CLIENT_FLAG_AUTOSTART)),
+#ifdef OPENREPOS
+    iFullAppName(QString("openrepos-logger-") + aPackage),
+    iTransDir("/usr/share/translations")
+#else
+    iFullAppName(QString("harbour-logger-") + aPackage),
+    iTransDir(SailfishApp::pathTo("translations").toLocalFile())
+#endif
 {
-    QGuiApplication* app = SailfishApp::application(aArgc, aArgv);
-
     QString pluginPrefix(QString("harbour.logger.") + aPackage);
     register_types(qPrintable(pluginPrefix));
     HarbourTransferMethodInfo::registerTypes();
+}
 
-    // Load translations
+LoggerMain::~LoggerMain()
+{
+    dbus_log_client_unref(iClient);
+    delete iApp;
+}
+
+void LoggerMain::loadTranslations()
+{
     QLocale locale;
-    QTranslator* translator = new QTranslator(app);
-#ifdef OPENREPOS
-    QString fullAppName(QString("openrepos-logger-") + aPackage);
-    QString transDir("/usr/share/translations");
-#else
-    QString fullAppName(QString("harbour-logger-") + aPackage);
-    QString transDir = SailfishApp::pathTo("translations").toLocalFile();
-#endif
-    if (translator->load(locale, fullAppName, "-", transDir) ||
-        translator->load(fullAppName, transDir)) {
-        app->installTranslator(translator);
+    QTranslator* translator = new QTranslator(iApp);
+    if (translator->load(locale, iFullAppName, "-", iTransDir) ||
+        translator->load(iFullAppName, iTransDir)) {
+        iApp->installTranslator(translator);
     } else {
-        HWARN("Failed to load" << qPrintable(fullAppName) << "translations for" << locale);
-        HDEBUG("Translation directory" << transDir);
-        HDEBUG("App name" << fullAppName);
+        HWARN("Failed to load" << qPrintable(iFullAppName) << "translations for" << locale);
+        HDEBUG("Translation directory" << iTransDir);
+        HDEBUG("App name" << iFullAppName);
         delete translator;
     }
 
-    translator = new QTranslator(app);
+    translator = new QTranslator(iApp);
     if (HarbourTransferMethodsModel::loadTranslations(translator, locale) ||
         HarbourTransferMethodsModel::loadTranslations(translator, QLocale("en_GB"))) {
-        app->installTranslator(translator);
+        iApp->installTranslator(translator);
     } else {
         delete translator;
     }
+}
+
+bool LoggerMain::saveOutput(const char* aExe, const char* const aArgv[],
+    QString aOut)
+{
+    int fd = open(qPrintable(aOut), O_WRONLY | O_CREAT, 0644);
+    if (fd >= 0) {
+        if (fork() == 0) {
+            dup2(fd, STDOUT_FILENO);
+            dup2(fd, STDERR_FILENO);
+            execvp(aExe, (char**)aArgv);
+        }
+        close(fd);
+        return true;
+    }
+    return false;
+}
+
+bool LoggerMain::saveOutput(const char* aExe, const char* aArg1,
+    const char* aArg2, QString aOut)
+{
+    const char* argv[4];
+    argv[0] = aExe;
+    argv[1] = aArg1;
+    argv[2] = aArg2;
+    argv[3] = NULL;
+    return saveOutput(aExe, argv, aOut);
+}
+
+bool LoggerMain::saveOutput(const char* aExe, const char* aArg1,
+    const char* aArg2, const char* aArg3, const char* aArg4,
+    const char* aArg5, const char* aArg6, QString aOut)
+{
+    const char* argv[8];
+    argv[0] = aExe;
+    argv[1] = aArg1;
+    argv[2] = aArg2;
+    argv[3] = aArg3;
+    argv[4] = aArg4;
+    argv[5] = aArg5;
+    argv[6] = aArg6;
+    argv[7] = NULL;
+    return saveOutput(aExe, argv, aOut);
+}
+
+void LoggerMain::saveFilesAtStartup(QString aDir)
+{
+    // Copy OS version
+    QFile::copy("/etc/sailfish-release", aDir + "/sailfish-release");
+
+    // And the package version
+    saveOutput("rpm", "-q", qPrintable(iPackage),
+        aDir + "/" + iPackage + "-version");
+}
+
+int LoggerMain::run()
+{
+    loadTranslations();
 
     // Signal handler
-    HarbourSigChildHandler* sigChild = HarbourSigChildHandler::install(app);
+    HarbourSigChildHandler* sigChild = HarbourSigChildHandler::install(iApp);
 
-    // Log client and models
-    DBusLogClient* client = dbus_log_client_new(G_BUS_TYPE_SYSTEM,
-        aService, "/", DBUSLOG_CLIENT_FLAG_AUTOSTART);
-    LoggerSettings* logSettings = new LoggerSettings(fullAppName, app);
-    LoggerLogModel* logModel = new LoggerLogModel(logSettings, client, app);
-    LoggerCategoryListModel* categoryModel = new LoggerCategoryListModel(client, app);
-    LoggerLogSaver* logSaver = new LoggerLogSaver(aPackage, app);
+    // Models and stuff
+    LoggerSettings* logSettings = new LoggerSettings(iFullAppName, iApp);
+    LoggerLogModel* logModel = new LoggerLogModel(logSettings, iClient, iApp);
+    LoggerCategoryListModel* categoryModel = new LoggerCategoryListModel(iClient, iApp);
+    LoggerLogSaver* logSaver = new LoggerLogSaver(iPackage, iApp);
     logSaver->connect(logModel, SIGNAL(entryAdded(LoggerEntry)), SLOT(addEntry(LoggerEntry)));
     logSaver->connect(sigChild, SIGNAL(processDied(int,int)), SLOT(onProcessDied(int,int)));
 
-    // Copy OS version
-    QString dir(logSaver->dirName());
-    QFile::copy("/etc/sailfish-release", dir + "/sailfish-release");
-
-    // And the package version
-    QString pkgVersionFile(dir + "/" + aPackage + "-version");
-    int pkgVersionFd = open(qPrintable(pkgVersionFile), O_WRONLY | O_CREAT, 0644);
-    if (pkgVersionFd >= 0) {
-        if (fork() == 0) {
-            dup2(pkgVersionFd, STDOUT_FILENO);
-            dup2(pkgVersionFd, STDERR_FILENO);
-            execlp("rpm", "rpm", "-q", qPrintable(aPackage), NULL);
-        }
-        close(pkgVersionFd);
-    }
+    // Save some files
+    saveFilesAtStartup(logSaver->dirName());
 
     // Create and show the view
     QQuickView* view = SailfishApp::createView();
@@ -132,14 +187,21 @@ int Logger::Main(int aArgc, char* aArgv[], const char* aService,
     context->setContextProperty("LogModel", logModel);
     context->setContextProperty("LogSaver", logSaver);
     context->setContextProperty("CategoryModel", categoryModel);
-    context->setContextProperty("AppName", QString(fullAppName));
-    view->setSource(SailfishApp::pathTo(aQmlPath));
+    context->setContextProperty("AppName", iFullAppName);
+    view->setSource(SailfishApp::pathTo(iQmlPath));
     view->showFullScreen();
 
-    int ret = app->exec();
+    int ret = iApp->exec();
 
-    dbus_log_client_unref(client);
     delete view;
-    delete app;
+    return ret;
+}
+
+int LoggerMain::Run(int aArgc, char* aArgv[], const char* aService,
+    QString aPackage, QString aQmlPath)
+{
+    LoggerMain* main = new LoggerMain(&aArgc, aArgv, aService, aPackage, aQmlPath);
+    int ret = main->run();
+    delete main;
     return ret;
 }
