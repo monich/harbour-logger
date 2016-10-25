@@ -141,6 +141,7 @@ void OfonoLogger::saveFiles()
         dumpOfonoInfo(path, "SimManager.GetProperties");
         dumpOfonoInfo(path, "NetworkRegistration.GetProperties");
         dumpOfonoInfo(path, "ConnectionManager.GetProperties");
+        dumpOfonoInfo(path, "ConnectionManager.GetContexts");
     }
 }
 
