@@ -212,7 +212,7 @@ void LoggerLogSaver::doWrite()
         if (type == LoggerEntry::TypeLog) {
             LoggerCategory category(entry.category());
             QString categoryName(category.name());
-            QString timestamp(entry.time().toString("MMM d hh:mm:ss.zzz "));
+            QString timestamp(entry.time().toString("yyyy-MM-dd hh:mm:ss.zzz "));
             QString line;
             if (category.isValid() &&
                 !category.name().isEmpty() &&
