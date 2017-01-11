@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
+ * Copyright (C) 2016-2017 Jolla Ltd.
  * Contact: Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
@@ -126,7 +126,7 @@ void LoggerLogModel::handleMessage(DBusLogCategory* aCategory, DBusLogMessage* a
     addEntry(LoggerEntry(cat, aMessage));
 }
 
-void LoggerLogModel::handleSkip(guint aCount)
+void LoggerLogModel::handleSkip(uint aCount)
 {
     addEntry(LoggerEntry(aCount));
 }
@@ -241,18 +241,22 @@ QVariant LoggerLogModel::data(const QModelIndex& aIndex, int aRole) const
     return value;
 }
 
+// Why invokeMethod? See https://bugreports.qt.io/browse/QTBUG-18434
 void LoggerLogModel::connectedProc(DBusLogClient* aClient, gpointer aData)
 {
-    ((LoggerLogModel*)aData)->handleConnected();
+    QMetaObject::invokeMethod((LoggerLogModel*)aData, "handleConnected");
 }
 
 void LoggerLogModel::messageProc(DBusLogClient* aClient, DBusLogCategory* aCategory,
     DBusLogMessage* aMessage, gpointer aData)
 {
-    ((LoggerLogModel*)aData)->handleMessage(aCategory, aMessage);
+    QMetaObject::invokeMethod((LoggerLogModel*)aData, "handleMessage",
+        Q_ARG(DBusLogCategory*,aCategory),
+        Q_ARG(DBusLogMessage*,aMessage));
 }
 
 void LoggerLogModel::skipProc(DBusLogClient* aClient, guint aCount, gpointer aData)
 {
-    ((LoggerLogModel*)aData)->handleSkip(aCount);
+    QMetaObject::invokeMethod((LoggerLogModel*)aData, "handleSkip",
+        Q_ARG(uint,aCount));
 }

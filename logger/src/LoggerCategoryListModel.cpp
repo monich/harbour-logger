@@ -226,7 +226,7 @@ void LoggerCategoryListModel::handleConnected()
     Q_EMIT connectedChanged();
 }
 
-void LoggerCategoryListModel::handleCategoryAdded(DBusLogCategory* aCategory, guint aIndex)
+void LoggerCategoryListModel::handleCategoryAdded(DBusLogCategory* aCategory, uint aIndex)
 {
     HDEBUG(aCategory->name);
     beginInsertRows(QModelIndex(), aIndex, aIndex);
@@ -236,7 +236,7 @@ void LoggerCategoryListModel::handleCategoryAdded(DBusLogCategory* aCategory, gu
     Q_EMIT countChanged();
 }
 
-void LoggerCategoryListModel::handleCategoryRemoved(DBusLogCategory* aCategory, guint aIndex)
+void LoggerCategoryListModel::handleCategoryRemoved(DBusLogCategory* aCategory, uint aIndex)
 {
     HDEBUG(aCategory->name);
     beginRemoveRows(QModelIndex(), aIndex, aIndex);
@@ -246,7 +246,7 @@ void LoggerCategoryListModel::handleCategoryRemoved(DBusLogCategory* aCategory, 
     Q_EMIT countChanged();
 }
 
-void LoggerCategoryListModel::handleCategoryFlags(DBusLogCategory* aCategory, guint aIndex)
+void LoggerCategoryListModel::handleCategoryFlags(DBusLogCategory* aCategory, uint aIndex)
 {
     HDEBUG(aIndex << aCategory->name << aCategory->flags);
     QModelIndex index(createIndex(aIndex, 0));
@@ -257,23 +257,34 @@ void LoggerCategoryListModel::handleCategoryFlags(DBusLogCategory* aCategory, gu
 
 void LoggerCategoryListModel::connectedProc(DBusLogClient* aClient, gpointer aData)
 {
-    ((LoggerCategoryListModel*)aData)->handleConnected();
+    LoggerCategoryListModel* model = (LoggerCategoryListModel*)aData;
+    QMetaObject::invokeMethod(model, "handleConnected");
 }
 
+// Why invokeMethod? See https://bugreports.qt.io/browse/QTBUG-18434
 void LoggerCategoryListModel::categoryAddedProc(DBusLogClient* aClient,
     DBusLogCategory* aCategory, guint aIndex, gpointer  aData)
 {
-    ((LoggerCategoryListModel*)aData)->handleCategoryAdded(aCategory, aIndex);
+    QMetaObject::invokeMethod((LoggerCategoryListModel*)aData,
+        "handleCategoryAdded",
+        Q_ARG(DBusLogCategory*,aCategory),
+        Q_ARG(uint,aIndex));
 }
 
 void LoggerCategoryListModel::categoryRemovedProc(DBusLogClient* aClient,
     DBusLogCategory* aCategory, guint aIndex, gpointer  aData)
 {
-    ((LoggerCategoryListModel*)aData)->handleCategoryRemoved(aCategory, aIndex);
+    QMetaObject::invokeMethod((LoggerCategoryListModel*)aData,
+        "handleCategoryRemoved",
+        Q_ARG(DBusLogCategory*,aCategory),
+        Q_ARG(uint,aIndex));
 }
 
 void LoggerCategoryListModel::categoryFlagsProc(DBusLogClient* aClient,
     DBusLogCategory* aCategory, guint aIndex, gpointer  aData)
 {
-    ((LoggerCategoryListModel*)aData)->handleCategoryFlags(aCategory, aIndex);
+    QMetaObject::invokeMethod((LoggerCategoryListModel*)aData,
+        "handleCategoryFlags",
+        Q_ARG(DBusLogCategory*,aCategory),
+        Q_ARG(uint,aIndex));
 }

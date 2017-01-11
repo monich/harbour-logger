@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
+ * Copyright (C) 2016-2017 Jolla Ltd.
  * Contact: Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
@@ -77,6 +77,12 @@ Q_SIGNALS:
     void connectedChanged();
     void haveDefaultsChanged();
 
+private Q_SLOTS:
+    void handleConnected();
+    void handleCategoryAdded(DBusLogCategory* aCategory, uint aIndex);
+    void handleCategoryRemoved(DBusLogCategory* aCategory, uint aIndex);
+    void handleCategoryFlags(DBusLogCategory* aCategory, uint aIndex);
+
 private:
     static void connectedProc(DBusLogClient* aClient, gpointer aData);
     static void categoryAddedProc(DBusLogClient* aClient,
@@ -87,10 +93,6 @@ private:
         DBusLogCategory* aCategory, guint aIndex, gpointer  aData);
 
     void updateDefaults();
-    void handleConnected();
-    void handleCategoryAdded(DBusLogCategory* aCategory, guint aIndex);
-    void handleCategoryRemoved(DBusLogCategory* aCategory, guint aIndex);
-    void handleCategoryFlags(DBusLogCategory* aCategory, guint aIndex);
 
 private:
     enum DBusLogClientSignals {

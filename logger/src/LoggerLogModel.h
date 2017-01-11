@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
+ * Copyright (C) 2016-2017 Jolla Ltd.
  * Contact: Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
@@ -79,6 +79,9 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void updateLogSizeLimit();
+    void handleConnected();
+    void handleMessage(DBusLogCategory* aCategory, DBusLogMessage* aMessage);
+    void handleSkip(uint aCount);
 
 private:
     static void connectedProc(DBusLogClient* aClient, gpointer aData);
@@ -86,9 +89,6 @@ private:
         DBusLogMessage* aMessage, gpointer aData);
     static void skipProc(DBusLogClient* aClient, guint aCount, gpointer aData);
 
-    void handleConnected();
-    void handleMessage(DBusLogCategory* aCategory, DBusLogMessage* aMessage);
-    void handleSkip(guint aCount);
     void addEntry(LoggerEntry aEntry);
 
 private:
