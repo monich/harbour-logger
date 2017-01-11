@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
+ * Copyright (C) 2016-2017 Jolla Ltd.
  * Contact: Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
@@ -209,6 +209,12 @@ void LoggerCategoryListModel::handleConnected()
             iCategories.insert(cat->id, LoggerCategory(cat));
         }
         endResetModel();
+        // Make sure that verbose logging is enabled. The default is often
+        // DEBUG which turns off e.g. RIL data dump in ofono
+        if (iClient->default_level < DBUSLOG_LEVEL_VERBOSE) {
+            dbus_log_client_set_default_level(iClient,
+                DBUSLOG_LEVEL_VERBOSE, NULL, NULL);
+        }
     } else if (!iCategories.isEmpty()) {
         HDEBUG("disconnected");
         beginResetModel();
