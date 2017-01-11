@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
+ * Copyright (C) 2016-2017 Jolla Ltd.
  * Contact: Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
@@ -124,6 +124,11 @@ void OfonoLogger::maybeSaveFiles()
 
 void OfonoLogger::saveFiles()
 {
+    QString rilerror("/var/lib/ofono/rilerror");
+    if (QFile::exists(rilerror)) {
+        QFile::copy(rilerror, iSaveDir + "/rilerror");
+    }
+
     // ModemManager.GetAll
     const int ver = iModemManager->interfaceVersion();
     QString dest = QString("--dest=%1").arg(iService);
