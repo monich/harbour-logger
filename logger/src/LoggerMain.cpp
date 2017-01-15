@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
+ * Copyright (C) 2016-2017 Jolla Ltd.
  * Contact: Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
@@ -111,7 +111,7 @@ void LoggerMain::loadTranslations()
 }
 
 bool LoggerMain::saveOutput(const char* aExe, const char* const aArgv[],
-    QString aOut)
+    QString aOut) const
 {
     int fd = open(qPrintable(aOut), O_WRONLY | O_CREAT, 0644);
     if (fd >= 0) {
@@ -131,7 +131,7 @@ bool LoggerMain::saveOutput(const char* aExe, const char* const aArgv[],
 }
 
 bool LoggerMain::saveOutput(const char* aExe, const char* aArg1,
-    const char* aArg2, QString aOut)
+    const char* aArg2, QString aOut) const
 {
     const char* argv[4];
     argv[0] = aExe;
@@ -143,7 +143,7 @@ bool LoggerMain::saveOutput(const char* aExe, const char* aArg1,
 
 bool LoggerMain::saveOutput(const char* aExe, const char* aArg1,
     const char* aArg2, const char* aArg3, const char* aArg4,
-    const char* aArg5, const char* aArg6, QString aOut)
+    const char* aArg5, const char* aArg6, QString aOut) const
 {
     const char* argv[8];
     argv[0] = aExe;

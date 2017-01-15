@@ -54,9 +54,9 @@ public:
     Q_INVOKABLE void fixMobileData();
 
 private:
-    void dumpOfonoInfo(QString aPath, QString aService);
     void maybeSaveFiles();
-    void saveFiles();
+    void saveFiles() const;
+    void dumpOfonoInfo(QString aPath, QString aService) const;
 
 protected:
     virtual void saveFilesAtStartup(QString aDir);
@@ -122,7 +122,7 @@ void OfonoLogger::maybeSaveFiles()
     }
 }
 
-void OfonoLogger::saveFiles()
+void OfonoLogger::saveFiles() const
 {
     QString rilerror("/var/lib/ofono/rilerror");
     if (QFile::exists(rilerror)) {
@@ -150,7 +150,7 @@ void OfonoLogger::saveFiles()
     }
 }
 
-void OfonoLogger::dumpOfonoInfo(QString aPath, QString aCall)
+void OfonoLogger::dumpOfonoInfo(QString aPath, QString aCall) const
 {
     QString suffix = QString(aPath).replace("/", "");
     QString dest = QString("--dest=%1").arg(iService);
