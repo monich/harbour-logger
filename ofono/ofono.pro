@@ -36,6 +36,7 @@ CONFIG(debug, debug|release) {
 HARBOUR_LIB_DIR = $$_PRO_FILE_PWD_/../harbour-lib
 LOGGER_LIB_DIR = $$_PRO_FILE_PWD_/../logger
 QOFONOEXT_LIB_DIR = $$_PRO_FILE_PWD_/src/libqofonoext
+QCONNMAN_LIB_DIR = $$_PRO_FILE_PWD_/src/libconnman-qt
 
 # Libraries
 HARBOUR_LIB = $$OUT_PWD/../harbour-lib/libharbour-lib.a
@@ -66,15 +67,25 @@ INCLUDEPATH += \
   src \
   $${LOGGER_LIB_DIR}/include \
   $${HARBOUR_LIB_DIR}/include \
-  $${QOFONOEXT_LIB_DIR}/src
+  $${QOFONOEXT_LIB_DIR}/src \
+  $${QCONNMAN_LIB_DIR}/libconnman-qt
 
 HEADERS += \
-  $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.h
+  $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.h \
+  $${QCONNMAN_LIB_DIR}/libconnman-qt/networktechnology.h
 
 SOURCES += \
   src/main.cpp \
   $${QOFONOEXT_LIB_DIR}/src/qofonoext.cpp \
-  $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.cpp
+  $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.cpp \
+  $${QCONNMAN_LIB_DIR}/libconnman-qt/networktechnology.cpp
+
+# D-Bus interfaces
+DBUS_INTERFACES += net_connman_technology
+net_connman_technology.files = $${QCONNMAN_LIB_DIR}/libconnman-qt/connman_technology.xml
+
+OTHER_FILES += \
+    $${net_connman_technology.files}
 
 # Settings
 app_settings {
@@ -128,7 +139,7 @@ for(t, TRANSLATION_FILES) {
         mkdir -p \"$${OUT_PWD}/translations\" &&  [ \"$${in}.ts\" != \"$${out}.ts\" ] && \
         cp -af \"$${in}.ts\" \"$${out}.ts\" || :
 
-    $${lrelease_target}.target = \"$${out}.qm\"
+    $${lrelease_target}.target = $${out}.qm
     $${lrelease_target}.depends = $${lupdate_target}
     $${lrelease_target}.commands = lrelease -idbased \"$${out}.ts\"
 

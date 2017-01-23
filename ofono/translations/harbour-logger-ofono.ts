@@ -16,6 +16,11 @@
         <extracomment>Pull-down menu item</extracomment>
         <translation>Fix mobile data</translation>
     </message>
+    <message id="ofono-logger-pm-enable-mobile-data">
+        <source>Enable mobile data</source>
+        <extracomment>Pull-down menu item</extracomment>
+        <translation>Enable mobile data</translation>
+    </message>
     <message id="logger-logpage-pm-clear-log">
         <source>Clear log</source>
         <translation>Clear log</translation>

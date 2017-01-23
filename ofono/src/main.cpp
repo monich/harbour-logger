@@ -34,6 +34,7 @@
 #include "HarbourDebug.h"
 
 #include "qofonoextmodemmanager.h"
+#include "networktechnology.h"
 
 #include <QQuickView>
 #include <QQmlContext>
@@ -41,56 +42,86 @@
 #define OFONO_INTERFACE "org.ofono"
 #define OFONOEXT_INTERFACE "org.nemomobile.ofono"
 #define MODEM_MANAGER_INTERFACE OFONOEXT_INTERFACE ".ModemManager"
+#define CELLULAR_TECHNOLOGY_PATH "/net/connman/technology/cellular"
 
 #define SUPER LoggerMain
 
 class OfonoLogger: public SUPER {
     Q_OBJECT
     Q_PROPERTY(bool mobileDataBroken READ mobileDataBroken NOTIFY mobileDataBrokenChanged)
+    Q_PROPERTY(bool mobileDataDisabled READ mobileDataDisabled NOTIFY mobileDataDisabledChanged)
     static const QString AUTO;
 public:
     OfonoLogger(int* aArgc, char** aArgv);
     bool mobileDataBroken() const;
+    bool mobileDataDisabled() const;
     Q_INVOKABLE void fixMobileData();
+    Q_INVOKABLE void enableMobileData();
 
 private:
     void maybeSaveFiles();
     void saveFiles() const;
     void dumpOfonoInfo(QString aPath, QString aService) const;
+    void dumpConnmanInfo(QString aPath, QString aService) const;
 
 protected:
     virtual void saveFilesAtStartup(QString aDir);
     virtual void setupView(QQuickView* aView);
 
 private Q_SLOTS:
-    void updateState();
+    void updateModemManagerState();
+    void updateNetworkTechnologyState();
+    void onNetworkTechnologyReady();
 
 Q_SIGNALS:
     void mobileDataBrokenChanged();
+    void mobileDataEnabledChanged();
+    void mobileDataDisabledChanged();
 
 private:
     QString iSaveDir;
-    QOfonoExtModemManager* iModemManager;
+    QSharedPointer<QOfonoExtModemManager> iModemManager;
+    NetworkTechnology* iNetworkTechnology;
+    bool iNetworkTechnologyReady;
     bool iFilesSaved;
     bool iMobileDataBroken;
+    bool iMobileDataDisabled;
 };
 
 const QString OfonoLogger::AUTO("auto");
 
 OfonoLogger::OfonoLogger(int* aArgc, char** aArgv) :
     SUPER(aArgc, aArgv, "org.ofono", "ofono", "qml/main.qml"),
-    iModemManager(new QOfonoExtModemManager(this)),
+    iModemManager(QOfonoExtModemManager::instance()),
+    iNetworkTechnology(new NetworkTechnology(this)),
     iFilesSaved(false),
-    iMobileDataBroken(false)
+    iMobileDataBroken(false),
+    iMobileDataDisabled(false)
 {
-    connect(iModemManager, SIGNAL(validChanged(bool)), SLOT(updateState()));
-    connect(iModemManager, SIGNAL(defaultDataSimChanged(QString)), SLOT(updateState()));
-    updateState();
+    iNetworkTechnology->setPath(CELLULAR_TECHNOLOGY_PATH);
+    connect(iNetworkTechnology,
+        SIGNAL(poweredChanged(bool)),
+        SLOT(updateNetworkTechnologyState()));
+    connect(iNetworkTechnology,
+        SIGNAL(propertiesReady()),
+        SLOT(onNetworkTechnologyReady()));
+    connect(iModemManager.data(),
+        SIGNAL(validChanged(bool)),
+        SLOT(updateModemManagerState()));
+    connect(iModemManager.data(),
+        SIGNAL(defaultDataSimChanged(QString)),
+        SLOT(updateModemManagerState()));
+    updateModemManagerState();
 }
 
 inline bool OfonoLogger::mobileDataBroken() const
 {
     return iMobileDataBroken;
+}
+
+inline bool OfonoLogger::mobileDataDisabled() const
+{
+    return iMobileDataDisabled;
 }
 
 void OfonoLogger::fixMobileData()
@@ -99,19 +130,44 @@ void OfonoLogger::fixMobileData()
     iModemManager->setDefaultDataSim(AUTO);
 }
 
-void OfonoLogger::updateState()
+void OfonoLogger::enableMobileData()
+{
+    HDEBUG("ok");
+    iNetworkTechnology->setPowered(true);
+}
+
+void OfonoLogger::updateModemManagerState()
 {
     maybeSaveFiles();
     // On a single-SIM phone default data sim should be always set to "auto"
     // because UI doesn't provide any way to change it.
-    bool broken = iModemManager->valid() &&
+    const bool wasBroken = iMobileDataBroken;
+    iMobileDataBroken = iModemManager->valid() &&
         iModemManager->availableModems().count() == 1 &&
         iModemManager->defaultDataSim() != AUTO;
-    if (iMobileDataBroken != broken) {
-        iMobileDataBroken = broken;
-        HDEBUG((broken ? "broken" : "ok"));
+    if (iMobileDataBroken != wasBroken) {
+        HDEBUG("default data SIM" << (iMobileDataBroken ? "broken" : "ok"));
         Q_EMIT mobileDataBrokenChanged();
     }
+}
+
+void OfonoLogger::updateNetworkTechnologyState()
+{
+    if (iNetworkTechnologyReady) {
+        const bool wasDisabled = iMobileDataDisabled;
+        iMobileDataDisabled = !iNetworkTechnology->powered();
+        if (iMobileDataDisabled != wasDisabled) {
+            HDEBUG("data" << (iMobileDataDisabled ? "disabled" : "enabled"));
+            Q_EMIT mobileDataDisabledChanged();
+        }
+    }
+}
+
+void OfonoLogger::onNetworkTechnologyReady()
+{
+    HDEBUG("NetworkTechnology ready");
+    iNetworkTechnologyReady = true;
+    updateNetworkTechnologyState();
 }
 
 void OfonoLogger::maybeSaveFiles()
@@ -160,9 +216,25 @@ void OfonoLogger::dumpOfonoInfo(QString aPath, QString aCall) const
         iSaveDir + "/" + aCall + "." + suffix + ".txt");
 }
 
+void OfonoLogger::dumpConnmanInfo(QString aPath, QString aCall) const
+{
+    QString call = QString("net.connman.%1").arg(aCall);
+    QString outFile = iSaveDir + "/connman." + aCall;
+    const int lastSlash = aPath.lastIndexOf('/');
+    if (lastSlash > 0 && (lastSlash + 1) < aPath.length()) {
+        outFile += ".";
+        outFile += aPath.right(aPath.length() - lastSlash - 1);
+    }
+    outFile += ".txt";
+    saveOutput("dbus-send", "--system", "--print-reply", "--type=method_call",
+        "--dest=net.connman",  qPrintable(aPath), qPrintable(call), outFile);
+}
+
 void OfonoLogger::saveFilesAtStartup(QString aDir)
 {
     iSaveDir = aDir;
+    dumpConnmanInfo("/net/connman/technology/cellular",
+        "Technology.GetProperties");
     maybeSaveFiles();
     SUPER::saveFilesAtStartup(aDir);
 }

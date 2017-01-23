@@ -16,6 +16,11 @@
         <extracomment>Pull-down menu item</extracomment>
         <translation>Починить мобильные данные</translation>
     </message>
+    <message id="ofono-logger-pm-enable-mobile-data">
+        <source>Enable mobile data</source>
+        <extracomment>Pull-down menu item</extracomment>
+        <translation>Разрешить мобильные данные</translation>
+    </message>
     <message id="logger-logpage-pm-clear-log">
         <source>Clear log</source>
         <translation>Очистить журнал</translation>

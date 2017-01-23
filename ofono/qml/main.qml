@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
+ * Copyright (C) 2016-2017 Jolla Ltd.
  * Contact: Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
@@ -52,20 +52,33 @@ ApplicationWindow
             customLogMenuItem:  MenuItem {
                 id: fixMobileDataMenuItem
                 property bool active
-                //: Pull-down menu item
-                //% "Fix mobile data"
-                text: qsTrId("ofono-logger-pm-fix-mobile-data")
-                onClicked: OfonoLogger.fixMobileData()
-                onActiveChanged: if (!active) visible = OfonoLogger.mobileDataBroken
-                Component.onCompleted: visible = OfonoLogger.mobileDataBroken
+                text: OfonoLogger.mobileDataBroken ?
+                          //: Pull-down menu item
+                          //% "Fix mobile data"
+                          qsTrId("ofono-logger-pm-fix-mobile-data") :
+                          //: Pull-down menu item
+                          //% "Enable mobile data"
+                          qsTrId("ofono-logger-pm-enable-mobile-data")
+
+                onClicked: {
+                    if (OfonoLogger.mobileDataBroken) {
+                        OfonoLogger.fixMobileData()
+                    } else {
+                        OfonoLogger.enableMobileData()
+                    }
+                }
+                onActiveChanged: updateVisiblity()
+                Component.onCompleted: updateVisiblity()
+                function updateVisiblity() {
+                    if (!active) {
+                        visible = OfonoLogger.mobileDataBroken || OfonoLogger.mobileDataDisabled
+                    }
+                }
             }
             Connections {
                 target: OfonoLogger
-                onMobileDataBrokenChanged: {
-                    if (!fixMobileDataMenuItem.active) {
-                        fixMobileDataMenuItem.visible = OfonoLogger.mobileDataBroken
-                    }
-                }
+                onMobileDataBrokenChanged: fixMobileDataMenuItem.updateVisiblity()
+                onMobileDataDisabledChanged: fixMobileDataMenuItem.updateVisiblity()
             }
         }
     }
