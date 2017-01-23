@@ -1,6 +1,6 @@
 Name:       harbour-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.7
+Version:    1.0.8
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -59,6 +59,10 @@ rm -fr %{buildroot}/%{_datarootdir}/logger
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 
 %changelog
+* Mon Jan 23 2017 Slava Monich <slava.monich@jolla.com> 1.0.8
+- Save the state of the connmans's cellular technology
+- Another connectivity fix
+
 * Wed Jan 11 2017 Slava Monich <slava.monich@jolla.com> 1.0.7
 - Don't directly invoke Qt code from glib callbacks
 - Make sure that verbose trace is enabled
