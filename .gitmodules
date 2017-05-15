@@ -11,5 +11,5 @@
 	path = ofono/src/libqofonoext
 	url = https://git.merproject.org/mer-core/libqofonoext.git
 [submodule "libconnman-qt"]
-	path = ofono/src/libconnman-qt
+	path = libconnman-qt
 	url = https://git.merproject.org/mer-core/libconnman-qt.git

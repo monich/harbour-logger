@@ -36,7 +36,7 @@ CONFIG(debug, debug|release) {
 HARBOUR_LIB_DIR = $$_PRO_FILE_PWD_/../harbour-lib
 LOGGER_LIB_DIR = $$_PRO_FILE_PWD_/../logger
 QOFONOEXT_LIB_DIR = $$_PRO_FILE_PWD_/src/libqofonoext
-QCONNMAN_LIB_DIR = $$_PRO_FILE_PWD_/src/libconnman-qt
+QCONNMAN_LIB_DIR = $$_PRO_FILE_PWD_/..//libconnman-qt
 
 # Libraries
 HARBOUR_LIB = $$OUT_PWD/../harbour-lib/libharbour-lib.a
