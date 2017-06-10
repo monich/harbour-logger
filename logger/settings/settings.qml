@@ -36,7 +36,19 @@ import org.nemomobile.configuration 1.0
 
 Page {
     id: page
-    readonly property string rootPath: "/apps/harbour-logger-conf/"
+    readonly property string rootPath: "/apps/" + appName() + "/"
+
+    // Deduce package name from the path
+    function appName() {
+        var parts = Qt.resolvedUrl("dummy").split('/')
+        if (parts.length > 2) {
+            var name = parts[parts.length-3]
+            if (name.indexOf("-logger") >= 0) {
+                return name
+            }
+        }
+        return "harbour-logger"
+    }
 
     SilicaFlickable {
         anchors.fill: parent
