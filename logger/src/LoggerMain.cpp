@@ -159,8 +159,9 @@ bool LoggerMain::saveOutput(const char* aExe, const char* aArg1,
 
 void LoggerMain::saveFilesAtStartup(QString aDir)
 {
-    // Copy OS version
+    // Copy OS and hardware versions
     QFile::copy("/etc/sailfish-release", aDir + "/sailfish-release");
+    QFile::copy("/etc/hw-release", aDir + "/hw-release");
 
     // And the package version
     saveOutput("rpm", "-q", qPrintable(iPackage),
