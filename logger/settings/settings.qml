@@ -115,19 +115,19 @@ Page {
             Slider {
                 id: fontSizeSlider
                 width: parent.width
-                minimumValue: Theme.fontSizeTiny
-                maximumValue: Theme.fontSizeLarge
+                minimumValue: 0
+                maximumValue: Theme.fontSizeLarge - Theme.fontSizeTiny
                 stepSize: 1
                 //% "Font size"
                 label: qsTrId("logger-settings-fontsize-label")
-                valueText: minimumValue + sliderValue
-                onSliderValueChanged: fontSizeAdjustment.value = sliderValue - minimumValue
-                Component.onCompleted: value = minimumValue + fontSizeAdjustment.value
+                valueText: Theme.fontSizeTiny + sliderValue
+                onSliderValueChanged: fontSizeAdjustment.value = sliderValue
+                Component.onCompleted: value = fontSizeAdjustment.value
 
                 ConfigurationValue {
                     id: fontSizeAdjustment
                     key: rootPath + "fontSizeAdjustment"
-                    onValueChanged: fontSizeSlider.value = fontSizeSlider.minimumValue + value
+                    onValueChanged: fontSizeSlider.value = value
                     defaultValue: 0
                 }
             }
