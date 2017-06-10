@@ -1,6 +1,6 @@
 Name:       openrepos-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.8
+Version:    1.0.9
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -62,6 +62,12 @@ rm -fr %{buildroot}/%{_datarootdir}/logger
 %{_datadir}/jolla-settings/entries/%{name}.json
 
 %changelog
+* Sat Jun 10 2017 Slava Monich <slava.monich@jolla.com> 1.0.9
+- Added Swedish translations
+- Add /etc/hw-release to the tarball
+- Added autoEnableLogging and autoResetLogging options
+- A few settings page fixes
+
 * Mon Jan 23 2017 Slava Monich <slava.monich@jolla.com> 1.0.8
 - Save the state of the connmans's cellular technology
 - Another connectivity fix
