@@ -182,7 +182,7 @@ int LoggerMain::run()
     // Models and stuff
     LoggerSettings* logSettings = new LoggerSettings(iFullAppName, iApp);
     LoggerLogModel* logModel = new LoggerLogModel(logSettings, iClient, iApp);
-    LoggerCategoryListModel* categoryModel = new LoggerCategoryListModel(iClient, iApp);
+    LoggerCategoryListModel* categoryModel = new LoggerCategoryListModel(logSettings, iClient, iApp);
     LoggerLogSaver* logSaver = new LoggerLogSaver(iPackage, iApp);
     logSaver->connect(logModel, SIGNAL(entryAdded(LoggerEntry)), SLOT(addEntry(LoggerEntry)));
     logSaver->connect(sigChild, SIGNAL(processDied(int,int)), SLOT(onProcessDied(int,int)));
@@ -204,6 +204,10 @@ int LoggerMain::run()
     view->showFullScreen();
 
     int ret = iApp->exec();
+
+    if (logSettings->autoResetLogging()) {
+        categoryModel->reset();
+    }
 
     delete view;
     return ret;

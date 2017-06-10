@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
+ * Copyright (C) 2016-2017 Jolla Ltd.
  * Contact: Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
@@ -38,33 +38,112 @@
 #define DCONF_KEY(app,key)              QString("/apps/%1/%2").arg(app).arg(key)
 #define DCONF_LOG_SIZE_LIMIT(app)       DCONF_KEY(app,"logSizeLimit")
 #define DCONF_FONT_SIZE_ADJUSTMENT(app) DCONF_KEY(app,"fontSizeAdjustment")
+#define DCONF_AUTO_ENABLE_LOGGING(app)  DCONF_KEY(app,"autoEnableLogging")
+#define DCONF_AUTO_RESET_LOGGING(app)   DCONF_KEY(app,"autoResetLogging")
 
-const int LoggerSettings::DEFAULT_LOG_SIZE_LIMIT = 1000;
-const int LoggerSettings::DEFAULT_FONT_SIZE_ADJUSTMENT = 0;
+//===========================================================================
+// LoggerSettings::Private
+//===========================================================================
+
+class LoggerSettings::Private : public QObject
+{
+    Q_OBJECT
+public:
+    Private(QString aApp, QObject* aParent);
+
+    int logSizeLimit() const;
+    int fontSizeAdjustment() const;
+    AutoEnable autoEnableLogging() const;
+    bool autoResetLogging() const;
+
+public:
+    static const int DEFAULT_LOG_SIZE_LIMIT = 1000;
+    static const int DEFAULT_FONT_SIZE_ADJUSTMENT = 0;
+    static const int DEFAULT_AUTO_ENABLE_LOGGING = AutoEnableAll;
+    static const bool DEFAULT_AUTO_RESET_LOGGING = true;
+
+    MGConfItem* iLogSizeLimit;
+    MGConfItem* iFontSizeAdjustment;
+    MGConfItem* iAutoEnableLogging;
+    MGConfItem* iAutoResetLogging;
+};
+
+LoggerSettings::Private::Private(QString aApp, QObject* aParent) :
+    QObject(aParent),
+    iLogSizeLimit(new MGConfItem(DCONF_LOG_SIZE_LIMIT(aApp), this)),
+    iFontSizeAdjustment(new MGConfItem(DCONF_FONT_SIZE_ADJUSTMENT(aApp), this)),
+    iAutoEnableLogging(new MGConfItem(DCONF_AUTO_ENABLE_LOGGING(aApp), this)),
+    iAutoResetLogging(new MGConfItem(DCONF_AUTO_RESET_LOGGING(aApp), this))
+{
+}
+
+inline int LoggerSettings::Private::logSizeLimit() const
+{
+    return iLogSizeLimit->value(DEFAULT_LOG_SIZE_LIMIT).toInt();
+}
+
+inline int LoggerSettings::Private::fontSizeAdjustment() const
+{
+    return iFontSizeAdjustment->value(DEFAULT_FONT_SIZE_ADJUSTMENT).toInt();
+}
+
+inline LoggerSettings::AutoEnable LoggerSettings::Private::autoEnableLogging() const
+{
+    int value = iAutoEnableLogging->value(DEFAULT_AUTO_ENABLE_LOGGING).toInt();
+    switch(value) {
+    case AutoEnableNone:
+    case AutoEnableAll:
+        return (AutoEnable)value;
+    }
+    return (AutoEnable)DEFAULT_AUTO_ENABLE_LOGGING;
+}
+
+inline bool LoggerSettings::Private::autoResetLogging() const
+{
+    return iAutoResetLogging->value(DEFAULT_AUTO_RESET_LOGGING).toBool();
+}
+
+//===========================================================================
+// LoggerSettings::Private
+//===========================================================================
 
 LoggerSettings::LoggerSettings(QString aApp, QObject* aParent) :
     QObject(aParent),
-    iLogSizeLimit(new MGConfItem(DCONF_LOG_SIZE_LIMIT(aApp), this)),
-    iFontSizeAdjustment(new MGConfItem(DCONF_FONT_SIZE_ADJUSTMENT(aApp), this))
+    iPrivate(new Private(aApp, this))
 {
-    connect(iLogSizeLimit, SIGNAL(valueChanged()), SIGNAL(logSizeLimitChanged()));
-    connect(iFontSizeAdjustment, SIGNAL(valueChanged()), SIGNAL(fontSizeAdjustmentChanged()));
+    connect(iPrivate->iLogSizeLimit, SIGNAL(valueChanged()),
+        this, SIGNAL(logSizeLimitChanged()));
+    connect(iPrivate->iFontSizeAdjustment, SIGNAL(valueChanged()),
+        this, SIGNAL(fontSizeAdjustmentChanged()));
+    connect(iPrivate->iAutoEnableLogging, SIGNAL(valueChanged()),
+        this, SIGNAL(autoEnableLoggingChanged()));
+    connect(iPrivate->iAutoResetLogging, SIGNAL(valueChanged()),
+        this, SIGNAL(autoResetLoggingChanged()));
+}
+
+int LoggerSettings::defaultLogSizeLimit()
+{
+    return Private::DEFAULT_LOG_SIZE_LIMIT;
 }
 
 int LoggerSettings::logSizeLimit() const
 {
-    QVariant value = iLogSizeLimit->value();
-    if (value.isValid()) {
-        bool ok = false;
-        int ival = value.toInt(&ok);
-        if (ok) {
-            return ival;
-        }
-    }
-    return DEFAULT_LOG_SIZE_LIMIT;
+    return iPrivate->logSizeLimit();
 }
 
 int LoggerSettings::fontSizeAdjustment() const
 {
-    return iFontSizeAdjustment->value(DEFAULT_FONT_SIZE_ADJUSTMENT).toInt();
+    return iPrivate->fontSizeAdjustment();
 }
+
+LoggerSettings::AutoEnable LoggerSettings::autoEnableLogging() const
+{
+    return iPrivate->autoEnableLogging();
+}
+
+bool LoggerSettings::autoResetLogging() const
+{
+    return iPrivate->autoResetLogging();
+}
+
+#include "LoggerSettings.moc"

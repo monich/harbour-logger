@@ -31,6 +31,7 @@
  */
 
 #include "LoggerCategoryListModel.h"
+#include "LoggerSettings.h"
 #include "HarbourDebug.h"
 
 #include "gutil_strv.h"
@@ -40,8 +41,9 @@
 
 #define SUPER QAbstractListModel
 
-LoggerCategoryListModel::LoggerCategoryListModel(DBusLogClient* aClient,
-    QObject* aParent) : SUPER(aParent),
+LoggerCategoryListModel::LoggerCategoryListModel(LoggerSettings* aSettings,
+    DBusLogClient* aClient, QObject* aParent) : SUPER(aParent),
+    iSettings(aSettings),
     iClient(dbus_log_client_ref(aClient)),
     iHaveDefaults(false)
 {
@@ -224,6 +226,11 @@ void LoggerCategoryListModel::handleConnected()
     updateDefaults();
     Q_EMIT countChanged();
     Q_EMIT connectedChanged();
+
+    // Automatically enable all categories if necessary
+    if (iSettings->autoEnableLogging() == LoggerSettings::AutoEnableAll) {
+        enableAll();
+    }
 }
 
 void LoggerCategoryListModel::handleCategoryAdded(DBusLogCategory* aCategory, uint aIndex)

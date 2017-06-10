@@ -109,10 +109,12 @@
     </message>
     <message id="logger-settings-page-header">
         <source>Logger</source>
+        <extracomment>Page header</extracomment>
         <translation>Журнал ofono</translation>
     </message>
     <message id="logger-settings-section-header-display">
         <source>Display</source>
+        <extracomment>Section header</extracomment>
         <translation>Вывод на экран</translation>
     </message>
     <message id="logger-settings-logsizelimit">
@@ -130,6 +132,31 @@
     <message id="logger-settings-fontsize-label">
         <source>Font size</source>
         <translation>Размер шрифта</translation>
+    </message>
+    <message id="logger-settings-section-header-logging">
+        <source>Logging</source>
+        <extracomment>Section header</extracomment>
+        <translation>Сбор информации</translation>
+    </message>
+    <message id="logger-settings-autoenable_logging-switch-label">
+        <source>Automatically enable logging</source>
+        <extracomment>Text switch label</extracomment>
+        <translation>Автоматически начинать сбор отладочной информации</translation>
+    </message>
+    <message id="logger-settings-autoenable_logging-switch-description">
+        <source>Enable all logging categories when the application starts.</source>
+        <extracomment>Text switch description</extracomment>
+        <translation>Эта опция позволяет включать сбор и вывод на экран всей доступной отладочной информации всякий раз, когда приложение запускается.</translation>
+    </message>
+    <message id="logger-settings-autoreset_logging-switch-label">
+        <source>Automatically reset logging on exit</source>
+        <extracomment>Text switch label</extracomment>
+        <translation>Автоматически отключать сбор отладочной информации</translation>
+    </message>
+    <message id="logger-settings-autoreset_logging-switch-description">
+        <source>Reset all logging categories to their default values when the application is exiting. Otherwise logging would continue in the background, wasting the system resources and eating up your battery.</source>
+        <extracomment>Text switch description</extracomment>
+        <translation>Отключать сбор отладочной информации, когда приложение закрывается. Иначе всё это будет продолжать форматироваться и записываться в журнал в фоновом режиме, что в большинстве случаев бесполезно и только разряжает аккумулятор.</translation>
     </message>
 </context>
 </TS>

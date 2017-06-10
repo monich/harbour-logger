@@ -40,6 +40,7 @@
 
 #include <QAbstractListModel>
 
+class LoggerSettings;
 class LoggerCategoryListModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -55,7 +56,8 @@ public:
         IdRole
     };
 
-    LoggerCategoryListModel(DBusLogClient* aClient, QObject* aParent);
+    LoggerCategoryListModel(LoggerSettings* aSettings, DBusLogClient* aClient,
+        QObject* aParent);
     ~LoggerCategoryListModel();
 
     virtual QHash<int,QByteArray> roleNames() const;
@@ -103,6 +105,7 @@ private:
         DBusLogClientSignalCount
     };
 
+    LoggerSettings* iSettings;
     DBusLogClient* iClient;
     gulong iClientSignals[DBusLogClientSignalCount];
     QHash<guint32,LoggerCategory> iCategories;

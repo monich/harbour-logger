@@ -35,29 +35,38 @@
 
 #include <QtQml>
 
-class MGConfItem;
 class LoggerSettings : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int logSizeLimit READ logSizeLimit NOTIFY logSizeLimitChanged)
     Q_PROPERTY(int fontSizeAdjustment READ fontSizeAdjustment NOTIFY fontSizeAdjustmentChanged)
+    Q_PROPERTY(bool autoEnableLogging READ autoEnableLogging NOTIFY autoEnableLoggingChanged)
+    Q_PROPERTY(bool autoResetLogging READ autoResetLogging NOTIFY autoResetLoggingChanged)
 
 public:
+    enum AutoEnable {
+        AutoEnableNone,
+        AutoEnableAll
+    };
+
     explicit LoggerSettings(QString aAppName, QObject* aParent = NULL);
 
-    static const int DEFAULT_LOG_SIZE_LIMIT;
-    static const int DEFAULT_FONT_SIZE_ADJUSTMENT;
+    static int defaultLogSizeLimit();
 
     int logSizeLimit() const;
     int fontSizeAdjustment() const;
+    AutoEnable autoEnableLogging() const;
+    bool autoResetLogging() const;
 
 Q_SIGNALS:
     void logSizeLimitChanged();
     void fontSizeAdjustmentChanged();
+    void autoEnableLoggingChanged();
+    void autoResetLoggingChanged();
 
 private:
-    MGConfItem* iLogSizeLimit;
-    MGConfItem* iFontSizeAdjustment;
+    class Private;
+    Private* iPrivate;
 };
 
 QML_DECLARE_TYPE(LoggerSettings)

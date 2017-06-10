@@ -48,7 +48,7 @@ LoggerLogModel::LoggerLogModel(LoggerSettings* aSettings, DBusLogClient* aClient
     QObject* aParent) : SUPER(aParent),
     iSettings(aSettings),
     iClient(dbus_log_client_ref(aClient)),
-    iBuffer(LoggerSettings::DEFAULT_LOG_SIZE_LIMIT)
+    iBuffer(aSettings->logSizeLimit())
 {
     // updateLogSizeLimit() will initialize iLogSizeLimit and iLogRemoveCount:
     updateLogSizeLimit();
@@ -71,7 +71,7 @@ LoggerLogModel::~LoggerLogModel()
 
 void LoggerLogModel::updateLogSizeLimit()
 {
-    iLogSizeLimit = LoggerSettings::DEFAULT_LOG_SIZE_LIMIT;
+    iLogSizeLimit = LoggerSettings::defaultLogSizeLimit();
     int value = iSettings->logSizeLimit();
     if (value <= 0) {
         iLogSizeLimit = LOG_SIZE_LIMIT_NONE;

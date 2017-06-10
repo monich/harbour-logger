@@ -109,10 +109,12 @@
     </message>
     <message id="logger-settings-page-header">
         <source>Logger</source>
+        <extracomment>Page header</extracomment>
         <translation>Ofono Log</translation>
     </message>
     <message id="logger-settings-section-header-display">
         <source>Display</source>
+        <extracomment>Section header</extracomment>
         <translation>Display</translation>
     </message>
     <message id="logger-settings-logsizelimit">
@@ -130,6 +132,31 @@
     <message id="logger-settings-fontsize-label">
         <source>Font size</source>
         <translation>Font size</translation>
+    </message>
+    <message id="logger-settings-section-header-logging">
+        <source>Logging</source>
+        <extracomment>Section header</extracomment>
+        <translation>Logging</translation>
+    </message>
+    <message id="logger-settings-autoenable_logging-switch-label">
+        <source>Automatically enable logging</source>
+        <extracomment>Text switch label</extracomment>
+        <translation>Automatically enable logging</translation>
+    </message>
+    <message id="logger-settings-autoenable_logging-switch-description">
+        <source>Enable all logging categories when the application starts.</source>
+        <extracomment>Text switch description</extracomment>
+        <translation>Enable all logging categories when the application starts.</translation>
+    </message>
+    <message id="logger-settings-autoreset_logging-switch-label">
+        <source>Automatically reset logging on exit</source>
+        <extracomment>Text switch label</extracomment>
+        <translation>Automatically reset logging on exit</translation>
+    </message>
+    <message id="logger-settings-autoreset_logging-switch-description">
+        <source>Reset all logging categories to their default values when the application is exiting. Otherwise logging would continue in the background, wasting the system resources and eating up your battery.</source>
+        <extracomment>Text switch description</extracomment>
+        <translation>Reset all logging categories to their default values when the application is exiting. Otherwise logging would continue in the background, wasting the system resources and eating up your battery.</translation>
     </message>
 </context>
 </TS>
