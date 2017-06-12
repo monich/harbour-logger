@@ -9,33 +9,33 @@
     </message>
     <message id="logger-mainpage-swipe-left-hint">
         <source>Swipe left to configure log categories</source>
-        <translation>Swipe left to configure log categories</translation>
+        <translation>Przesuń w lewo aby skonfigurować kategorie logów</translation>
     </message>
     <message id="ofono-logger-pm-fix-mobile-data">
         <source>Fix mobile data</source>
         <extracomment>Pull-down menu item</extracomment>
-        <translation>Fix mobile data</translation>
+        <translation>Napraw dane mobilne</translation>
     </message>
     <message id="ofono-logger-pm-enable-mobile-data">
         <source>Enable mobile data</source>
         <extracomment>Pull-down menu item</extracomment>
-        <translation>Enable mobile data</translation>
+        <translation>Włącz dane mobilne</translation>
     </message>
     <message id="logger-logpage-pm-clear-log">
         <source>Clear log</source>
-        <translation>Clear log</translation>
+        <translation>Wyczyść logi</translation>
     </message>
     <message id="logger-logpage-pm-pack-and-send">
         <source>Pack and send</source>
-        <translation>Pack and send</translation>
+        <translation>Spakuj i wyślij</translation>
     </message>
     <message id="logger-logpage-title">
         <source>Log</source>
-        <translation>Ofono log</translation>
+        <translation>Logi Ofono</translation>
     </message>
     <message id="logger-logpage-msg-connected">
         <source>Connected.</source>
-        <translation>Connected to ofono.</translation>
+        <translation>Połączono z Ofono</translation>
     </message>
     <message id="logger-logpage-msg-connect-error">
         <source>We are having trouble connecting to the service.</source>
@@ -43,56 +43,56 @@
     </message>
     <message id="logger-logpage-msg-disconnected">
         <source>Connection lost.</source>
-        <translation>Lost connection to ofono.</translation>
+        <translation>Połączenie z Ofono utracone</translation>
     </message>
     <message id="logger-logpage-msg-log-cleared">
         <source>Log cleared</source>
-        <translation>Log cleared</translation>
+        <translation>Logi wyczyszczone</translation>
     </message>
     <message id="logger-categories-title">
         <source>Log categories</source>
-        <translation>Log categories</translation>
+        <translation>Kategorie logów</translation>
     </message>
     <message id="logger-categories-pm-enable-all">
         <source>Enable all</source>
-        <translation>Enable all</translation>
+        <translation>Włącz wszystko</translation>
     </message>
     <message id="logger-categories-pm-disable-all">
         <source>Disable all</source>
-        <translation>Disable all</translation>
+        <translation>Wyłącz wszystko</translation>
     </message>
     <message id="logger-categories-pm-default">
         <source>Reset to default</source>
-        <translation>Reset to default</translation>
+        <translation>Przywróć do wartości fabrycznych</translation>
     </message>
     <message id="logger-categories-not-connected">
         <source>Not connected</source>
-        <translation>Not connected to ofono</translation>
+        <translation>Niepołączony z Ofono</translation>
     </message>
     <message id="logger-sharemethodlist-add-account">
         <source>Add account</source>
-        <translation>Add account</translation>
+        <translation>Dodaj konto</translation>
     </message>
     <message id="logger-sharepage-save-ok">
         <source>Saved %1</source>
-        <translation>Saved %1</translation>
+        <translation>Zapisano %1</translation>
     </message>
     <message id="logger-sharepage-save-error">
         <source>Failed to save %1</source>
-        <translation>Failed to save %1</translation>
+        <translation>Błąd zapisu %1</translation>
     </message>
     <message id="logger-sharepage-pm-save-to-documents">
         <source>Save to documents</source>
-        <translation>Save to documents</translation>
+        <translation>Zapisane do dokumentów</translation>
     </message>
     <message id="logger-sharepage-header">
         <source>Pack and send</source>
-        <translation>Pack and send</translation>
+        <translation>Spakuj i wyślij</translation>
     </message>
     <message id="logger-sharepage-default-subject">
         <source>Log</source>
         <extracomment>Default email subject</extracomment>
-        <translation>ofono log</translation>
+        <translation>Logi Ofono</translation>
     </message>
     <message id="logger-sharepage-default-email">
         <source></source>
@@ -105,21 +105,21 @@
     </message>
     <message id="logger-sharepage-please-wait">
         <source>Please wait</source>
-        <translation>Please wait</translation>
+        <translation>Proszę czekać</translation>
     </message>
     <message id="logger-settings-page-header">
         <source>Logger</source>
         <extracomment>Page header</extracomment>
-        <translation>Ofono Log</translation>
+        <translation>Logger</translation>
     </message>
     <message id="logger-settings-section-header-display">
         <source>Display</source>
         <extracomment>Section header</extracomment>
-        <translation>Display</translation>
+        <translation>Wyświetl</translation>
     </message>
     <message id="logger-settings-logsizelimit">
         <source>Screen buffer size</source>
-        <translation>Screen buffer size</translation>
+        <translation>Rozmiar bufora ekranu</translation>
     </message>
     <message id="logger-settings-logsizelimit-description">
         <source>Don&apos;t worry, everything will be written to the log file regardless of the screen buffer size.</source>
@@ -127,36 +127,36 @@
     </message>
     <message id="logger-settings-logsizelimit-unlimited">
         <source>Unlimited</source>
-        <translation>Unlimited</translation>
+        <translation>Nieograniczone</translation>
     </message>
     <message id="logger-settings-fontsize-label">
         <source>Font size</source>
-        <translation>Font size</translation>
+        <translation>Rozmiar czcionki</translation>
     </message>
     <message id="logger-settings-section-header-logging">
         <source>Logging</source>
         <extracomment>Section header</extracomment>
-        <translation>Logging</translation>
+        <translation>Zbieranie logów</translation>
     </message>
     <message id="logger-settings-autoenable_logging-switch-label">
         <source>Automatically enable logging</source>
         <extracomment>Text switch label</extracomment>
-        <translation>Automatically enable logging</translation>
+        <translation>Automatycznie włącz logowanie</translation>
     </message>
     <message id="logger-settings-autoenable_logging-switch-description">
         <source>Enable all logging categories when the application starts.</source>
         <extracomment>Text switch description</extracomment>
-        <translation>Enable all logging categories when the application starts.</translation>
+        <translation>Włącz wszystkie kategorie logowania podczas startu aplikacji.</translation>
     </message>
     <message id="logger-settings-autoreset_logging-switch-label">
         <source>Automatically reset logging on exit</source>
         <extracomment>Text switch label</extracomment>
-        <translation>Automatically reset logging on exit</translation>
+        <translation>Automatycznie zresetuj logi na wyjściu</translation>
     </message>
     <message id="logger-settings-autoreset_logging-switch-description">
         <source>Reset all logging categories to their default values when the application is exiting. Otherwise logging would continue in the background, wasting the system resources and eating up your battery.</source>
         <extracomment>Text switch description</extracomment>
-        <translation>Reset all logging categories to their default values when the application is exiting. Otherwise logging would continue in the background, wasting the system resources and eating up your battery.</translation>
+        <translation>Zresetuj wszystkie kategorie logowania do wartości domyślnych podczas opuszczania aplikacji. W innym przypadku logowanie będzie kontynuowane w tle, zużywając zasoby i rozładowując baterię.</translation>
     </message>
 </context>
 </TS>
