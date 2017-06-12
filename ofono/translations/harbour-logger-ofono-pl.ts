@@ -39,7 +39,7 @@
     </message>
     <message id="logger-logpage-msg-connect-error">
         <source>We are having trouble connecting to the service.</source>
-        <translation>We are having trouble connecting to ofono. It could be that this version of ofono doesn&apos;t support logging.</translation>
+        <translation>Mamy problemy z połączenie z usługami. Możliwe, że ta wersja Ofono nie wspiera zbierania logów.</translation>
     </message>
     <message id="logger-logpage-msg-disconnected">
         <source>Connection lost.</source>
@@ -101,7 +101,7 @@
     </message>
     <message id="logger-sharepage-warning">
         <source>Keep in mind that some of the information contained in this archive may be considered private. If you would like to check what you are about to send, please consider sending it to yourself and checking its contents first.</source>
-        <translation>Keep in mind that some of the information contained in this archive may be considered private. If you would like to check what you are about to send, please consider sending it to yourself and checking its contents first.</translation>
+        <translation>Miej na uwadze, że część informacji zawartych w tym archiwum może być prywatna. Jeśli chcesz sprawdzić co wysyłasz, proszę rozważ wysłanie logów, w pierwszej kolejności, do siebie i sprawdzź ich zawartość. </translation>
     </message>
     <message id="logger-sharepage-please-wait">
         <source>Please wait</source>
@@ -123,7 +123,7 @@
     </message>
     <message id="logger-settings-logsizelimit-description">
         <source>Don&apos;t worry, everything will be written to the log file regardless of the screen buffer size.</source>
-        <translation>Don&apos;t worry, everything will be written to the log file regardless of the screen buffer size.</translation>
+        <translation>Nie martw się, wszystko zostanie zapisane do pliku logów, bez względu na rozmiar buforu ekranu.</translation>
     </message>
     <message id="logger-settings-logsizelimit-unlimited">
         <source>Unlimited</source>
