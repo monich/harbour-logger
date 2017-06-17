@@ -125,7 +125,7 @@ TRANSLATION_SOURCES = \
   $${LOGGER_LIB_DIR}/qml \
   $${LOGGER_LIB_DIR}/settings
 
-TRANSLATION_FILES = $${NAME} $${NAME}-ru $${NAME}-sv
+TRANSLATION_FILES = $${NAME} $${NAME}-pl $${NAME}-ru $${NAME}-sv
 
 for(t, TRANSLATION_FILES) {
     suffix = $$replace(t,-,_)
