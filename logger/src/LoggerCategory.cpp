@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
+ * Copyright (C) 2016-2017 Jolla Ltd.
  * Contact: Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
@@ -79,7 +79,7 @@ LoggerCategory::LoggerCategory() :
 }
 
 LoggerCategory::LoggerCategory(DBusLogCategory* aCategory) :
-    iPrivate(new Private(aCategory))
+    iPrivate(aCategory ? new Private(aCategory) : NULL)
 {
 }
 

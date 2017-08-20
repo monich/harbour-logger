@@ -65,6 +65,11 @@
         <source>Reset to default</source>
         <translation>Reset to default</translation>
     </message>
+    <message id="logger-categories-select-placeholder">
+        <source>Select categories</source>
+        <extracomment>Placeholder text for the search field</extracomment>
+        <translation>Select categories</translation>
+    </message>
     <message id="logger-categories-not-connected">
         <source>Not connected</source>
         <translation>Not connected to ofono</translation>

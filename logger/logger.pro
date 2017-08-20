@@ -35,7 +35,8 @@ openrepos {
 SOURCES += \
     src/LoggerBuffer.cpp \
     src/LoggerCategory.cpp \
-    src/LoggerCategoryListModel.cpp \
+    src/LoggerCategoryModel.cpp \
+    src/LoggerCategoryFilterModel.cpp \
     src/LoggerEntry.cpp \
     src/LoggerHints.cpp \
     src/LoggerLogModel.cpp \
@@ -47,7 +48,8 @@ HEADERS += \
     include/LoggerMain.h \
     src/LoggerBuffer.h \
     src/LoggerCategory.h \
-    src/LoggerCategoryListModel.h \
+    src/LoggerCategoryModel.h \
+    src/LoggerCategoryFilterModel.h \
     src/LoggerEntry.h \
     src/LoggerHints.h \
     src/LoggerLogModel.h \

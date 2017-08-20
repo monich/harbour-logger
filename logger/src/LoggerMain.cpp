@@ -35,7 +35,8 @@
 #include "LoggerLogModel.h"
 #include "LoggerLogSaver.h"
 #include "LoggerSettings.h"
-#include "LoggerCategoryListModel.h"
+#include "LoggerCategoryModel.h"
+#include "LoggerCategoryFilterModel.h"
 
 #include "HarbourDebug.h"
 #include "HarbourSigChildHandler.h"
@@ -182,7 +183,8 @@ int LoggerMain::run()
     // Models and stuff
     LoggerSettings* logSettings = new LoggerSettings(iFullAppName, iApp);
     LoggerLogModel* logModel = new LoggerLogModel(logSettings, iClient, iApp);
-    LoggerCategoryListModel* categoryModel = new LoggerCategoryListModel(logSettings, iClient, iApp);
+    LoggerCategoryModel* categoryModel = new LoggerCategoryModel(logSettings, iClient, iApp);
+    LoggerCategoryFilterModel* filterModel = new LoggerCategoryFilterModel(categoryModel);
     LoggerLogSaver* logSaver = new LoggerLogSaver(iPackage, iApp);
     logSaver->connect(logModel, SIGNAL(entryAdded(LoggerEntry)), SLOT(addEntry(LoggerEntry)));
     logSaver->connect(sigChild, SIGNAL(processDied(int,int)), SLOT(onProcessDied(int,int)));
@@ -197,6 +199,7 @@ int LoggerMain::run()
     context->setContextProperty("LogModel", logModel);
     context->setContextProperty("LogSaver", logSaver);
     context->setContextProperty("CategoryModel", categoryModel);
+    context->setContextProperty("CategoryFilterModel", filterModel);
     context->setContextProperty("AppName", iFullAppName);
 
     setupView(view);

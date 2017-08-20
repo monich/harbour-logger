@@ -30,8 +30,8 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef LOGGER_CATEGORY_LIST_MODEL_H
-#define LOGGER_CATEGORY_LIST_MODEL_H
+#ifndef LOGGER_CATEGORY_MODEL_H
+#define LOGGER_CATEGORY_MODEL_H
 
 #include "LoggerCategory.h"
 #include "LoggerBuffer.h"
@@ -41,7 +41,7 @@
 #include <QAbstractListModel>
 
 class LoggerSettings;
-class LoggerCategoryListModel : public QAbstractListModel
+class LoggerCategoryModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(int count READ count NOTIFY countChanged)
@@ -56,9 +56,9 @@ public:
         IdRole
     };
 
-    LoggerCategoryListModel(LoggerSettings* aSettings, DBusLogClient* aClient,
+    LoggerCategoryModel(LoggerSettings* aSettings, DBusLogClient* aClient,
         QObject* aParent);
-    ~LoggerCategoryListModel();
+    ~LoggerCategoryModel();
 
     virtual QHash<int,QByteArray> roleNames() const;
     virtual int rowCount(const QModelIndex& aParent) const;
@@ -67,6 +67,11 @@ public:
     int count() const;
     bool isConnected() const;
     bool haveDefaults() const;
+
+    LoggerCategory loggerCategoryAt(int aRow) const;
+    void resetCategories(QList<LoggerCategory> aCategories);
+    void enableCategories(QList<LoggerCategory> aCategories);
+    void disableCategories(QList<LoggerCategory> aCategories);
 
     Q_INVOKABLE void reset();
     Q_INVOKABLE void enable(uint id);
@@ -94,7 +99,8 @@ private:
     static void categoryFlagsProc(DBusLogClient* aClient,
         DBusLogCategory* aCategory, guint aIndex, gpointer  aData);
 
-    void updateDefaults();
+    void updateHaveDefaults();
+    DBusLogCategory* categoryAt(int aRow) const;
 
 private:
     enum DBusLogClientSignals {
@@ -112,7 +118,9 @@ private:
     bool iHaveDefaults;
 };
 
-inline bool LoggerCategoryListModel::haveDefaults() const
+inline LoggerCategory LoggerCategoryModel::loggerCategoryAt(int aRow) const
+    { return LoggerCategory(categoryAt(aRow)); }
+inline bool LoggerCategoryModel::haveDefaults() const
     { return iHaveDefaults; }
 
-#endif // LOGGER_CATEGORY_LIST_MODEL_H
+#endif // LOGGER_CATEGORY_MODEL_H

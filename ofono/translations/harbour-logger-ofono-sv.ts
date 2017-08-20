@@ -65,6 +65,11 @@
         <source>Reset to default</source>
         <translation>Återställ standard</translation>
     </message>
+    <message id="logger-categories-select-placeholder">
+        <source>Select categories</source>
+        <extracomment>Placeholder text for the search field</extracomment>
+        <translation type="unfinished">Välj kategorier</translation>
+    </message>
     <message id="logger-categories-not-connected">
         <source>Not connected</source>
         <translation>Ej ansluten</translation>

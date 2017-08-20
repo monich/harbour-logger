@@ -55,15 +55,20 @@
     </message>
     <message id="logger-categories-pm-enable-all">
         <source>Enable all</source>
-        <translation>Включить всё</translation>
+        <translation>Включить все</translation>
     </message>
     <message id="logger-categories-pm-disable-all">
         <source>Disable all</source>
-        <translation>Выключить всё</translation>
+        <translation>Выключить все</translation>
     </message>
     <message id="logger-categories-pm-default">
         <source>Reset to default</source>
         <translation>Сбросить по умолчанию</translation>
+    </message>
+    <message id="logger-categories-select-placeholder">
+        <source>Select categories</source>
+        <extracomment>Placeholder text for the search field</extracomment>
+        <translation>Выбрать</translation>
     </message>
     <message id="logger-categories-not-connected">
         <source>Not connected</source>

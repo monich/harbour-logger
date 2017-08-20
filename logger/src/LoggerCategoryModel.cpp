@@ -30,7 +30,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "LoggerCategoryListModel.h"
+#include "LoggerCategoryModel.h"
 #include "LoggerSettings.h"
 #include "HarbourDebug.h"
 
@@ -41,7 +41,7 @@
 
 #define SUPER QAbstractListModel
 
-LoggerCategoryListModel::LoggerCategoryListModel(LoggerSettings* aSettings,
+LoggerCategoryModel::LoggerCategoryModel(LoggerSettings* aSettings,
     DBusLogClient* aClient, QObject* aParent) : SUPER(aParent),
     iSettings(aSettings),
     iClient(dbus_log_client_ref(aClient)),
@@ -63,23 +63,33 @@ LoggerCategoryListModel::LoggerCategoryListModel(LoggerSettings* aSettings,
     handleConnected();
 }
 
-LoggerCategoryListModel::~LoggerCategoryListModel()
+LoggerCategoryModel::~LoggerCategoryModel()
 {
     dbus_log_client_remove_handlers(iClient, iClientSignals, G_N_ELEMENTS(iClientSignals));
     dbus_log_client_unref(iClient);
 }
 
-int LoggerCategoryListModel::count() const
+int LoggerCategoryModel::count() const
 {
     return iClient->connected ? iClient->categories->len : 0;
 }
 
-bool LoggerCategoryListModel::isConnected() const
+bool LoggerCategoryModel::isConnected() const
 {
     return iClient->connected != FALSE;
 }
 
-QHash<int,QByteArray> LoggerCategoryListModel::roleNames() const
+DBusLogCategory* LoggerCategoryModel::categoryAt(int aRow) const
+{
+    const int count = iClient->categories->len;
+    if (aRow >= 0 && aRow < count) {
+        return (DBusLogCategory*)g_ptr_array_index(iClient->categories, aRow);
+    } else {
+        return NULL;
+    }
+}
+
+QHash<int,QByteArray> LoggerCategoryModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[NameRole] = "categoryName";
@@ -89,31 +99,28 @@ QHash<int,QByteArray> LoggerCategoryListModel::roleNames() const
     return roles;
 }
 
-int LoggerCategoryListModel::rowCount(const QModelIndex& aParent) const
+int LoggerCategoryModel::rowCount(const QModelIndex& aParent) const
 {
     return count();
 }
 
-QVariant LoggerCategoryListModel::data(const QModelIndex& aIndex, int aRole) const
+QVariant LoggerCategoryModel::data(const QModelIndex& aIndex, int aRole) const
 {
     QVariant value;
-    const int row = aIndex.row();
-    const int count = iClient->categories->len;
-    if (row >= 0 && row < count) {
-        const DBusLogCategory* cat = (DBusLogCategory*)g_ptr_array_index(iClient->categories, row);
-        LoggerCategory logcat(iCategories.value(cat->id));
+    LoggerCategory cat(loggerCategoryAt(aIndex.row()));
+    if (cat.isValid()) {
         switch (aRole) {
         case NameRole:
-            value = logcat.name();
+            value = cat.name();
             break;
         case EnabledRole:
-            value = logcat.enabled();
+            value = cat.enabled();
             break;
         case EnabledByDefaultRole:
-            value = logcat.enabledByDefault();
+            value = cat.enabledByDefault();
             break;
         case IdRole:
-            value = logcat.id();
+            value = cat.id();
             break;
         default:
             break;
@@ -122,7 +129,7 @@ QVariant LoggerCategoryListModel::data(const QModelIndex& aIndex, int aRole) con
     return value;
 }
 
-void LoggerCategoryListModel::enable(uint aId)
+void LoggerCategoryModel::enable(uint aId)
 {
     LoggerCategory category(iCategories.value(aId));
     HASSERT(category.isValid());
@@ -132,7 +139,7 @@ void LoggerCategoryListModel::enable(uint aId)
     }
 }
 
-void LoggerCategoryListModel::disable(uint aId)
+void LoggerCategoryModel::disable(uint aId)
 {
     LoggerCategory category(iCategories.value(aId));
     HASSERT(category.isValid());
@@ -142,24 +149,87 @@ void LoggerCategoryListModel::disable(uint aId)
     }
 }
 
-void LoggerCategoryListModel::enableAll()
+void LoggerCategoryModel::enableAll()
 {
     HDEBUG("enabling all categories");
     dbus_log_client_enable_pattern(iClient, "*", NULL, NULL);
 }
 
-void LoggerCategoryListModel::disableAll()
+void LoggerCategoryModel::disableAll()
 {
     HDEBUG("disabling all categories");
     dbus_log_client_disable_pattern(iClient, "*", NULL, NULL);
 }
 
-void LoggerCategoryListModel::reset()
+void LoggerCategoryModel::resetCategories(QList<LoggerCategory> aCategories)
+{
+    GStrV* enable = NULL;
+    GStrV* disable = NULL;
+    const guint n = aCategories.count();
+    for (guint i = 0; i < n; i++) {
+        LoggerCategory cat = aCategories.at(i);
+        if (cat.enabledByDefault()) {
+            if (!cat.enabled()) {
+                HDEBUG("enable" << cat.cname());
+                enable = gutil_strv_add(enable, cat.cname());
+            }
+        } else {
+            if (cat.enabled()) {
+                HDEBUG("disable" << cat.cname());
+                disable = gutil_strv_add(disable, cat.cname());
+            }
+        }
+    }
+    if (enable) {
+        dbus_log_client_enable_categories(iClient, enable, NULL, NULL);
+        g_strfreev(enable);
+    }
+    if (disable) {
+        dbus_log_client_disable_categories(iClient, disable, NULL, NULL);
+        g_strfreev(disable);
+    }
+}
+
+void LoggerCategoryModel::enableCategories(QList<LoggerCategory> aCategories)
+{
+    GStrV* enable = NULL;
+    const guint n = aCategories.count();
+    for (guint i = 0; i < n; i++) {
+        LoggerCategory cat = aCategories.at(i);
+        if (cat.isValid() && !cat.enabled()) {
+            HDEBUG("enable" << cat.cname());
+            enable = gutil_strv_add(enable, cat.cname());
+        }
+    }
+    if (enable) {
+        dbus_log_client_enable_categories(iClient, enable, NULL, NULL);
+        g_strfreev(enable);
+    }
+}
+
+void LoggerCategoryModel::disableCategories(QList<LoggerCategory> aCategories)
+{
+    GStrV* disable = NULL;
+    const guint n = aCategories.count();
+    for (guint i = 0; i < n; i++) {
+        LoggerCategory cat = aCategories.at(i);
+        if (cat.enabled()) {
+            HDEBUG("disable" << cat.cname());
+            disable = gutil_strv_add(disable, cat.cname());
+        }
+    }
+    if (disable) {
+        dbus_log_client_disable_categories(iClient, disable, NULL, NULL);
+        g_strfreev(disable);
+    }
+}
+
+void LoggerCategoryModel::reset()
 {
     GStrV* enable = NULL;
     GStrV* disable = NULL;
     for (guint i = 0; i < iClient->categories->len; i++) {
-        DBusLogCategory* cat = (DBusLogCategory*)g_ptr_array_index(iClient->categories, i);
+        const DBusLogCategory* cat = categoryAt(i);
         if (cat->flags & DBUSLOG_CATEGORY_FLAG_ENABLED_BY_DEFAULT) {
             if (!(cat->flags & DBUSLOG_CATEGORY_FLAG_ENABLED)) {
                 HDEBUG("enable" << cat->name);
@@ -182,12 +252,12 @@ void LoggerCategoryListModel::reset()
     }
 }
 
-void LoggerCategoryListModel::updateDefaults()
+void LoggerCategoryModel::updateHaveDefaults()
 {
     bool haveDefaults = false;
     if (iClient->connected) {
         for (guint i = 0; i < iClient->categories->len; i++) {
-            DBusLogCategory* cat = (DBusLogCategory*)g_ptr_array_index(iClient->categories, i);
+            const DBusLogCategory* cat = categoryAt(i);
             if (cat->flags & DBUSLOG_CATEGORY_FLAG_ENABLED_BY_DEFAULT) {
                 haveDefaults = true;
                 break;
@@ -200,14 +270,14 @@ void LoggerCategoryListModel::updateDefaults()
     }
 }
 
-void LoggerCategoryListModel::handleConnected()
+void LoggerCategoryModel::handleConnected()
 {
     if (iClient->connected) {
         HDEBUG("connected");
         beginResetModel();
         iCategories.clear();
         for (guint i = 0; i < iClient->categories->len; i++) {
-            DBusLogCategory* cat = (DBusLogCategory*)g_ptr_array_index(iClient->categories, i);
+            DBusLogCategory* cat = categoryAt(i);
             iCategories.insert(cat->id, LoggerCategory(cat));
         }
         endResetModel();
@@ -223,7 +293,7 @@ void LoggerCategoryListModel::handleConnected()
         iCategories.clear();
         endResetModel();
     }
-    updateDefaults();
+    updateHaveDefaults();
     Q_EMIT countChanged();
     Q_EMIT connectedChanged();
 
@@ -233,27 +303,27 @@ void LoggerCategoryListModel::handleConnected()
     }
 }
 
-void LoggerCategoryListModel::handleCategoryAdded(DBusLogCategory* aCategory, uint aIndex)
+void LoggerCategoryModel::handleCategoryAdded(DBusLogCategory* aCategory, uint aIndex)
 {
     HDEBUG(aCategory->name);
     beginInsertRows(QModelIndex(), aIndex, aIndex);
     iCategories.insert(aCategory->id, LoggerCategory(aCategory));
     endInsertRows();
-    updateDefaults();
+    updateHaveDefaults();
     Q_EMIT countChanged();
 }
 
-void LoggerCategoryListModel::handleCategoryRemoved(DBusLogCategory* aCategory, uint aIndex)
+void LoggerCategoryModel::handleCategoryRemoved(DBusLogCategory* aCategory, uint aIndex)
 {
     HDEBUG(aCategory->name);
     beginRemoveRows(QModelIndex(), aIndex, aIndex);
     iCategories.remove(aCategory->id);
     endRemoveRows();
-    updateDefaults();
+    updateHaveDefaults();
     Q_EMIT countChanged();
 }
 
-void LoggerCategoryListModel::handleCategoryFlags(DBusLogCategory* aCategory, uint aIndex)
+void LoggerCategoryModel::handleCategoryFlags(DBusLogCategory* aCategory, uint aIndex)
 {
     HDEBUG(aIndex << aCategory->name << aCategory->flags);
     QModelIndex index(createIndex(aIndex, 0));
@@ -262,35 +332,35 @@ void LoggerCategoryListModel::handleCategoryFlags(DBusLogCategory* aCategory, ui
     Q_EMIT dataChanged(index, index, roles);
 }
 
-void LoggerCategoryListModel::connectedProc(DBusLogClient* aClient, gpointer aData)
+void LoggerCategoryModel::connectedProc(DBusLogClient* aClient, gpointer aData)
 {
-    LoggerCategoryListModel* model = (LoggerCategoryListModel*)aData;
+    LoggerCategoryModel* model = (LoggerCategoryModel*)aData;
     QMetaObject::invokeMethod(model, "handleConnected");
 }
 
 // Why invokeMethod? See https://bugreports.qt.io/browse/QTBUG-18434
-void LoggerCategoryListModel::categoryAddedProc(DBusLogClient* aClient,
+void LoggerCategoryModel::categoryAddedProc(DBusLogClient* aClient,
     DBusLogCategory* aCategory, guint aIndex, gpointer  aData)
 {
-    QMetaObject::invokeMethod((LoggerCategoryListModel*)aData,
+    QMetaObject::invokeMethod((LoggerCategoryModel*)aData,
         "handleCategoryAdded",
         Q_ARG(DBusLogCategory*,aCategory),
         Q_ARG(uint,aIndex));
 }
 
-void LoggerCategoryListModel::categoryRemovedProc(DBusLogClient* aClient,
+void LoggerCategoryModel::categoryRemovedProc(DBusLogClient* aClient,
     DBusLogCategory* aCategory, guint aIndex, gpointer  aData)
 {
-    QMetaObject::invokeMethod((LoggerCategoryListModel*)aData,
+    QMetaObject::invokeMethod((LoggerCategoryModel*)aData,
         "handleCategoryRemoved",
         Q_ARG(DBusLogCategory*,aCategory),
         Q_ARG(uint,aIndex));
 }
 
-void LoggerCategoryListModel::categoryFlagsProc(DBusLogClient* aClient,
+void LoggerCategoryModel::categoryFlagsProc(DBusLogClient* aClient,
     DBusLogCategory* aCategory, guint aIndex, gpointer  aData)
 {
-    QMetaObject::invokeMethod((LoggerCategoryListModel*)aData,
+    QMetaObject::invokeMethod((LoggerCategoryModel*)aData,
         "handleCategoryFlags",
         Q_ARG(DBusLogCategory*,aCategory),
         Q_ARG(uint,aIndex));

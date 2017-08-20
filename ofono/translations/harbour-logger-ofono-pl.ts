@@ -65,6 +65,11 @@
         <source>Reset to default</source>
         <translation>Przywróć do wartości fabrycznych</translation>
     </message>
+    <message id="logger-categories-select-placeholder">
+        <source>Select categories</source>
+        <extracomment>Placeholder text for the search field</extracomment>
+        <translation type="unfinished">Wybierz kategorie</translation>
+    </message>
     <message id="logger-categories-not-connected">
         <source>Not connected</source>
         <translation>Niepołączony z Ofono</translation>

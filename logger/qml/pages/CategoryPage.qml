@@ -36,43 +36,69 @@ import Sailfish.Silica 1.0
 SilicaFlickable {
     id: categoryPage
     property var categoryModel: CategoryModel
+    property var filterModel: CategoryFilterModel
+    property string searchString
+
+    onSearchStringChanged: {
+        console.log(searchString)
+        filterModel.setFilterFixedString(searchString)
+    }
 
     PullDownMenu {
-        visible: categoryModel.connected
+        visible: canEnableDisable || canReset
+        readonly property bool canEnableDisable: filterModel.count > 0
+        readonly property bool canReset: filterModel.haveDefaults
         MenuItem {
             //% "Enable all"
             text: qsTrId("logger-categories-pm-enable-all")
-            onClicked: categoryModel.enableAll()
-            visible: categoryModel.count > 0
+            onClicked: filterModel.enableAll()
+            visible: canEnableDisable
         }
         MenuItem {
             //% "Disable all"
             text: qsTrId("logger-categories-pm-disable-all")
-            onClicked: categoryModel.disableAll()
-            visible: categoryModel.count > 0
+            onClicked: filterModel.disableAll()
+            visible: canEnableDisable
         }
         MenuItem {
             //% "Reset to default"
             text: qsTrId("logger-categories-pm-default")
-            onClicked: categoryModel.reset()
-            visible: categoryModel.haveDefaults
+            onClicked: filterModel.reset()
+            visible: canReset
         }
     }
 
     SilicaListView {
         id: list
-        model: categoryModel
+        model: filterModel
         clip: true
         anchors.fill: parent
-
-        //% "Log categories"
-        header: PageHeader { title: qsTrId("logger-categories-title") }
+        currentIndex: -1 // to keep focus
+        header: Column {
+            width: parent.width
+            //% "Log categories"
+            PageHeader { title: qsTrId("logger-categories-title") }
+            SearchField {
+                id: searchField
+                width: parent.width
+                //: Placeholder text for the search field
+                //% "Select categories"
+                placeholderText: qsTrId("logger-categories-select-placeholder")
+                autoScrollEnabled: false
+                focus: parent.focus
+                focusOutBehavior: FocusBehavior.KeepFocus
+                inputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase | Qt.ImhPreferLowercase
+                EnterKey.iconSource: "image://theme/icon-m-enter-close"
+                EnterKey.onClicked: categoryPage.focus = true
+                onTextChanged: searchString = text.toLowerCase().trim()
+            }
+        }
         delegate: Item {
             width: parent.width
             height: checkBox.height
             TextSwitch {
                 id: checkBox
-                text: categoryName
+                text: Theme.highlightText(categoryName, searchString, Theme.highlightColor)
                 checked: categoryEnabled
                 automaticCheck: false
                 onClicked: {
@@ -90,7 +116,8 @@ SilicaFlickable {
                 }
             }
         }
-
+        // Hide the keyboard on flick
+        onFlickStarted: categoryPage.focus = true
         VerticalScrollDecorator {}
     }
 
