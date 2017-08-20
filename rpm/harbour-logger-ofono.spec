@@ -1,6 +1,6 @@
 Name:       harbour-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.9
+Version:    1.0.10
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -59,6 +59,10 @@ rm -fr %{buildroot}/%{_datarootdir}/logger
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 
 %changelog
+* Sat Aug 20 2017 Slava Monich <slava.monich@jolla.com> 1.0.10
+- Filter for categories
+- Polish translations
+
 * Sat Jun 10 2017 Slava Monich <slava.monich@jolla.com> 1.0.9
 - Added Swedish translations
 - Add /etc/hw-release to the tarball
