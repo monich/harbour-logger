@@ -1,6 +1,6 @@
 Name:       openrepos-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.10
+Version:    1.0.11
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -65,6 +65,9 @@ rm -fr %{buildroot}/%{_datarootdir}/logger
 %{privileges_dir}/%{name}
 
 %changelog
+* Sat Aug 26 2017 Slava Monich <slava.monich@jolla.com> 1.0.11
+- Run as nemo:privileged
+
 * Sat Aug 20 2017 Slava Monich <slava.monich@jolla.com> 1.0.10
 - Filter for categories
 - Polish translations
