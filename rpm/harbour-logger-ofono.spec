@@ -51,12 +51,15 @@ rm -fr %{buildroot}/%{_includedir}/harbour-lib
 rm -fr %{buildroot}/%{_datarootdir}/logger
 
 %files
+%global privileges_dir %{_datarootdir}/mapplauncherd/privileges.d
+%dir %{privileges_dir}
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
 %{_datadir}/%{name}/qml
 %{_datadir}/%{name}/translations
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
+%{privileges_dir}/%{name}
 
 %changelog
 * Sat Aug 20 2017 Slava Monich <slava.monich@jolla.com> 1.0.10

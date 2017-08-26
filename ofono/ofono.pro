@@ -54,6 +54,7 @@ OTHER_FILES += \
   icons/harbour-$${NAME}.svg \
   harbour-$${NAME}.desktop \
   qml/*.qml \
+  privileges/* \
   translations/*.ts
 
 TARGET_DATA_DIR = /usr/share/$${TARGET}
@@ -99,8 +100,13 @@ app_settings {
     INSTALLS += settings_qml settings_json
 }
 
+# Priveleges
+privileges.files = privileges/$${PREFIX}-logger-ofono
+privileges.path = /usr/share/mapplauncherd/privileges.d/
+INSTALLS += privileges
+
 # Desktop file
-equals(PREFIX, "openrepos") {
+openrepos {
     desktop.extra = sed s/harbour/openrepos/g harbour-$${NAME}.desktop > $${TARGET}.desktop
     desktop.CONFIG += no_check_exist
 }
@@ -112,7 +118,7 @@ for(s, ICON_SIZES) {
     icon_dir = icons/$${s}x$${s}
     $${icon_target}.files = $${icon_dir}/$${TARGET}.png
     $${icon_target}.path = /usr/share/icons/hicolor/$${s}x$${s}/apps
-    equals(PREFIX, "openrepos") {
+    openrepos {
         $${icon_target}.extra = cp $${icon_dir}/harbour-$${NAME}.png $$eval($${icon_target}.files)
         $${icon_target}.CONFIG += no_check_exist
     }

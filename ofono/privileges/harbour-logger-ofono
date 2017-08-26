@@ -1,0 +1,2 @@
+# Tells invoker to run ofono logger as nemo:privileged
+/usr/bin/harbour-logger-ofono,
