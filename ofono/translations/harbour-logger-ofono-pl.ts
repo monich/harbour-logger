@@ -88,7 +88,7 @@
     </message>
     <message id="logger-sharepage-pm-save-to-documents">
         <source>Save to documents</source>
-        <translation>Zapisane do dokumentów</translation>
+        <translation>Zapisz do dokumentów</translation>
     </message>
     <message id="logger-sharepage-header">
         <source>Pack and send</source>
