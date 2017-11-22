@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2017 Jolla Ltd.
+ * Copyright (C) 2016-2017 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -66,15 +66,11 @@ Page {
                 sourceComponent: modelData
             }
         }
-        onWidthChanged: updateCurrentIndex()
-        onContentXChanged: updateCurrentIndex()
-        function updateCurrentIndex() {
-            currentIndex = indexAt(contentX + width/2, contentY + height/2)
-        }
+        highlightRangeMode: ListView.StrictlyEnforceRange
         onCurrentIndexChanged: {
             if (currentIndex && swipeHintEnabled) {
-                // Use has seen the second page
-                loggerHints.categoryLeftSwipe++
+                // User has seen the second page
+                loggerHints.categoryLeftSwipe = loggerHints.categoryLeftSwipeMax
                 if (swipeHint.item) {
                     swipeHint.item.stop()
                 }
