@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2017 Jolla Ltd.
+ * Copyright (C) 2016-2017 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -38,8 +38,13 @@ Page {
     id: page
     property var logSaver: LogSaver
     allowedOrientations: window.allowedOrientations
-    backNavigation: _canShare
     property bool _canShare: !logSaver.packing && !logSaver.saving && !minWaitTimer.running
+
+    // For the page slide animation to kick in, the initial value of
+    // backNavigation has to be true. Once the transition has started,
+    // backNavigation is turned off until the log has been saved.
+    showNavigationIndicator: status !== PageStatus.Inactive
+    backNavigation: status === PageStatus.Inactive || _canShare
 
     // The timer makes sure that animation is displayed for at least 1 second
     Timer {
