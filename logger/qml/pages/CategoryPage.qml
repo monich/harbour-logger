@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2017 Jolla Ltd.
+ * Copyright (C) 2016-2017 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -45,6 +45,7 @@ SilicaFlickable {
     }
 
     PullDownMenu {
+        id: menu
         visible: canEnableDisable || canReset
         readonly property bool canEnableDisable: filterModel.count > 0
         readonly property bool canReset: filterModel.haveDefaults
@@ -52,19 +53,19 @@ SilicaFlickable {
             //% "Enable all"
             text: qsTrId("logger-categories-pm-enable-all")
             onClicked: filterModel.enableAll()
-            visible: canEnableDisable
+            visible: menu.canEnableDisable
         }
         MenuItem {
             //% "Disable all"
             text: qsTrId("logger-categories-pm-disable-all")
             onClicked: filterModel.disableAll()
-            visible: canEnableDisable
+            visible: menu.canEnableDisable
         }
         MenuItem {
             //% "Reset to default"
             text: qsTrId("logger-categories-pm-default")
             onClicked: filterModel.reset()
-            visible: canReset
+            visible: menu.canReset
         }
     }
 
