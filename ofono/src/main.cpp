@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016-2017 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2017 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -199,6 +199,7 @@ void OfonoLogger::saveFiles() const
     for (int i=0; i<modems.count(); i++) {
         QString path(modems.at(i));
         HDEBUG(path);
+        dumpOfonoInfo(path, "Modem.GetProperties");
         dumpOfonoInfo(path, "SimManager.GetProperties");
         dumpOfonoInfo(path, "NetworkRegistration.GetProperties");
         dumpOfonoInfo(path, "ConnectionManager.GetProperties");
