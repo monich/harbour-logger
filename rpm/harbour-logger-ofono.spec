@@ -1,6 +1,6 @@
 Name:       harbour-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.11
+Version:    1.0.12
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -21,7 +21,7 @@ BuildRequires: desktop-file-utils
 BuildRequires: qt5-qttools-linguist
 
 %description
-Application for gathering ofono logs
+Application for gathering ofono logs on Sailfish OS
 
 %{!?qtc_qmake:%define qtc_qmake %qmake}
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
@@ -62,6 +62,12 @@ rm -fr %{buildroot}/%{_datarootdir}/logger
 %{privileges_dir}/%{name}
 
 %changelog
+* Tue Jun 19 2018 Slava Monich <slava.monich@jolla.com> 1.0.12
+- Save Modem properties
+- Freshened up sharing menu
+- Updated Polish translations
+- Added Dutch translations
+
 * Sat Aug 26 2017 Slava Monich <slava.monich@jolla.com> 1.0.11
 - Run as nemo:privileged
 
