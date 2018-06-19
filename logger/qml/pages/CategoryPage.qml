@@ -40,14 +40,13 @@ SilicaFlickable {
     property string searchString
 
     onSearchStringChanged: {
-        console.log(searchString)
         filterModel.setFilterFixedString(searchString)
     }
 
     PullDownMenu {
         id: menu
         visible: canEnableDisable || canReset
-        readonly property bool canEnableDisable: filterModel.count > 0
+        readonly property bool canEnableDisable: filterModel && filterModel.count > 0
         readonly property bool canReset: filterModel.haveDefaults
         MenuItem {
             //% "Enable all"
