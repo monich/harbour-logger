@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2018 Jolla Ltd.
+ * Copyright (C) 2016-2018 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -63,13 +63,26 @@ SilicaListView {
         id: backgroundItem
         width: root.width
 
+        Image {
+            id: icon
+            x: Theme.horizontalPageMargin
+            anchors.verticalCenter: parent.verticalCenter
+            source: accountIcon ? accountIcon :
+                transferMethodsModel.accountIconSupported ? "image://theme/icon-m-share" : ""
+            visible: transferMethodsModel.accountIconSupported
+        }
+
         Label {
             id: displayNameLabel
             text: displayName
             color: backgroundItem.highlighted ? Theme.highlightColor : Theme.primaryColor
             truncationMode: TruncationMode.Fade
             x: Theme.horizontalPageMargin
-            anchors.verticalCenter: parent.verticalCenter
+            anchors {
+                left: icon.visible ? icon.right : parent.left
+                leftMargin: icon.visible ? Theme.paddingMedium : Theme.horizontalPageMargin
+                verticalCenter: parent.verticalCenter
+            }
             width: Math.min(implicitWidth, parent.width - 2*Theme.horizontalPageMargin)
         }
 
@@ -80,7 +93,7 @@ SilicaListView {
             truncationMode: TruncationMode.Fade
             anchors {
                 left: displayNameLabel.right
-                leftMargin: Theme.horizontalPageMargin
+                leftMargin: Theme.paddingSmall
                 right: parent.right
                 rightMargin: Theme.horizontalPageMargin
                 verticalCenter: parent.verticalCenter
@@ -103,11 +116,26 @@ SilicaListView {
     }
 
     footer: BackgroundItem {
+        id: addItem
+
+        Image {
+            id: addAccountIcon
+            x: Theme.horizontalPageMargin
+            anchors.verticalCenter: parent.verticalCenter
+            source: transferMethodsModel.accountIconSupported ?
+                ("image://theme/icon-m-add" + (addItem.highlighted ? "?" + Theme.highlightColor : "")) : ""
+            visible: transferMethodsModel.accountIconSupported
+        }
+
         Label {
             //% "Add account"
             text: qsTrId("logger-sharemethodlist-add-account")
             x: Theme.horizontalPageMargin
-            anchors.verticalCenter: parent.verticalCenter
+            anchors {
+                left: addAccountIcon.visible ? addAccountIcon.right : parent.left
+                leftMargin: addAccountIcon.visible ? Theme.paddingMedium : Theme.horizontalPageMargin
+                verticalCenter: parent.verticalCenter
+            }
             color: highlighted ? Theme.highlightColor : Theme.primaryColor
         }
         onClicked: settings.call("showAccounts", undefined)

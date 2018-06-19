@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2017 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2018 Jolla Ltd.
+ * Copyright (C) 2016-2018 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -80,7 +80,7 @@ LoggerMain::LoggerMain(int* aArgc, char** aArgv, const char* aService,
 {
     QString pluginPrefix(QString("harbour.logger.") + aPackage);
     register_types(qPrintable(pluginPrefix));
-    HarbourTransferMethodInfo::registerTypes();
+    HarbourTransferMethodInfo2::registerTypes();
 }
 
 LoggerMain::~LoggerMain()
