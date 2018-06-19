@@ -68,7 +68,7 @@
     <message id="logger-categories-select-placeholder">
         <source>Select categories</source>
         <extracomment>Placeholder text for the search field</extracomment>
-        <translation type="unfinished">Wybierz kategorie</translation>
+        <translation>Wybierz kategorie</translation>
     </message>
     <message id="logger-categories-not-connected">
         <source>Not connected</source>
