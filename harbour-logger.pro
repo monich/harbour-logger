@@ -1,4 +1,4 @@
 TEMPLATE = subdirs
-SUBDIRS = harbour-lib logger ofono
-ofono.depends = harbour-lib logger
+SUBDIRS = logger ofono
+ofono.depends = logger
 OTHER_FILES += rpm/*.spec

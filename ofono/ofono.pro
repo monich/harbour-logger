@@ -39,7 +39,6 @@ QOFONOEXT_LIB_DIR = $$_PRO_FILE_PWD_/src/libqofonoext
 QCONNMAN_LIB_DIR = $$_PRO_FILE_PWD_/../libconnman-qt
 
 # Libraries
-HARBOUR_LIB = $$OUT_PWD/../harbour-lib/libharbour-lib.a
 LOGGER_LIB = $$OUT_PWD/../logger/liblogger.a
 
 PRE_TARGETDEPS += \
@@ -80,6 +79,8 @@ SOURCES += \
   $${QOFONOEXT_LIB_DIR}/src/qofonoext.cpp \
   $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.cpp \
   $${QCONNMAN_LIB_DIR}/libconnman-qt/networktechnology.cpp
+
+include(../harbour-lib.pri)
 
 # D-Bus interfaces
 DBUS_INTERFACES += net_connman_technology

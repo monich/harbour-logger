@@ -46,8 +46,6 @@ desktop-file-install --delete-original \
 
 # Build artifacts
 rm %{buildroot}/%{_bindir}/liblogger.a
-rm %{buildroot}/%{_libdir}/libharbour-lib.a
-rm %{buildroot}/%{_libdir}/pkgconfig/harbour-lib.pc
 rm -fr %{buildroot}/%{_includedir}/harbour-lib
 rm -fr %{buildroot}/%{_datarootdir}/logger
 
