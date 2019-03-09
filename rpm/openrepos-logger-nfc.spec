@@ -1,6 +1,6 @@
 Name:       openrepos-logger-nfc
 Summary:    NFC logger
-Version:    1.0.12
+Version:    1.0.13
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -55,3 +55,7 @@ desktop-file-install --delete-original \
 %{_datadir}/translations/%{name}*.qm
 %{_datadir}/jolla-settings/entries/%{name}.json
 %{privileges_dir}/%{name}
+
+%changelog
+* Sat Mar 9 2019 Slava Monich <slava.monich@jolla.com> 1.0.13
+- Added NFC logger
