@@ -5,6 +5,7 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
@@ -15,11 +16,33 @@
    viewBox="0 0 86 86"
    enable-background="new 0 0 86 86"
    xml:space="preserve"
-   id="svg7194"
    inkscape:version="0.92.4 (unknown)"
    sodipodi:docname="harbour-logger-nfc.svg"
    inkscape:export-xdpi="285.76746"
    inkscape:export-ydpi="285.76746">
+  <defs>
+    <linearGradient
+        inkscape:collect="always"
+        id="linearGradient839">
+      <stop
+          style="stop-color:#9be5ff;stop-opacity:1"
+          offset="0"
+          id="stop835"/>
+      <stop
+          style="stop-color:#87d3ff;stop-opacity:1"
+          offset="1"
+          id="stop837"/>
+    </linearGradient>
+    <linearGradient
+        inkscape:collect="always"
+        xlink:href="#linearGradient839"
+        id="linearGradient841"
+        x1="21.563559"
+        y1="22.411016"
+        x2="64.254242"
+        y2="64.13559"
+        gradientUnits="userSpaceOnUse"/>
+  </defs>
   <metadata>
     <rdf:RDF>
       <cc:Work
@@ -28,7 +51,7 @@
         <dc:type
             rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
         <dc:title/>
-        </cc:Work>
+      </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
@@ -44,11 +67,11 @@
         y2="85.2833">
       <stop
           offset="0.0049"
-          style="stop-color:#0674bb;stop-opacity:1"
+          style="stop-color:#29a5f9;stop-opacity:1"
           id="stop7199"/>
       <stop
           offset="1"
-          style="stop-color:#3aadf9;stop-opacity:1"
+          style="stop-color:#067dcc;stop-opacity:1"
           id="stop7201"/>
     </linearGradient>
     <path
@@ -57,17 +80,16 @@
   </g>
   <g
       transform="matrix(2.997423,0,0,3.1000509,61.42846,1.850079)">
-    <g
-        id="g4">
+    <g>
       <path
           inkscape:connector-curvature="0"
           style="fill-rule:evenodd;stroke-width:1.33060896"
           d="m 6.1183852,22.224267 -2.257889,-2.176235 c 1.384268,-1.912693 2.202245,-4.233201 2.202245,-6.740764 0,-6.5149481 -5.47764703,-11.7963358 -12.2346941,-11.7963357 -6.7570481,-10e-8 -12.2346961,5.2813874 -12.2346961,11.7963357 0,6.514948 5.477649,11.796335 12.2346964,11.796335 2.6007459,0 5.0074854,-0.788669 6.99125377,-2.12334 l 2.26991603,2.188585 c 0.838173,0.796353 1.92461,0.651597 2.701689,-0.08834 0.94936,-0.903977 1.104985,-2.034948 0.327479,-2.856244 z"
           sodipodi:nodetypes="scssssccscs"/>
-      </g>
+    </g>
   </g>
   <circle
-      style="fill:#97e3ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.54362178"
+      style="fill:url(#linearGradient841);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.54362178"
       cx="43"
       cy="43"
       r="30"/>
