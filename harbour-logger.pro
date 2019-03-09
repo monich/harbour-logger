@@ -1,4 +1,5 @@
 TEMPLATE = subdirs
 SUBDIRS = logger ofono
-ofono.depends = logger
+logger.target = logger-target
+ofono.depends = logger-target
 OTHER_FILES += LICENSE rpm/*.spec
