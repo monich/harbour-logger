@@ -1,0 +1,2 @@
+# Tells invoker to run NFC logger as nemo:privileged
+/usr/bin/harbour-logger-nfc,
