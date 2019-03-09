@@ -38,16 +38,11 @@ Application for gathering ofono logs on Sailfish OS
 
 %install
 rm -rf %{buildroot}
-%qmake5_install
+%qmake5_install -C ofono
 
 desktop-file-install --delete-original \
   --dir %{buildroot}%{_datadir}/applications \
    %{buildroot}%{_datadir}/applications/*.desktop
-
-# Build artifacts
-rm %{buildroot}/%{_bindir}/liblogger.a
-rm -fr %{buildroot}/%{_includedir}/harbour-lib
-rm -fr %{buildroot}/%{_datarootdir}/logger
 
 %files
 %global privileges_dir %{_datarootdir}/mapplauncherd/privileges.d
