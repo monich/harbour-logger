@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2017 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2019 Jolla Ltd.
+ * Copyright (C) 2016-2019 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -13,9 +13,9 @@
  *   2. Redistributions in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *   3. Neither the name of Jolla Ltd nor the names of its contributors may
- *      be used to endorse or promote products derived from this software
- *      without specific prior written permission.
+ *   3. Neither the names of the copyright holders nor the names of its
+ *      contributors may be used to endorse or promote products derived
+ *      from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -44,14 +44,10 @@ class LoggerMain : public QObject {
 
 public:
     LoggerMain(int* aArgc, char** aArgv, const char* aService,
-        QString aPackage, QString aQmlPath);
+        QString aRpmPackage, QString aAppSuffix, QString aQmlPath);
     virtual ~LoggerMain();
 
     int run();
-
-    // Quick way to run the app
-    static int Run(int aArgc, char** aArgv, const char* aService,
-        QString aPackage, QString aQmlPath);
 
 protected:
     bool saveOutput(const char* aExe, const char* const aArgv[],
@@ -70,7 +66,8 @@ protected:
 protected:
     QGuiApplication* iApp;
     QString iService;
-    QString iPackage;
+    QString iRpmPackage;
+    QString iAppSuffix;
     QString iQmlPath;
     struct dbus_log_client* iClient;
     QString iFullAppName;

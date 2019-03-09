@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2018 Jolla Ltd.
- * Copyright (C) 2016-2018 Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2019 Jolla Ltd.
+ * Copyright (C) 2016-2019 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -13,9 +13,9 @@
  *   2. Redistributions in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *   3. Neither the name of Jolla Ltd nor the names of its contributors may
- *      be used to endorse or promote products derived from this software
- *      without specific prior written permission.
+ *   3. Neither the names of the copyright holders nor the names of its
+ *      contributors may be used to endorse or promote products derived
+ *      from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -63,22 +63,23 @@ static void register_types(const char* uri, int v1 = 1, int v2 = 0)
 }
 
 LoggerMain::LoggerMain(int* aArgc, char** aArgv, const char* aService,
-    QString aPackage, QString aQmlPath) :
+    QString aRpmPackage, QString aAppSuffix, QString aQmlPath) :
     iApp(SailfishApp::application(*aArgc, aArgv)),
     iService(aService),
-    iPackage(aPackage),
+    iRpmPackage(aRpmPackage),
+    iAppSuffix(aAppSuffix),
     iQmlPath(aQmlPath),
     iClient(dbus_log_client_new(G_BUS_TYPE_SYSTEM, aService, "/",
         DBUSLOG_CLIENT_FLAG_AUTOSTART)),
 #ifdef OPENREPOS
-    iFullAppName(QString("openrepos-logger-") + aPackage),
+    iFullAppName(QString("openrepos-logger-") + aAppSuffix),
     iTransDir("/usr/share/translations")
 #else
-    iFullAppName(QString("harbour-logger-") + aPackage),
+    iFullAppName(QString("harbour-logger-") + aAppSuffix),
     iTransDir(SailfishApp::pathTo("translations").toLocalFile())
 #endif
 {
-    QString pluginPrefix(QString("harbour.logger.") + aPackage);
+    QString pluginPrefix(QString("harbour.logger.") + aAppSuffix);
     register_types(qPrintable(pluginPrefix));
     HarbourTransferMethodInfo2::registerTypes();
 }
@@ -166,8 +167,8 @@ void LoggerMain::saveFilesAtStartup(QString aDir)
     QFile::copy("/etc/hw-release", aDir + "/hw-release");
 
     // And the package version
-    saveOutput("rpm", "-q", qPrintable(iPackage),
-        aDir + "/" + iPackage + "-version");
+    saveOutput("rpm", "-q", qPrintable(iRpmPackage),
+        aDir + "/" + iRpmPackage + "-version");
 }
 
 void LoggerMain::setupView(QQuickView* aView)
@@ -192,7 +193,7 @@ int LoggerMain::run()
     LoggerLogModel* logModel = new LoggerLogModel(logSettings, iClient, iApp);
     LoggerCategoryModel* categoryModel = new LoggerCategoryModel(logSettings, iClient, iApp);
     LoggerCategoryFilterModel* filterModel = new LoggerCategoryFilterModel(categoryModel);
-    LoggerLogSaver* logSaver = new LoggerLogSaver(iPackage, iApp);
+    LoggerLogSaver* logSaver = new LoggerLogSaver(iAppSuffix, iApp);
     logSaver->connect(logModel, SIGNAL(entryAdded(LoggerEntry)), SLOT(addEntry(LoggerEntry)));
     logSaver->connect(sigChild, SIGNAL(processDied(int,int)), SLOT(onProcessDied(int,int)));
 
@@ -220,14 +221,5 @@ int LoggerMain::run()
     }
 
     delete view;
-    return ret;
-}
-
-int LoggerMain::Run(int aArgc, char* aArgv[], const char* aService,
-    QString aPackage, QString aQmlPath)
-{
-    LoggerMain* main = new LoggerMain(&aArgc, aArgv, aService, aPackage, aQmlPath);
-    int ret = main->run();
-    delete main;
     return ret;
 }
