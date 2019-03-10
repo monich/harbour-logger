@@ -1,6 +1,6 @@
 Name:       harbour-logger-nfc
 Summary:    NFC logger
-Version:    1.0.13
+Version:    1.0.14
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -55,5 +55,8 @@ desktop-file-install --delete-original \
 %{privileges_dir}/%{name}
 
 %changelog
+* Sun Mar 10 2019 Slava Monich <slava.monich@jolla.com> 1.0.14
+- Dump versions of plugins and related libraries
+
 * Sat Mar 9 2019 Slava Monich <slava.monich@jolla.com> 1.0.13
 - Added NFC logger

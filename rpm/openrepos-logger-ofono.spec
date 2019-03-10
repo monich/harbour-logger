@@ -1,6 +1,6 @@
 Name:       openrepos-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.12
+Version:    1.0.14
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -58,6 +58,9 @@ desktop-file-install --delete-original \
 %{privileges_dir}/%{name}
 
 %changelog
+* Sun Mar 10 2019 Slava Monich <slava.monich@jolla.com> 1.0.14
+- Dump versions of plugins and related libraries
+
 * Tue Jun 19 2018 Slava Monich <slava.monich@jolla.com> 1.0.12
 - Save Modem properties
 - Freshened up sharing menu
