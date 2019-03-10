@@ -63,10 +63,10 @@ static void register_types(const char* uri, int v1 = 1, int v2 = 0)
 }
 
 LoggerMain::LoggerMain(int* aArgc, char** aArgv, const char* aService,
-    QString aRpmPackage, QString aAppSuffix, QString aQmlPath) :
+    QStringList aRpmPackages, QString aAppSuffix, QString aQmlPath) :
     iApp(SailfishApp::application(*aArgc, aArgv)),
     iService(aService),
-    iRpmPackage(aRpmPackage),
+    iRpmPackages(aRpmPackages),
     iAppSuffix(aAppSuffix),
     iQmlPath(aQmlPath),
     iClient(dbus_log_client_new(G_BUS_TYPE_SYSTEM, aService, "/",
@@ -133,6 +133,11 @@ bool LoggerMain::saveOutput(const char* aExe, const char* const aArgv[],
     }
 }
 
+bool LoggerMain::saveOutput(const char* const aArgv[], QString aOut) const
+{
+    return saveOutput(aArgv[0], aArgv, aOut);
+}
+
 bool LoggerMain::saveOutput(const char* aExe, const char* aArg1,
     const char* aArg2, QString aOut) const
 {
@@ -166,9 +171,20 @@ void LoggerMain::saveFilesAtStartup(QString aDir)
     QFile::copy("/etc/sailfish-release", aDir + "/sailfish-release");
     QFile::copy("/etc/hw-release", aDir + "/hw-release");
 
-    // And the package version
-    saveOutput("rpm", "-q", qPrintable(iRpmPackage),
-        aDir + "/" + iRpmPackage + "-version");
+    // And the package version(s)
+    const int n = iRpmPackages.count();
+    if (n > 0) {
+        QByteArray printablePackages[n];
+        const char* args[n + 3];
+        args[0] = "rpm";
+        args[1] = "-q";
+        for (int i = 0; i < n; i++) {
+            printablePackages[i] = iRpmPackages.at(i).toLocal8Bit();
+            args[i + 2] = printablePackages[i].constData();
+        }
+        args[n + 2] = NULL;
+        saveOutput(args, aDir + "/" + iAppSuffix + "-packages");
+    }
 }
 
 void LoggerMain::setupView(QQuickView* aView)

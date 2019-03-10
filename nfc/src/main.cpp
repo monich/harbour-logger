@@ -34,5 +34,11 @@
 
 Q_DECL_EXPORT int main(int argc, char* argv[])
 {
-    return LoggerMain(&argc, argv, "org.sailfishos.nfc.daemon", "nfcd", "nfc", "qml/main.qml").run();
+    QStringList packages;
+    packages.append("libgbinder");
+    packages.append("libglibutil");
+    packages.append("nfcd");
+    packages.append("nfcd-binder-plugin");
+    return LoggerMain(&argc, argv, "org.sailfishos.nfc.daemon", packages,
+        "nfc", "qml/main.qml").run();
 }

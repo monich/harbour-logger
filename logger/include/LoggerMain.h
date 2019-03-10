@@ -33,8 +33,9 @@
 #ifndef LOGGER_MAIN_H
 #define LOGGER_MAIN_H
 
-#include <QString>
 #include <QObject>
+#include <QString>
+#include <QStringList>
 
 class QQuickView;
 class QGuiApplication;
@@ -44,12 +45,13 @@ class LoggerMain : public QObject {
 
 public:
     LoggerMain(int* aArgc, char** aArgv, const char* aService,
-        QString aRpmPackage, QString aAppSuffix, QString aQmlPath);
+        QStringList aRpmPackages, QString aAppSuffix, QString aQmlPath);
     virtual ~LoggerMain();
 
     int run();
 
 protected:
+    bool saveOutput(const char* const aArgv[], QString aOut) const;
     bool saveOutput(const char* aExe, const char* const aArgv[],
         QString aOut) const;
     bool saveOutput(const char* aExe, const char* aArg1, const char* aArg2,
@@ -66,7 +68,7 @@ protected:
 protected:
     QGuiApplication* iApp;
     QString iService;
-    QString iRpmPackage;
+    QStringList iRpmPackages;
     QString iAppSuffix;
     QString iQmlPath;
     struct dbus_log_client* iClient;

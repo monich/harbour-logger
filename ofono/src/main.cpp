@@ -51,8 +51,9 @@ class OfonoLogger: public SUPER {
     Q_PROPERTY(bool mobileDataBroken READ mobileDataBroken NOTIFY mobileDataBrokenChanged)
     Q_PROPERTY(bool mobileDataDisabled READ mobileDataDisabled NOTIFY mobileDataDisabledChanged)
     static const QString AUTO;
+
 public:
-    OfonoLogger(int* aArgc, char** aArgv);
+    OfonoLogger(int* aArgc, char** aArgv, QStringList aPackages);
     bool mobileDataBroken() const;
     bool mobileDataDisabled() const;
     Q_INVOKABLE void fixMobileData();
@@ -65,8 +66,8 @@ private:
     void dumpConnmanInfo(QString aPath, QString aService) const;
 
 protected:
-    virtual void saveFilesAtStartup(QString aDir);
-    virtual void setupView(QQuickView* aView);
+    void saveFilesAtStartup(QString aDir) Q_DECL_OVERRIDE;
+    void setupView(QQuickView* aView) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void updateModemManagerState();
@@ -90,8 +91,8 @@ private:
 
 const QString OfonoLogger::AUTO("auto");
 
-OfonoLogger::OfonoLogger(int* aArgc, char** aArgv) :
-    SUPER(aArgc, aArgv, "org.ofono", "ofono", "ofono", "qml/main.qml"),
+OfonoLogger::OfonoLogger(int* aArgc, char** aArgv, QStringList aPackages) :
+    SUPER(aArgc, aArgv, "org.ofono", aPackages, "ofono", "qml/main.qml"),
     iModemManager(QOfonoExtModemManager::instance()),
     iNetworkTechnology(new NetworkTechnology(this)),
     iFilesSaved(false),
@@ -249,7 +250,15 @@ void OfonoLogger::setupView(QQuickView* aView)
 
 Q_DECL_EXPORT int main(int argc, char* argv[])
 {
-    return OfonoLogger(&argc, argv).run();
+    QStringList packages;
+    packages.append("libgbinder");
+    packages.append("libgbinder-radio");
+    packages.append("libglibutil");
+    packages.append("libgrilio");
+    packages.append("libgrilio-binder");
+    packages.append("ofono");
+    packages.append("ofono-ril-binder-plugin");
+    return OfonoLogger(&argc, argv, packages).run();
 }
 
 #include "main.moc"
