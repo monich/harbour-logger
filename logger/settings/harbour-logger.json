@@ -3,9 +3,9 @@
     "entries": [
         {
             "path": "applications/harbour-logger.desktop",
-            "title": "MMS Logger",
+            "title": "Logger",
             "type": "page",
-            "icon": "harbour-mmslog",
+            "icon": "harbour-logger",
             "params": {
                 "source": "/usr/share/harbour-logger/settings/settings.qml"
             }
