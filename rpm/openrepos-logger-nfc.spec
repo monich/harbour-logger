@@ -1,6 +1,6 @@
 Name:       openrepos-logger-nfc
 Summary:    NFC logger
-Version:    1.0.14
+Version:    1.0.15
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -57,6 +57,11 @@ desktop-file-install --delete-original \
 %{privileges_dir}/%{name}
 
 %changelog
+* Sat Dec 14 2019 Slava Monich <slava.monich@jolla.com> 1.0.15
+- Fixed settings icon name
+- Updated list of NFC related packages
+- Updated submodules
+
 * Sun Mar 10 2019 Slava Monich <slava.monich@jolla.com> 1.0.14
 - Dump versions of plugins and related libraries
 
