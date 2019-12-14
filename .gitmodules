@@ -12,4 +12,4 @@
 	url = https://github.com/monich/libqofonoext.git
 [submodule "libconnman-qt"]
 	path = libconnman-qt
-	url = https://git.merproject.org/mer-core/libconnman-qt.git
+	url = https://github.com/monich/libconnman-qt.git
