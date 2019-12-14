@@ -6,7 +6,7 @@
 	url = https://git.merproject.org/mer-core/libdbuslog.git
 [submodule "libglibutil"]
 	path = logger/src/libglibutil
-	url = https://git.merproject.org/mer-core/libglibutil.git
+	url = https://github.com/monich/libglibutil.git
 [submodule "libqofonoext"]
 	path = ofono/src/libqofonoext
 	url = https://git.merproject.org/mer-core/libqofonoext.git
