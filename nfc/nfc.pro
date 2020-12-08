@@ -127,7 +127,7 @@ for(t, TRANSLATION_FILES) {
     lrelease_target = lrelease_$$suffix
 
     $${lupdate_target}.commands = lupdate -noobsolete -extensions qml $${TRANSLATION_SOURCES} -ts \"$${in}.ts\" && \
-        mkdir -p \"$${OUT_PWD}/translations\" &&  [ \"$${in}.ts\" != \"$${out}.ts\" ] && \
+        mkdir -p \"$${_PRO_FILE_PWD_}/translations\" &&  [ \"$${in}.ts\" != \"$${out}.ts\" ] && \
         cp -af \"$${in}.ts\" \"$${out}.ts\" || :
 
     $${lrelease_target}.target = $${out}.qm
@@ -136,7 +136,7 @@ for(t, TRANSLATION_FILES) {
 
     QMAKE_EXTRA_TARGETS += $${lrelease_target} $${lupdate_target}
     PRE_TARGETDEPS += \"$${out}.qm\"
-    qm.files += \"$${out}.qm\"
+    qm.files += \"$$relative_path($${out},$${_PRO_FILE_PWD_}).qm\"
 }
 
 qm.path = $$TRANSLATIONS_PATH

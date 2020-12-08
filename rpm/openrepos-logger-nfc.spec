@@ -33,7 +33,7 @@ Application for gathering NFC logs on Sailfish OS
 
 %build
 %qtc_qmake5 CONFIG+=openrepos CONFIG+=app_settings
-%qtc_make %{?_smp_mflags}
+%qtc_make %{?_smp_mflags} logger-nfc
 
 %install
 rm -rf %{buildroot}

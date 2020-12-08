@@ -157,7 +157,7 @@ for(t, TRANSLATION_FILES) {
 
     QMAKE_EXTRA_TARGETS += $${lrelease_target} $${lupdate_target}
     PRE_TARGETDEPS += \"$${out}.qm\"
-    qm.files += \"$${out}.qm\"
+    qm.files += \"$$relative_path($${out},$${_PRO_FILE_PWD_}).qm\"
 }
 
 qm.path = $$TRANSLATIONS_PATH

@@ -33,7 +33,7 @@ Application for gathering NFC logs on Sailfish OS
 
 %build
 %qtc_qmake5
-%qtc_make %{?_smp_mflags}
+%qtc_make %{?_smp_mflags} logger-nfc
 
 %install
 rm -rf %{buildroot}
@@ -44,9 +44,9 @@ desktop-file-install --delete-original \
    %{buildroot}%{_datadir}/applications/*.desktop
 
 %files
+%defattr(-,root,root,-)
 %global privileges_dir %{_datarootdir}/mapplauncherd/privileges.d
 %dir %{privileges_dir}
-%defattr(-,root,root,-)
 %{_bindir}/%{name}
 %{_datadir}/%{name}/qml
 %{_datadir}/%{name}/translations

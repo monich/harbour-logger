@@ -33,7 +33,7 @@ Application for gathering ofono logs on Sailfish OS
 
 %build
 %qtc_qmake5 CONFIG+=ofono
-%qtc_make %{?_smp_mflags}
+%qtc_make %{?_smp_mflags} logger-ofono
 
 %install
 rm -rf %{buildroot}
