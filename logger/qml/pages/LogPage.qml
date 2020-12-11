@@ -38,6 +38,8 @@ import "../harbour"
 SilicaFlickable {
     id: page
 
+    property alias pullDownMenuActive: menu.active
+
     property var logModel: LogModel
     readonly property string fontFamily: "Monospace"
 
@@ -58,44 +60,8 @@ SilicaFlickable {
     }
 
     Component.onCompleted: {
-        // Dynamically bind custom menu item
-        if (customLogMenuItem) {
-            customMenuItem.clicked.connect(customLogMenuItem.clicked)
-            customLogMenuItemTextComponent.createObject(page)
-            customLogMenuItemVisibleComponent.createObject(page)
-            if (customLogMenuItem.active !== undefined) {
-                customLogMenuItemActiveComponent.createObject(page)
-            }
-        }
         if (logModel.connected) {
             connected()
-        }
-    }
-
-    Component {
-        id: customLogMenuItemTextComponent
-        Binding {
-            target: customMenuItem
-            property: "text"
-            value: customLogMenuItem.text
-        }
-    }
-
-    Component {
-        id: customLogMenuItemVisibleComponent
-        Binding {
-            target: customMenuItem
-            property: "visible"
-            value: customLogMenuItem.visible
-        }
-    }
-
-    Component {
-        id: customLogMenuItemActiveComponent
-        Binding {
-            target: customLogMenuItem
-            property: "active"
-            value: pullDownMenu.active
         }
     }
 
@@ -114,10 +80,15 @@ SilicaFlickable {
     }
 
     PullDownMenu {
-        id: pullDownMenu
+        id: menu
+
+        // Delay the click because the action may cause custom item to disappear
+        property bool customMenuItemClicked
+
         MenuItem {
-            id: customMenuItem
-            visible: false
+            text: customLogMenuItem ? customLogMenuItem.text : ""
+            visible: customLogMenuItem ? customLogMenuItem.visible : false
+            onClicked: menu.customMenuItemClicked = true
         }
         MenuItem {
             //% "Clear log"
@@ -129,6 +100,13 @@ SilicaFlickable {
             //% "Pack and send"
             text: qsTrId("logger-logpage-pm-pack-and-send")
             onClicked: packAndShare()
+        }
+
+        onActiveChanged: {
+            if (!active && customMenuItemClicked) {
+                customMenuItemClicked = false
+                customLogMenuItem.clicked()
+            }
         }
     }
 
@@ -244,7 +222,7 @@ SilicaFlickable {
         id: positioner
         interval: 100
         onTriggered: {
-            if (!pullDownMenu.active) {
+            if (!pullDownMenuActive) {
                 list.cancelFlick()
                 list.positionViewAtEnd()
             }

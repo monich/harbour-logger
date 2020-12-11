@@ -42,11 +42,14 @@ ApplicationWindow {
     allowedOrientations: Orientation.Portrait | Orientation.Landscape | Orientation.LandscapeInverted
     initialPage: Component {
         MainPage {
-            customLogMenuItem:  MenuItem {
+            id: mainPage
+
+            customLogMenuItem:  QtObject {
                 id: fixMobileDataMenuItem
 
-                property bool active
-                text: OfonoLogger.mobileDataBroken ?
+                property bool visible: shouldBeVisible
+                readonly property bool shouldBeVisible: OfonoLogger.mobileDataBroken || OfonoLogger.mobileDataDisabled
+                property string text: OfonoLogger.mobileDataBroken ?
                           //: Pull-down menu item
                           //% "Fix mobile data"
                           qsTrId("ofono-logger-pm-fix-mobile-data") :
@@ -54,21 +57,20 @@ ApplicationWindow {
                           //% "Enable mobile data"
                           qsTrId("ofono-logger-pm-enable-mobile-data")
 
-                onClicked: {
+                function updateVisiblity() {
+                    if (!mainPage.pullDownMenuActive) {
+                        visible = shouldBeVisible
+                    }
+                }
+                function clicked() {
                     if (OfonoLogger.mobileDataBroken) {
                         OfonoLogger.fixMobileData()
                     } else {
                         OfonoLogger.enableMobileData()
                     }
                 }
-                onActiveChanged: updateVisiblity()
-                Component.onCompleted: updateVisiblity()
-                function updateVisiblity() {
-                    if (!active) {
-                        visible = OfonoLogger.mobileDataBroken || OfonoLogger.mobileDataDisabled
-                    }
-                }
             }
+            onPullDownMenuActiveChanged:fixMobileDataMenuItem.updateVisiblity()
 
             Connections {
                 target: OfonoLogger
