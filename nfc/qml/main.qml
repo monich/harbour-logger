@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2019 Jolla Ltd.
- * Copyright (C) 2019 Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2019-2020 Jolla Ltd.
+ * Copyright (C) 2019-2020 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -33,20 +33,18 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import harbour.logger.nfc 1.0
+
 import "pages"
 
-ApplicationWindow
-{
+ApplicationWindow {
     id: window
+
+    allowedOrientations: Orientation.Portrait | Orientation.Landscape | Orientation.LandscapeInverted
+    initialPage: Component { MainPage { } }
+    cover: Component { CoverPage { } }
+
     LoggerHints {
         id: loggerHints
         appName: AppName
     }
-    TransferMethodsModel {
-        id: transferMethodsModel
-        filter: LogSaver.archiveType
-    }
-    allowedOrientations: Orientation.Portrait | Orientation.Landscape | Orientation.LandscapeInverted
-    initialPage: Component { MainPage { } }
-    cover: Component { CoverPage { } }
 }

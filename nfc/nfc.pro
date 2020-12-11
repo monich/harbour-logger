@@ -69,6 +69,16 @@ INCLUDEPATH += \
 SOURCES += \
   src/main.cpp
 
+# harbour-lib QML components
+
+HARBOUR_LIB_QML = $${HARBOUR_LIB_DIR}/qml
+HARBOUR_QML_COMPONENTS = \
+    $${HARBOUR_LIB_QML}/HarbourShareMethodList.qml
+
+qml_components.files = $${HARBOUR_QML_COMPONENTS}
+qml_components.path = $${TARGET_DATA_DIR}/qml/harbour
+INSTALLS += qml_components
+
 # Settings
 app_settings {
     settings_json.files = $${LOGGER_LIB_DIR}/settings/$${TARGET}.json

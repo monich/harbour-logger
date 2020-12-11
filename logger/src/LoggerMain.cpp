@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2019 Jolla Ltd.
- * Copyright (C) 2016-2019 Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2020 Jolla Ltd.
+ * Copyright (C) 2016-2020 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -59,7 +59,6 @@
 static void register_types(const char* uri, int v1 = 1, int v2 = 0)
 {
     qmlRegisterType<LoggerHints>(uri, v1, v2, "LoggerHints");
-    qmlRegisterType<HarbourTransferMethodsModel>(uri, v1, v2, "TransferMethodsModel");
 }
 
 LoggerMain::LoggerMain(int* aArgc, char** aArgv, const char* aService,
@@ -210,6 +209,8 @@ int LoggerMain::run()
     LoggerCategoryModel* categoryModel = new LoggerCategoryModel(logSettings, iClient, iApp);
     LoggerCategoryFilterModel* filterModel = new LoggerCategoryFilterModel(categoryModel);
     LoggerLogSaver* logSaver = new LoggerLogSaver(iAppSuffix, iApp);
+    HarbourTransferMethodsModel* transferModel = new HarbourTransferMethodsModel(iApp);
+    transferModel->setFilter(logSaver->archiveType());
     logSaver->connect(logModel, SIGNAL(entryAdded(LoggerEntry)), SLOT(addEntry(LoggerEntry)));
     logSaver->connect(sigChild, SIGNAL(processDied(int,int)), SLOT(onProcessDied(int,int)));
 
@@ -224,6 +225,7 @@ int LoggerMain::run()
     context->setContextProperty("LogSaver", logSaver);
     context->setContextProperty("CategoryModel", categoryModel);
     context->setContextProperty("CategoryFilterModel", filterModel);
+    context->setContextProperty("TransferMethodsModel", transferModel);
     context->setContextProperty("AppName", iFullAppName);
 
     setupView(view);

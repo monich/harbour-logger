@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2017 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2020 Jolla Ltd.
+ * Copyright (C) 2016-2020 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -13,9 +13,9 @@
  *   2. Redistributions in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *   3. Neither the name of Jolla Ltd nor the names of its contributors may
- *      be used to endorse or promote products derived from this software
- *      without specific prior written permission.
+ *   3. Neither the names of the copyright holders nor the names of its
+ *      contributors may be used to endorse or promote products derived
+ *      from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -33,24 +33,18 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import harbour.logger.ofono 1.0
+
 import "pages"
 
-ApplicationWindow
-{
+ApplicationWindow {
     id: window
-    LoggerHints {
-        id: loggerHints
-        appName: AppName
-    }
-    TransferMethodsModel {
-        id: transferMethodsModel
-        filter: LogSaver.archiveType
-    }
+
     allowedOrientations: Orientation.Portrait | Orientation.Landscape | Orientation.LandscapeInverted
     initialPage: Component {
         MainPage {
             customLogMenuItem:  MenuItem {
                 id: fixMobileDataMenuItem
+
                 property bool active
                 text: OfonoLogger.mobileDataBroken ?
                           //: Pull-down menu item
@@ -75,6 +69,7 @@ ApplicationWindow
                     }
                 }
             }
+
             Connections {
                 target: OfonoLogger
                 onMobileDataBrokenChanged: fixMobileDataMenuItem.updateVisiblity()
@@ -83,4 +78,9 @@ ApplicationWindow
         }
     }
     cover: Component { CoverPage { } }
+
+    LoggerHints {
+        id: loggerHints
+        appName: AppName
+    }
 }
