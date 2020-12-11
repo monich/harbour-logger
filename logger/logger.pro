@@ -9,6 +9,8 @@ QMAKE_CXXFLAGS += -Wno-unused-parameter -Wno-psabi
 QMAKE_CFLAGS += -Wno-unused-parameter
 
 HARBOUR_LIB_DIR = $$_PRO_FILE_PWD_/../harbour-lib
+HARBOUR_LIB_SRC = $${HARBOUR_LIB_DIR}/src
+HARBOUR_LIB_INCLUDE = $${HARBOUR_LIB_DIR}/include
 
 LIBGLIBUTIL = src/libglibutil
 LIBGLIBUTIL_SRC = $${LIBGLIBUTIL}/src
@@ -57,6 +59,16 @@ HEADERS += \
     src/LoggerSettings.h
 
 SOURCES += \
+  $${HARBOUR_LIB_SRC}/HarbourSigChildHandler.cpp \
+  $${HARBOUR_LIB_SRC}/HarbourTransferMethodInfo.cpp \
+  $${HARBOUR_LIB_SRC}/HarbourTransferMethodsModel.cpp
+
+HEADERS += \
+  $${HARBOUR_LIB_INCLUDE}/HarbourSigChildHandler.h \
+  $${HARBOUR_LIB_INCLUDE}/HarbourTransferMethodInfo.h \
+  $${HARBOUR_LIB_INCLUDE}/HarbourTransferMethodsModel.h
+
+SOURCES += \
     $${LIBDBUSLOG_COMMON_SRC}/dbuslog_category.c \
     $${LIBDBUSLOG_COMMON_SRC}/dbuslog_message.c
 
@@ -72,7 +84,7 @@ SOURCES += \
 
 INCLUDEPATH += \
     include \
-    $${HARBOUR_LIB_DIR}/include \
+    $${HARBOUR_LIB_INCLUDE} \
     $${LIBDBUSLOG_COMMON_INCLUDE} \
     $${LIBDBUSLOG_CLIENT_INCLUDE} \
     $${LIBGLIBUTIL_INCLUDE}

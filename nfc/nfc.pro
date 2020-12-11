@@ -69,8 +69,6 @@ INCLUDEPATH += \
 SOURCES += \
   src/main.cpp
 
-include(../harbour-lib.pri)
-
 # Settings
 app_settings {
     settings_json.files = $${LOGGER_LIB_DIR}/settings/$${TARGET}.json

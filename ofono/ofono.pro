@@ -80,8 +80,6 @@ SOURCES += \
   $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.cpp \
   $${QCONNMAN_LIB_DIR}/libconnman-qt/networktechnology.cpp
 
-include(../harbour-lib.pri)
-
 # D-Bus interfaces
 DBUS_INTERFACES += net_connman_technology
 net_connman_technology.files = $${QCONNMAN_LIB_DIR}/libconnman-qt/connman_technology.xml
