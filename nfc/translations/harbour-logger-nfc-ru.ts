@@ -39,6 +39,11 @@
         <source>Log cleared</source>
         <translation>Журнал очищен</translation>
     </message>
+    <message id="logger-logpage-hint-jump_to_bottom">
+        <source>Jump to the end of the log to see the most recent messages and follow new messages in real time</source>
+        <extracomment>Hint text, displayed on long tap</extracomment>
+        <translation>Перескочить к последнему сообщению и следить за новыми в реальном времени</translation>
+    </message>
     <message id="logger-categories-title">
         <source>Log categories</source>
         <translation>Категории</translation>

@@ -92,6 +92,7 @@ INCLUDEPATH += \
 OTHER_FILES += \
   qml/pages/*.js \
   qml/pages/*.qml \
+  qml/pages/images/*.svg \
   settings/*.qml \
   settings/*.json
 

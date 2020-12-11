@@ -57,9 +57,9 @@ OTHER_FILES += \
 TARGET_DATA_DIR = /usr/share/$${TARGET}
 TARGET_ICON_ROOT = /usr/share/icons/hicolor
 
-qml_pages.files = $${LOGGER_LIB_DIR}/qml/*
-qml_pages.path = $${TARGET_DATA_DIR}/qml
-INSTALLS += qml_pages
+logger_qml.files = $${LOGGER_LIB_DIR}/qml/*
+logger_qml.path = $${TARGET_DATA_DIR}/qml
+INSTALLS += logger_qml
 
 INCLUDEPATH += \
   src \
@@ -73,6 +73,8 @@ SOURCES += \
 
 HARBOUR_LIB_QML = $${HARBOUR_LIB_DIR}/qml
 HARBOUR_QML_COMPONENTS = \
+    $${HARBOUR_LIB_QML}/HarbourHighlightIcon.qml \
+    $${HARBOUR_LIB_QML}/HarbourHintIconButton.qml \
     $${HARBOUR_LIB_QML}/HarbourShareMethodList.qml
 
 qml_components.files = $${HARBOUR_QML_COMPONENTS}

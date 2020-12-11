@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="en">
 <context>
     <name></name>
     <message id="logger-cover-title">
@@ -38,6 +38,11 @@
     <message id="logger-logpage-msg-log-cleared">
         <source>Log cleared</source>
         <translation>Log cleared</translation>
+    </message>
+    <message id="logger-logpage-hint-jump_to_bottom">
+        <source>Jump to the end of the log to see the most recent messages and follow new messages in real time</source>
+        <extracomment>Hint text, displayed on long tap</extracomment>
+        <translation>Jump to the end of the log to see the most recent messages and follow new messages in real time</translation>
     </message>
     <message id="logger-categories-title">
         <source>Log categories</source>

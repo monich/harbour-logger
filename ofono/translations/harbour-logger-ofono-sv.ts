@@ -49,6 +49,11 @@
         <source>Log cleared</source>
         <translation>Loggen rensad</translation>
     </message>
+    <message id="logger-logpage-hint-jump_to_bottom">
+        <source>Jump to the end of the log to see the most recent messages and follow new messages in real time</source>
+        <extracomment>Hint text, displayed on long tap</extracomment>
+        <translation type="unfinished">Hoppa till slutet av loggen för att se de senaste meddelandena och följ nya meddelanden i realtid</translation>
+    </message>
     <message id="logger-categories-title">
         <source>Log categories</source>
         <translation>Loggkategorier</translation>

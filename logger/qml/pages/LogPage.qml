@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2020 Jolla Ltd.
+ * Copyright (C) 2016-2020 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -13,9 +13,9 @@
  *   2. Redistributions in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *   3. Neither the name of Jolla Ltd nor the names of its contributors may
- *      be used to endorse or promote products derived from this software
- *      without specific prior written permission.
+ *   3. Neither the names of the copyright holders nor the names of its
+ *      contributors may be used to endorse or promote products derived
+ *      from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -33,9 +33,11 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "logger.js" as Logger
+import "../harbour"
 
 SilicaFlickable {
     id: page
+
     property var logModel: LogModel
     readonly property string fontFamily: "Monospace"
 
@@ -132,6 +134,7 @@ SilicaFlickable {
 
     SilicaListView {
         id: list
+
         model: logModel
         anchors.fill: parent
         clip: true
@@ -183,6 +186,58 @@ SilicaFlickable {
         onHeightChanged: if (atYEnd) positioner.restart()
 
         VerticalScrollDecorator {}
+    }
+
+    InteractionHintLabel {
+        id: selectionHint
+
+        invert: true
+        visible: opacity > 0
+        opacity: item ? 1.0 : 0.0
+        property Item item: null
+        Behavior on opacity { FadeAnimation { duration: 1000 } }
+    }
+
+    HarbourHintIconButton {
+        id: immediateScrollButton
+
+        //: Hint text, displayed on long tap
+        //% "Jump to the end of the log to see the most recent messages and follow new messages in real time"
+        hint: qsTrId("logger-logpage-hint-jump_to_bottom")
+        icon {
+            source: "images/down.svg"
+            sourceSize: Qt.size(Theme.iconSizeLarge, Theme.iconSizeLarge)
+        }
+        anchors {
+            right: parent.right
+            rightMargin: Theme.horizontalPageMargin
+            bottom: parent.bottom
+            bottomMargin: Theme.paddingLarge
+        }
+        visible: opacity > 0
+        opacity: (isNeeded && !immediateScrollTimer.running) ? 1.0 : 0.0
+        readonly property bool isNeeded: !list.moving && !list.atYEnd && (list.contentHeight > list.height)
+        onIsNeededChanged: if (isNeeded) immediateScrollTimer.restart()
+        onClicked: {
+            cancelHint()
+            list.positionViewAtEnd()
+        }
+        onShowHint: {
+            selectionHint.text = hint
+            selectionHint.item = immediateScrollButton
+        }
+        onHideHint: cancelHint()
+        function cancelHint() {
+            if (selectionHint.item === immediateScrollButton) {
+                selectionHint.item = null
+            }
+        }
+        Behavior on opacity { FadeAnimation { } }
+    }
+
+    Timer {
+        id: immediateScrollTimer
+        interval: 500
     }
 
     Timer {
