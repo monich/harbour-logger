@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2020 Jolla Ltd.
+ * Copyright (C) 2016-2020 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -13,9 +13,9 @@
  *   2. Redistributions in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *   3. Neither the name of Jolla Ltd nor the names of its contributors may
- *      be used to endorse or promote products derived from this software
- *      without specific prior written permission.
+ *   3. Neither the names of the copyright holders nor the names of its
+ *      contributors may be used to endorse or promote products derived
+ *      from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -38,6 +38,7 @@
 #include <QDir>
 
 #include <unistd.h>
+#include <sys/types.h>
 
 // ==========================================================================
 // LoggerLogSaver::WriteTask
@@ -50,7 +51,7 @@ public:
         { setAutoDelete(true); }
 
 protected:
-    virtual void run();
+    void run() Q_DECL_OVERRIDE;
 
 private:
     LoggerLogSaver* iOwner;
@@ -156,6 +157,11 @@ void LoggerLogSaver::onProcessDied(int aPid, int aStatus)
 {
     if (iPid > 0 && iPid == aPid) {
         HDEBUG("Tar done, pid" << aPid << "status" << aStatus);
+        const QByteArray tarball(iArchivePath.toLocal8Bit());
+        if (chown(tarball.constData(), getuid(), getgid()) < 0) {
+            HWARN("Failed to chown" << tarball.constData() << ":"
+                << strerror(errno));
+        }
         iPid = -1;
         Q_EMIT packingChanged();
     }

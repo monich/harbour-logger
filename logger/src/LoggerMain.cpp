@@ -192,12 +192,6 @@ void LoggerMain::setupView(QQuickView* aView)
 
 int LoggerMain::run()
 {
-    // The application may (and should) be started with "privileged"
-    // effective gid, reset file system identity to the real identity
-    // of the process so that files are owned by nemo:nemo
-    setfsuid(getuid());
-    setfsgid(getgid());
-
     loadTranslations();
 
     // Signal handler
