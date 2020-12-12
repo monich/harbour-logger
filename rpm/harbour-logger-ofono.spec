@@ -1,6 +1,6 @@
 Name:       harbour-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.14
+Version:    1.0.16
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -55,6 +55,12 @@ desktop-file-install --delete-original \
 %{privileges_dir}/%{name}
 
 %changelog
+* Sat Dec 12 2020 Slava Monich <slava.monich@jolla.com> 1.0.16
+- Show page header when scrolling
+- Added "Jump to bottom" button
+- Fixed email sharing with latest Sailfish OS
+- Fixed build of translations with newer Qt
+
 * Sun Mar 10 2019 Slava Monich <slava.monich@jolla.com> 1.0.14
 - Dump versions of plugins and related libraries
 

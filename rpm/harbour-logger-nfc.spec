@@ -1,6 +1,6 @@
 Name:       harbour-logger-nfc
 Summary:    NFC logger
-Version:    1.0.15
+Version:    1.0.16
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -55,6 +55,12 @@ desktop-file-install --delete-original \
 %{privileges_dir}/%{name}
 
 %changelog
+* Sat Dec 12 2020 Slava Monich <slava.monich@jolla.com> 1.0.16
+- Show page header when scrolling
+- Added "Jump to bottom" button
+- Fixed email sharing with latest Sailfish OS
+- Fixed build of translations with newer Qt
+
 * Sat Dec 14 2019 Slava Monich <slava.monich@jolla.com> 1.0.15
 - Fixed settings icon name
 - Updated list of NFC related packages
