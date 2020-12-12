@@ -36,12 +36,13 @@ import "logger.js" as Logger
 import "../harbour"
 
 SilicaFlickable {
-    id: page
+    id: thisView
 
     property alias pullDownMenuActive: menu.active
 
     property var logModel: LogModel
     readonly property string fontFamily: "Monospace"
+    clip: true
 
     function packAndShare() {
         LogSaver.pack()
@@ -110,22 +111,43 @@ SilicaFlickable {
         }
     }
 
+    PageHeader {
+        id: pageHeader
+
+        //% "Log"
+        title: qsTrId("logger-logpage-title")
+        visible: y > -height
+        y: (list.contentHeight <= thisView.height || !list.atBottom) ? 0 : -height
+        Behavior on y { SmoothedAnimation { duration: 200 } }
+    }
+
     SilicaListView {
         id: list
 
+        y: pageHeader.y + pageHeader.height
+        width: parent.width
+        height: Math.min(contentHeight, thisView.height - y)
+        verticalLayoutDirection: ListView.BottomToTop
         model: logModel
-        anchors.fill: parent
         clip: true
 
         readonly property int rawTextSize: Theme.fontSizeTiny + LogSettings.fontSizeAdjustment
         readonly property int textSize: Math.min(Math.max(Theme.fontSizeTiny, rawTextSize), Theme.fontSizeHuge)
+        readonly property real offsetFromBottom: contentHeight + originY - contentY - height
+        readonly property bool atBottom: atYEnd || offsetFromBottom <= Theme.paddingLarge/2
 
-        //% "Log"
-        header: PageHeader { title: qsTrId("logger-logpage-title") }
+        header: Component {
+            Item {
+                width: 1
+                height: Theme.paddingLarge
+            }
+        }
+
         delegate: Item {
             width: parent.width
             height: textLabel.height
             readonly property color textColor: Logger.textColor(messageType, messageLevel)
+
             Label {
                 id: timeLabel
                 text: (messageType === Logger.TypeLog) ? messageTime : ""
@@ -138,11 +160,12 @@ SilicaFlickable {
                     rightMargin: Theme.horizontalPageMargin
                 }
             }
+
             Label {
                 id: textLabel
                 text: messageCategory ? messageCategory + ": " + messageText : messageText
                 font.pixelSize: list.textSize
-                font.family: page.fontFamily
+                font.family: thisView.fontFamily
                 wrapMode: Text.WordWrap
                 color: textColor
                 anchors {
@@ -154,14 +177,6 @@ SilicaFlickable {
                 }
             }
         }
-
-        onCountChanged: {
-            if (atYEnd && !dragging && !flicking) {
-                positioner.restart()
-            }
-        }
-
-        onHeightChanged: if (atYEnd) positioner.restart()
 
         VerticalScrollDecorator {}
     }
@@ -193,12 +208,10 @@ SilicaFlickable {
             bottomMargin: Theme.paddingLarge
         }
         visible: opacity > 0
-        opacity: (isNeeded && !immediateScrollTimer.running) ? 1.0 : 0.0
-        readonly property bool isNeeded: !list.moving && !list.atYEnd && (list.contentHeight > list.height)
-        onIsNeededChanged: if (isNeeded) immediateScrollTimer.restart()
+        opacity: (!list.moving && !list.atBottom) ? 1.0 : 0.0
         onClicked: {
             cancelHint()
-            list.positionViewAtEnd()
+            list.positionViewAtBeginning()
         }
         onShowHint: {
             selectionHint.text = hint
@@ -210,23 +223,7 @@ SilicaFlickable {
                 selectionHint.item = null
             }
         }
-        Behavior on opacity { FadeAnimation { } }
-    }
-
-    Timer {
-        id: immediateScrollTimer
-        interval: 500
-    }
-
-    Timer {
-        id: positioner
-        interval: 100
-        onTriggered: {
-            if (!pullDownMenuActive) {
-                list.cancelFlick()
-                list.positionViewAtEnd()
-            }
-        }
+        Behavior on opacity { FadeAnimation { duration: 500 } }
     }
 
     Timer {

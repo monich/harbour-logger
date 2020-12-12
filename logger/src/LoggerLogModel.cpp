@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2017 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2020 Jolla Ltd.
+ * Copyright (C) 2016-2020 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -13,9 +13,9 @@
  *   2. Redistributions in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *   3. Neither the name of Jolla Ltd nor the names of its contributors may
- *      be used to endorse or promote products derived from this software
- *      without specific prior written permission.
+ *   3. Neither the names of the copyright holders nor the names of its
+ *      contributors may be used to endorse or promote products derived
+ *      from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -85,7 +85,8 @@ void LoggerLogModel::updateLogSizeLimit()
         const int bufsize = iBuffer.size();
         if (bufsize > iLogSizeLimit) {
             const int dropCount = (bufsize - iLogSizeLimit);
-            beginRemoveRows(QModelIndex(), 0, dropCount-1);
+            const int first = bufsize - dropCount;
+            beginRemoveRows(QModelIndex(), first, first + dropCount - 1);
             iBuffer.drop(dropCount);
             endRemoveRows();
         }
@@ -135,12 +136,13 @@ void LoggerLogModel::addEntry(LoggerEntry aEntry)
 {
     const bool wasEmpty = isEmpty();
     if (!iBuffer.canPut(1)) {
-        beginRemoveRows(QModelIndex(), 0, iLogRemoveCount-1);
+        // Remove last iLogRemoveCount entries
+        const int first = iBuffer.size() - iLogRemoveCount;
+        beginRemoveRows(QModelIndex(), first, first + iLogRemoveCount - 1);
         iBuffer.drop(iLogRemoveCount);
         endRemoveRows();
     }
-    const int count = iBuffer.size();
-    beginInsertRows(QModelIndex(), count, count);
+    beginInsertRows(QModelIndex(), 0, 0);
     HVERIFY(iBuffer.put(aEntry));
     endInsertRows();
     if (wasEmpty) {
@@ -201,7 +203,7 @@ QVariant LoggerLogModel::data(const QModelIndex& aIndex, int aRole) const
     if (row >= 0) {
         const int count = iBuffer.size();
         if (row < count) {
-            LoggerEntry entry(iBuffer.at(row));
+            LoggerEntry entry(iBuffer.at(count - row - 1));
             switch (aRole) {
             case TypeRole:
                 value = entry.type();
