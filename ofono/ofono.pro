@@ -147,7 +147,8 @@ TRANSLATION_FILES = \
   $${NAME}-nl \
   $${NAME}-pl \
   $${NAME}-ru \
-  $${NAME}-sv
+  $${NAME}-sv \
+  $${NAME}-zh_CN
 
 for(t, TRANSLATION_FILES) {
     suffix = $$replace(t,-,_)
