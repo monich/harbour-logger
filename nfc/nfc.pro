@@ -126,6 +126,7 @@ TRANSLATION_SOURCES = \
 
 TRANSLATION_FILES = \
   $${NAME} \
+  $${NAME}-pl \
   $${NAME}-ru
 
 for(t, TRANSLATION_FILES) {
