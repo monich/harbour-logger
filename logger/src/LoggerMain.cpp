@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2020 Jolla Ltd.
- * Copyright (C) 2016-2020 Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2021 Jolla Ltd.
+ * Copyright (C) 2016-2021 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -39,6 +39,7 @@
 #include "LoggerCategoryFilterModel.h"
 
 #include "HarbourDebug.h"
+#include "HarbourSystemInfo.h"
 #include "HarbourSigChildHandler.h"
 #include "HarbourTransferMethodsModel.h"
 
@@ -220,6 +221,7 @@ int LoggerMain::run()
     context->setContextProperty("CategoryModel", categoryModel);
     context->setContextProperty("CategoryFilterModel", filterModel);
     context->setContextProperty("TransferMethodsModel", transferModel);
+    context->setContextProperty("SystemInfo", new HarbourSystemInfo(iApp));
     context->setContextProperty("AppName", iFullAppName);
 
     setupView(view);

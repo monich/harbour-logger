@@ -117,6 +117,11 @@
         <source>Please wait</source>
         <translation>Please wait</translation>
     </message>
+    <message id="logger-sharepage-broken">
+        <source>In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
+        <extracomment>Info label displayed instead of sharing method list</extracomment>
+        <translation>In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</translation>
+    </message>
     <message id="logger-settings-page-header">
         <source>Logger</source>
         <extracomment>Page header</extracomment>

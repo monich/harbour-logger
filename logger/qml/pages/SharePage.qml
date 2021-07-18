@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2020 Jolla Ltd.
- * Copyright (C) 2016-2020 Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2021 Jolla Ltd.
+ * Copyright (C) 2016-2021 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -42,14 +42,16 @@ Page {
     allowedOrientations: window.allowedOrientations
 
     property var logSaver: LogSaver
-    property var shareModel: TransferMethodsModel
-    property bool _canShare: !logSaver.packing && !logSaver.saving && !minWaitTimer.running
+    property var shareModel: TransferMethodsModel // Context property
+    readonly property string _sharingApiVersion: SystemInfo.packageVersion("declarative-transferengine-qt5")
+    readonly property bool _sharingBroken: SystemInfo.compareVersions(_sharingApiVersion, "0.4.0") >= 0 // QML API break
+    readonly property bool _readyToShare: !logSaver.packing && !logSaver.saving && !minWaitTimer.running
 
     // For the page slide animation to kick in, the initial value of
     // backNavigation has to be true. Once the transition has started,
     // backNavigation is turned off until the log has been saved.
     showNavigationIndicator: status !== PageStatus.Inactive
-    backNavigation: status === PageStatus.Inactive || _canShare
+    backNavigation: status === PageStatus.Inactive || _readyToShare
 
     // The timer makes sure that animation is displayed for at least 1 second
     Timer {
@@ -82,7 +84,7 @@ Page {
         contentHeight: parent.height
 
         PullDownMenu {
-            visible: _canShare || active
+            visible: _readyToShare || active
             MenuItem {
                 //% "Save to documents"
                 text: qsTrId("logger-sharepage-pm-save-to-documents")
@@ -102,35 +104,76 @@ Page {
             title: qsTrId("logger-sharepage-header")
         }
 
-        HarbourShareMethodList {
+        Item {
             id: shareMethods
-
-            visible: opacity > 0
-            opacity: _canShare
-            model: shareModel
-            source: logSaver.archivePath
-            type: logSaver.archiveType
-            //: Default email subject
-            //% "Log"
-            subject: qsTrId("logger-sharepage-default-subject")
-            //: Default email recipient
-            //% ""
-            emailTo: qsTrId("logger-sharepage-default-email")
-            //% "Add account"
-            addAccountText: qsTrId("logger-sharemethodlist-add-account")
-            Behavior on opacity { FadeAnimation {} }
             anchors {
                 top: header.bottom
                 left: parent.left
             }
-            VerticalScrollDecorator {}
+            width: parent.width
+            visible: opacity > 0
+            opacity: _readyToShare
+            Behavior on opacity { FadeAnimation {} }
+
+            Loader {
+                active: _sharingBroken
+                anchors.fill: parent
+                sourceComponent: Component {
+                    Item {
+                        anchors.fill: parent
+
+                        InfoLabel {
+                            id: sharingBrokenInfo
+                            //: Info label displayed instead of sharing method list
+                            //% "In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder."
+                            text: qsTrId("logger-sharepage-broken")
+                        }
+                        Item {
+                            anchors {
+                                left: parent.left
+                                right: parent.right
+                                top: sharingBrokenInfo.bottom
+                                bottom: parent.bottom
+                            }
+                            HarbourHighlightIcon {
+                                anchors.centerIn: parent
+                                sourceSize.height: Math.min(Math.floor(parent.height/2), Theme.itemSizeSmall)
+                                visible: height >= Theme.itemSizeSmall // Too small would look too stupid
+                                source: "images/shrug.svg"
+                            }
+                        }
+                    }
+                }
+            }
+
+            Loader {
+                active: !_sharingBroken
+                anchors.fill: parent
+                sourceComponent: Component {
+                    HarbourShareMethodList {
+                        anchors.fill: parent
+                        model: shareModel
+                        source: logSaver.archivePath
+                        type: logSaver.archiveType
+                        //: Default email subject
+                        //% "Log"
+                        subject: qsTrId("logger-sharepage-default-subject")
+                        //: Default email recipient
+                        //% ""
+                        emailTo: qsTrId("logger-sharepage-default-email")
+                        //% "Add account"
+                        addAccountText: qsTrId("logger-sharemethodlist-add-account")
+                        VerticalScrollDecorator {}
+                    }
+                }
+            }
         }
 
         Label {
             id: warning
 
             visible: opacity > 0
-            opacity: _canShare
+            opacity: _readyToShare
             height: implicitHeight
             Behavior on opacity { FadeAnimation {} }
             wrapMode: Text.WordWrap
@@ -191,7 +234,7 @@ Page {
 
     Column {
         visible: opacity > 0
-        opacity: _canShare ? 0 : 1
+        opacity: _readyToShare ? 0 : 1
         anchors.centerIn: parent
         spacing: Theme.paddingLarge
         width: Math.max(busyIndicator.width, pleaseWaitLabel.width)
@@ -200,7 +243,7 @@ Page {
             id: busyIndicator
             anchors.horizontalCenter: parent.horizontalCenter
             size: BusyIndicatorSize.Large
-            running: !_canShare
+            running: !_readyToShare
         }
         Label {
             id: pleaseWaitLabel

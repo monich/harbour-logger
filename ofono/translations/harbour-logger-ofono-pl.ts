@@ -117,6 +117,11 @@
         <source>Please wait</source>
         <translation>Proszę czekać</translation>
     </message>
+    <message id="logger-sharepage-broken">
+        <source>In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
+        <extracomment>Info label displayed instead of sharing method list</extracomment>
+        <translation type="unfinished">Niestety w tej wersji Sailfish OS nic tak łatwego do udostępnienia nie zadziała. Możesz zapisać plik tar w dokumentach, a następnie sam wymyślić, co z nim zrobić.</translation>
+    </message>
     <message id="logger-settings-page-header">
         <source>Logger</source>
         <extracomment>Page header</extracomment>
