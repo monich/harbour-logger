@@ -1,6 +1,6 @@
 Name:       openrepos-logger-nfc
 Summary:    NFC logger
-Version:    1.0.16
+Version:    1.0.17
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -57,6 +57,10 @@ desktop-file-install --delete-original \
 %{privileges_dir}/%{name}
 
 %changelog
+* Sun Jul 18 2021 Slava Monich <slava.monich@jolla.com> 1.0.17
+- Disable broken in-app sharing
+- Added Polish translation
+
 * Sat Dec 12 2020 Slava Monich <slava.monich@jolla.com> 1.0.16
 - Show page header when scrolling
 - Added "Jump to bottom" button
