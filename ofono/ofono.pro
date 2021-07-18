@@ -137,6 +137,7 @@ for(s, ICON_SIZES) {
 }
 
 # Translations
+TRANSLATION_IDBASED=-idbased
 TRANSLATION_SOURCES = \
   $${_PRO_FILE_PWD_}/qml \
   $${LOGGER_LIB_DIR}/qml \
@@ -156,21 +157,17 @@ for(t, TRANSLATION_FILES) {
     out = $${OUT_PWD}/translations/$${PREFIX}-$${t}
 
     lupdate_target = lupdate_$$suffix
-    lrelease_target = lrelease_$$suffix
-
-    $${lupdate_target}.commands = lupdate -noobsolete -extensions qml $${TRANSLATION_SOURCES} -ts \"$${in}.ts\" && \
+    $${lupdate_target}.commands = lupdate -noobsolete -locations none $${TRANSLATION_SOURCES} -ts \"$${in}.ts\" && \
         mkdir -p \"$${OUT_PWD}/translations\" &&  [ \"$${in}.ts\" != \"$${out}.ts\" ] && \
         cp -af \"$${in}.ts\" \"$${out}.ts\" || :
 
-    $${lrelease_target}.target = $${out}.qm
-    $${lrelease_target}.depends = $${lupdate_target}
-    $${lrelease_target}.commands = lrelease -idbased \"$${out}.ts\"
+    qm_target = qm_$$suffix
+    $${qm_target}.path = $$TRANSLATIONS_PATH
+    $${qm_target}.depends = $${lupdate_target}
+    $${qm_target}.commands = lrelease $$TRANSLATION_IDBASED \"$${out}.ts\" && \
+        $(INSTALL_FILE) \"$${out}.qm\" $(INSTALL_ROOT)$${TRANSLATIONS_PATH}/
 
-    QMAKE_EXTRA_TARGETS += $${lrelease_target} $${lupdate_target}
-    PRE_TARGETDEPS += \"$${out}.qm\"
-    qm.files += \"$$relative_path($${out},$${_PRO_FILE_PWD_}).qm\"
+    QMAKE_EXTRA_TARGETS += $${lupdate_target} $${qm_target}
+    INSTALLS += $${qm_target}
+    OTHER_FILES += $${in}.ts
 }
-
-qm.path = $$TRANSLATIONS_PATH
-qm.CONFIG += no_check_exist
-INSTALLS += qm
