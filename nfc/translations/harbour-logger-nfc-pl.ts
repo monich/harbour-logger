@@ -42,7 +42,7 @@
     <message id="logger-logpage-hint-jump_to_bottom">
         <source>Jump to the end of the log to see the most recent messages and follow new messages in real time</source>
         <extracomment>Hint text, displayed on long tap</extracomment>
-        <translation type="unfinished">Przejdź do ostatniej wiadomości i śledź nowe w czasie rzeczywistym</translation>
+        <translation>Przejdź do ostatniej wiadomości i śledź nowe wiadomości w czasie rzeczywistym</translation>
     </message>
     <message id="logger-categories-title">
         <source>Log categories</source>
@@ -110,7 +110,7 @@
     <message id="logger-sharepage-broken">
         <source>In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
         <extracomment>Info label displayed instead of sharing method list</extracomment>
-        <translation type="unfinished">Niestety w tej wersji Sailfish OS nic tak łatwego do udostępnienia nie zadziała. Możesz zapisać plik tar w dokumentach, a następnie sam wymyślić, co z nim zrobić.</translation>
+        <translation>Niestety w tej wersji Sailfish OS udostępnianie nie działa. Użyj menu wysuwanego, aby zapisać plik tar w katalogu dokumenty.</translation>
     </message>
     <message id="logger-settings-page-header">
         <source>Logger</source>
