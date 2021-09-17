@@ -33,8 +33,15 @@
         <source>Log</source>
         <translation>Ofono-log</translation>
     </message>
+    <message id="logger-logpage-msg-unprivileged">
+        <source>This application must be run in a privileged mode but apparently it&apos;s not. Sandboxing is the most likely reason for that, albeit not the only one. Whatever the reason is, logs will be unavailable. Sorry for the inconvenience!</source>
+        <oldsource>This application must be run in a privileged mode but apparently it&apos;s not. Sandboxing is the most likely reason for that, albeit not the only one.\n\nWhatever the reason is, logs will be unavailable. Sorry for the inconvenience!</oldsource>
+        <extracomment>Log entry</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
     <message id="logger-logpage-msg-connected">
         <source>Connected.</source>
+        <extracomment>Log entry</extracomment>
         <translation>Verbonden met ofono.</translation>
     </message>
     <message id="logger-logpage-msg-connect-error">

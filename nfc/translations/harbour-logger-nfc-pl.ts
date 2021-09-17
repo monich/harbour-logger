@@ -23,6 +23,14 @@
         <source>Log</source>
         <translation>Logi NFC</translation>
     </message>
+    <message id="logger-logpage-msg-unprivileged">
+        <source>This application must be run in a privileged mode but apparently it&apos;s not. Sandboxing is the most likely reason for that, albeit not the only one. Whatever the reason is, logs will be unavailable. Sorry for the inconvenience!</source>
+        <extracomment>Log entry</extracomment>
+        <translation type="unfinished">Ta aplikacja powinna działać w trybie uprzywilejowanym, ale wydaje się, że tak nie jest. Najprawdopodobniej problem tkwi w piaskownicy, chociaż mogą być inne przyczyny.
+
+W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie :(
+</translation>
+    </message>
     <message id="logger-logpage-msg-connected">
         <source>Connected.</source>
         <translation>Połączono</translation>

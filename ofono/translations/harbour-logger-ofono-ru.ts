@@ -33,8 +33,17 @@
         <source>Log</source>
         <translation>Журнал ofono</translation>
     </message>
+    <message id="logger-logpage-msg-unprivileged">
+        <source>This application must be run in a privileged mode but apparently it&apos;s not. Sandboxing is the most likely reason for that, albeit not the only one. Whatever the reason is, logs will be unavailable. Sorry for the inconvenience!</source>
+        <extracomment>Log entry</extracomment>
+        <translation>Это приложение должно работать в привилегированном режиме, но кажется это не так. Скорее всего проблема в песочнице, хотя могут быть и другие причины.
+
+Как бы то ни было, в таком виде приложение скорее всего работать не будет :(
+</translation>
+    </message>
     <message id="logger-logpage-msg-connected">
         <source>Connected.</source>
+        <extracomment>Log entry</extracomment>
         <translation>Соединение установлено.</translation>
     </message>
     <message id="logger-logpage-msg-connect-error">

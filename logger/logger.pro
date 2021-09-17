@@ -59,12 +59,14 @@ HEADERS += \
     src/LoggerSettings.h
 
 SOURCES += \
+  $${HARBOUR_LIB_SRC}/HarbourProcessState.cpp \
   $${HARBOUR_LIB_SRC}/HarbourSigChildHandler.cpp \
   $${HARBOUR_LIB_SRC}/HarbourSystemInfo.cpp \
   $${HARBOUR_LIB_SRC}/HarbourTransferMethodInfo.cpp \
   $${HARBOUR_LIB_SRC}/HarbourTransferMethodsModel.cpp
 
 HEADERS += \
+  $${HARBOUR_LIB_INCLUDE}/HarbourProcessState.h \
   $${HARBOUR_LIB_INCLUDE}/HarbourSigChildHandler.h \
   $${HARBOUR_LIB_INCLUDE}/HarbourSystemInfo.h \
   $${HARBOUR_LIB_INCLUDE}/HarbourTransferMethodInfo.h \

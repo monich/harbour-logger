@@ -39,6 +39,7 @@
 #include "LoggerCategoryFilterModel.h"
 
 #include "HarbourDebug.h"
+#include "HarbourProcessState.h"
 #include "HarbourSystemInfo.h"
 #include "HarbourSigChildHandler.h"
 #include "HarbourTransferMethodsModel.h"
@@ -221,6 +222,7 @@ int LoggerMain::run()
     context->setContextProperty("CategoryModel", categoryModel);
     context->setContextProperty("CategoryFilterModel", filterModel);
     context->setContextProperty("TransferMethodsModel", transferModel);
+    context->setContextProperty("ProcessState", new HarbourProcessState(iApp));
     context->setContextProperty("SystemInfo", new HarbourSystemInfo(iApp));
     context->setContextProperty("AppName", iFullAppName);
 

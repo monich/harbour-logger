@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2020 Jolla Ltd.
- * Copyright (C) 2016-2020 Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2021 Jolla Ltd.
+ * Copyright (C) 2016-2021 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -39,9 +39,10 @@ SilicaFlickable {
     id: thisView
 
     property alias pullDownMenuActive: menu.active
-
     property var logModel: LogModel
     readonly property string fontFamily: "Monospace"
+    property bool complainedAboutBeingUnprivileged
+
     clip: true
 
     function packAndShare() {
@@ -56,8 +57,16 @@ SilicaFlickable {
 
     function connected() {
         connectTimer.stop()
-        //% "Connected."
-        logModel.add(qsTrId("logger-logpage-msg-connected"))
+        if (ProcessState.privileged) {
+            //: Log entry
+            //% "Connected."
+            logModel.add(qsTrId("logger-logpage-msg-connected"))
+        } else if (!complainedAboutBeingUnprivileged) {
+            complainedAboutBeingUnprivileged = true
+            //: Log entry
+            //% "This application must be run in a privileged mode but apparently it's not. Sandboxing is the most likely reason for that, albeit not the only one. Whatever the reason is, logs will be unavailable. Sorry for the inconvenience!"
+            logModel.add(qsTrId("logger-logpage-msg-unprivileged"))
+        }
     }
 
     Component.onCompleted: {
