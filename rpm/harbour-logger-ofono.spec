@@ -1,6 +1,6 @@
 Name:       harbour-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.17
+Version:    1.0.19
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -55,6 +55,10 @@ desktop-file-install --delete-original \
 %{privileges_dir}/%{name}
 
 %changelog
+* Fri Sep 17 2021 Slava Monich <slava.monich@jolla.com> 1.0.19
+- Complain about not being privileged
+- Tweaked settings page
+
 * Sun Jul 18 2021 Slava Monich <slava.monich@jolla.com> 1.0.17
 - Disable broken in-app sharing
 - Freshed up app icon

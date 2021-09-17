@@ -1,6 +1,6 @@
 Name:       harbour-logger-nfc
 Summary:    NFC logger
-Version:    1.0.18
+Version:    1.0.19
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -55,6 +55,10 @@ desktop-file-install --delete-original \
 %{privileges_dir}/%{name}
 
 %changelog
+* Fri Sep 17 2021 Slava Monich <slava.monich@jolla.com> 1.0.19
+- Complain about not being privileged
+- Tweaked settings page
+
 * Mon Jul 19 2021 Slava Monich <slava.monich@jolla.com> 1.0.18
 - Updated Polish translation
 
