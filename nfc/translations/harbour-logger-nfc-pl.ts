@@ -117,7 +117,7 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
         <translation>Proszę czekać</translation>
     </message>
     <message id="logger-sharepage-broken">
-        <source>In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
+        <source>In-app sharing is not available in this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
         <extracomment>Info label displayed instead of sharing method list</extracomment>
         <translation>Niestety w tej wersji Sailfish OS udostępnianie nie działa. Użyj menu wysuwanego, aby zapisać plik tar w katalogu dokumenty.</translation>
     </message>

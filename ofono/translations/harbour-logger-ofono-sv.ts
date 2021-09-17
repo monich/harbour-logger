@@ -125,7 +125,7 @@
         <translation>Vänta</translation>
     </message>
     <message id="logger-sharepage-broken">
-        <source>In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
+        <source>In-app sharing is not available in this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
         <extracomment>Info label displayed instead of sharing method list</extracomment>
         <translation type="unfinished">Delning i appen är inte tillgänglig för den här versionen av Sailfish OS. Använd remskivmenyn för att spara tarball i dokumentmappen.</translation>
     </message>

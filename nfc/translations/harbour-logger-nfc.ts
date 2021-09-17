@@ -117,9 +117,9 @@ Whatever the reason is, logs will be unavailable. Sorry for the inconvenience!
         <translation>Please wait</translation>
     </message>
     <message id="logger-sharepage-broken">
-        <source>In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
+        <source>In-app sharing is not available in this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
         <extracomment>Info label displayed instead of sharing method list</extracomment>
-        <translation>In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</translation>
+        <translation>In-app sharing is not available in this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</translation>
     </message>
     <message id="openrepos-logger-nfc-app_name">
         <source>NFC Logger</source>

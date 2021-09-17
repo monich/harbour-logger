@@ -117,7 +117,7 @@
         <translation>Секундочку</translation>
     </message>
     <message id="logger-sharepage-broken">
-        <source>In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
+        <source>In-app sharing is not available in this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
         <extracomment>Info label displayed instead of sharing method list</extracomment>
         <translation>Увы, но в этой версии Sailfish OS ничего так просто расшарить не получится. Вы можете сохранить тарбол в документы, а дальше разбирайтесь сами, что с ним делать.</translation>
     </message>

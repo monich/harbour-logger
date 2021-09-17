@@ -125,7 +125,7 @@ Page {
                         InfoLabel {
                             id: sharingBrokenInfo
                             //: Info label displayed instead of sharing method list
-                            //% "In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder."
+                            //% "In-app sharing is not available in this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder."
                             text: qsTrId("logger-sharepage-broken")
                         }
                         Item {

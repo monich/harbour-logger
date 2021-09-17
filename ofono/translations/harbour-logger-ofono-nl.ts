@@ -125,7 +125,7 @@
         <translation>Even geduld</translation>
     </message>
     <message id="logger-sharepage-broken">
-        <source>In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
+        <source>In-app sharing is not available in this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
         <extracomment>Info label displayed instead of sharing method list</extracomment>
         <translation type="unfinished">In-app delen is niet beschikbaar voor deze versie van Sailfish OS. Gebruik het katrolmenu om tarball op te slaan in de documentenmap.</translation>
     </message>
