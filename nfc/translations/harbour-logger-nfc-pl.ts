@@ -33,6 +33,7 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
     </message>
     <message id="logger-logpage-msg-connected">
         <source>Connected.</source>
+        <extracomment>Log entry</extracomment>
         <translation>Połączono</translation>
     </message>
     <message id="logger-logpage-msg-connect-error">
@@ -120,10 +121,15 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
         <extracomment>Info label displayed instead of sharing method list</extracomment>
         <translation>Niestety w tej wersji Sailfish OS udostępnianie nie działa. Użyj menu wysuwanego, aby zapisać plik tar w katalogu dokumenty.</translation>
     </message>
-    <message id="logger-settings-page-header">
-        <source>Logger</source>
-        <extracomment>Page header</extracomment>
-        <translation>Logi NFC</translation>
+    <message id="openrepos-logger-nfc-app_name">
+        <source>NFC Logger</source>
+        <extracomment>Settings page title (app name)</extracomment>
+        <translation>NFC Logger</translation>
+    </message>
+    <message id="logger-settings-page-header-version">
+        <source>Version %1</source>
+        <extracomment>Settings page header description (app version)</extracomment>
+        <translation>Wersja %1</translation>
     </message>
     <message id="logger-settings-section-header-display">
         <source>Display</source>

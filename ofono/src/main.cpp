@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2019 Jolla Ltd.
- * Copyright (C) 2016-2019 Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2021 Jolla Ltd.
+ * Copyright (C) 2016-2021 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -46,10 +46,12 @@
 
 #define SUPER LoggerMain
 
-class OfonoLogger: public SUPER {
+class OfonoLogger: public SUPER
+{
     Q_OBJECT
     Q_PROPERTY(bool mobileDataBroken READ mobileDataBroken NOTIFY mobileDataBrokenChanged)
     Q_PROPERTY(bool mobileDataDisabled READ mobileDataDisabled NOTIFY mobileDataDisabledChanged)
+
     static const QString AUTO;
 
 public:
@@ -244,6 +246,9 @@ void OfonoLogger::saveFilesAtStartup(QString aDir)
 void OfonoLogger::setupView(QQuickView* aView)
 {
     QQmlContext* context = aView->rootContext();
+    //: Settings page title (app name)
+    //% "Ofono Log"
+    aView->setTitle(qtTrId("openrepos-logger-ofono-app_name"));
     context->setContextProperty("OfonoLogger", this);
     SUPER::setupView(aView);
 }

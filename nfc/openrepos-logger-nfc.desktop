@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=NFC Logger
-Name[ru]=Журнал NFC
+Name[ru]=NFC лог
 X-Nemo-Application-Type=silica-qt5
 Icon=openrepos-logger-nfc
 Exec=openrepos-logger-nfc

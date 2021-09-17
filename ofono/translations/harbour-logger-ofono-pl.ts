@@ -131,10 +131,15 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
         <extracomment>Info label displayed instead of sharing method list</extracomment>
         <translation type="unfinished">Niestety w tej wersji Sailfish OS nic tak łatwego do udostępnienia nie zadziała. Możesz zapisać plik tar w dokumentach, a następnie sam wymyślić, co z nim zrobić.</translation>
     </message>
-    <message id="logger-settings-page-header">
-        <source>Logger</source>
-        <extracomment>Page header</extracomment>
-        <translation>Logger</translation>
+    <message id="openrepos-logger-ofono-app_name">
+        <source>Ofono Log</source>
+        <extracomment>Settings page title (app name)</extracomment>
+        <translation>Ofono Log</translation>
+    </message>
+    <message id="logger-settings-page-header-version">
+        <source>Version %1</source>
+        <extracomment>Settings page header description (app version)</extracomment>
+        <translation>Wersja %1</translation>
     </message>
     <message id="logger-settings-section-header-display">
         <source>Display</source>

@@ -107,7 +107,6 @@ app_settings {
     settings_json.CONFIG += no_check_exist
     settings_qml.files = $${LOGGER_LIB_DIR}/settings/settings.qml
     settings_qml.path = /usr/share/$${TARGET}/settings/
-    settings_qml.extra = sed -i s/harbour-logger-conf/$${TARGET}/g $$eval(settings_qml.files)
     INSTALLS += settings_qml settings_json
 }
 
@@ -133,6 +132,7 @@ for(s, ICON_SIZES) {
 # Translations
 TRANSLATION_IDBASED=-idbased
 TRANSLATION_SOURCES = \
+  $${_PRO_FILE_PWD_}/src \
   $${_PRO_FILE_PWD_}/qml \
   $${LOGGER_LIB_DIR}/qml \
   $${LOGGER_LIB_DIR}/settings

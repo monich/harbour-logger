@@ -129,10 +129,15 @@
         <extracomment>Info label displayed instead of sharing method list</extracomment>
         <translation type="unfinished">此版本的 Sailfish OS 无法进行应用内共享。 使用滑轮菜单将 tarball 保存到文档文件夹。</translation>
     </message>
-    <message id="logger-settings-page-header">
-        <source>Logger</source>
-        <extracomment>Page header</extracomment>
-        <translation>日志生成器</translation>
+    <message id="openrepos-logger-ofono-app_name">
+        <source>Ofono Log</source>
+        <extracomment>Settings page title (app name)</extracomment>
+        <translation>Ofono Log</translation>
+    </message>
+    <message id="logger-settings-page-header-version">
+        <source>Version %1</source>
+        <extracomment>Settings page header description (app version)</extracomment>
+        <translation type="unfinished">版本 %1</translation>
     </message>
     <message id="logger-settings-section-header-display">
         <source>Display</source>

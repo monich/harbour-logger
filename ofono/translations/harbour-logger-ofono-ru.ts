@@ -131,10 +131,15 @@
         <extracomment>Info label displayed instead of sharing method list</extracomment>
         <translation>Увы, но в этой версии Sailfish OS ничего так просто расшарить не получится. Вы можете сохранить тарбол в документы, а дальше разбирайтесь сами, что с ним делать.</translation>
     </message>
-    <message id="logger-settings-page-header">
-        <source>Logger</source>
-        <extracomment>Page header</extracomment>
-        <translation>Журнал ofono</translation>
+    <message id="openrepos-logger-ofono-app_name">
+        <source>Ofono Log</source>
+        <extracomment>Settings page title (app name)</extracomment>
+        <translation>Ofono лог</translation>
+    </message>
+    <message id="logger-settings-page-header-version">
+        <source>Version %1</source>
+        <extracomment>Settings page header description (app version)</extracomment>
+        <translation>Версия %1</translation>
     </message>
     <message id="logger-settings-section-header-display">
         <source>Display</source>

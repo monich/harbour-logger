@@ -129,10 +129,15 @@
         <extracomment>Info label displayed instead of sharing method list</extracomment>
         <translation type="unfinished">Delning i appen är inte tillgänglig för den här versionen av Sailfish OS. Använd remskivmenyn för att spara tarball i dokumentmappen.</translation>
     </message>
-    <message id="logger-settings-page-header">
-        <source>Logger</source>
-        <extracomment>Page header</extracomment>
-        <translation>Datalogger</translation>
+    <message id="openrepos-logger-ofono-app_name">
+        <source>Ofono Log</source>
+        <extracomment>Settings page title (app name)</extracomment>
+        <translation>Ofono Log</translation>
+    </message>
+    <message id="logger-settings-page-header-version">
+        <source>Version %1</source>
+        <extracomment>Settings page header description (app version)</extracomment>
+        <translation>Version %1</translation>
     </message>
     <message id="logger-settings-section-header-display">
         <source>Display</source>

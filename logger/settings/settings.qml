@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2017 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2021 Jolla Ltd.
+ * Copyright (C) 2016-2021 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -13,9 +13,9 @@
  *   2. Redistributions in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *   3. Neither the name of Jolla Ltd nor the names of its contributors may
- *      be used to endorse or promote products derived from this software
- *      without specific prior written permission.
+ *   3. Neither the names of the copyright holders nor the names of its
+ *      contributors may be used to endorse or promote products derived
+ *      from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -35,8 +35,13 @@ import Sailfish.Silica 1.0
 import org.nemomobile.configuration 1.0
 
 Page {
-    id: page
     readonly property string rootPath: "/apps/" + appName() + "/"
+    property alias title: pageHeader.title
+    property bool inApp
+
+    // jolla-settings expects these properties:
+    property var applicationName
+    property var applicationIcon
 
     // Deduce package name from the path
     function appName() {
@@ -59,9 +64,28 @@ Page {
             width: parent.width
 
             PageHeader {
-                //: Page header
-                //% "Logger"
-                title: qsTrId("logger-settings-page-header")
+                id: pageHeader
+
+                rightMargin: Theme.horizontalPageMargin + (appIcon.visible ? (height - appIcon.padding) : 0)
+                title: applicationName ? applicationName : qsTrId(appName() + "-app_name")
+                description: applicationName ?
+                    //: Settings page header description (app version)
+                    //% "Version %1"
+                    qsTrId("logger-settings-page-header-version").arg("1.0.18") :
+                    ""
+
+                Image {
+                    id: appIcon
+                    readonly property int padding: Theme.paddingLarge
+                    readonly property int size: pageHeader.height - 2 * padding
+                    x: pageHeader.width - width - Theme.horizontalPageMargin
+                    y: padding
+                    width: size
+                    height: size
+                    sourceSize: Qt.size(size,size)
+                    source: applicationIcon ? applicationIcon : ""
+                    visible: appIcon.status === Image.Ready
+                }
             }
 
             SectionHeader {

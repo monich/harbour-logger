@@ -33,6 +33,7 @@ Whatever the reason is, logs will be unavailable. Sorry for the inconvenience!
     </message>
     <message id="logger-logpage-msg-connected">
         <source>Connected.</source>
+        <extracomment>Log entry</extracomment>
         <translation>Connected to NFC service.</translation>
     </message>
     <message id="logger-logpage-msg-connect-error">
@@ -120,10 +121,15 @@ Whatever the reason is, logs will be unavailable. Sorry for the inconvenience!
         <extracomment>Info label displayed instead of sharing method list</extracomment>
         <translation>In-app sharing is not available for this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</translation>
     </message>
-    <message id="logger-settings-page-header">
-        <source>Logger</source>
-        <extracomment>Page header</extracomment>
+    <message id="openrepos-logger-nfc-app_name">
+        <source>NFC Logger</source>
+        <extracomment>Settings page title (app name)</extracomment>
         <translation>NFC Logger</translation>
+    </message>
+    <message id="logger-settings-page-header-version">
+        <source>Version %1</source>
+        <extracomment>Settings page header description (app version)</extracomment>
+        <translation>Version %1</translation>
     </message>
     <message id="logger-settings-section-header-display">
         <source>Display</source>

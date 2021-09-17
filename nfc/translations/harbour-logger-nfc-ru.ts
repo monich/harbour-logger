@@ -33,6 +33,7 @@
     </message>
     <message id="logger-logpage-msg-connected">
         <source>Connected.</source>
+        <extracomment>Log entry</extracomment>
         <translation>Соединение установлено.</translation>
     </message>
     <message id="logger-logpage-msg-connect-error">
@@ -120,10 +121,15 @@
         <extracomment>Info label displayed instead of sharing method list</extracomment>
         <translation>Увы, но в этой версии Sailfish OS ничего так просто расшарить не получится. Вы можете сохранить тарбол в документы, а дальше разбирайтесь сами, что с ним делать.</translation>
     </message>
-    <message id="logger-settings-page-header">
-        <source>Logger</source>
-        <extracomment>Page header</extracomment>
-        <translation>Журнал NFC</translation>
+    <message id="openrepos-logger-nfc-app_name">
+        <source>NFC Logger</source>
+        <extracomment>Settings page title (app name)</extracomment>
+        <translation>NFC лог</translation>
+    </message>
+    <message id="logger-settings-page-header-version">
+        <source>Version %1</source>
+        <extracomment>Settings page header description (app version)</extracomment>
+        <translation>Версия %1</translation>
     </message>
     <message id="logger-settings-section-header-display">
         <source>Display</source>

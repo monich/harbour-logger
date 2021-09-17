@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2019 Jolla Ltd.
- * Copyright (C) 2019 Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2019-2021 Jolla Ltd.
+ * Copyright (C) 2019-2021 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -32,6 +32,35 @@
 
 #include "LoggerMain.h"
 
+#include <QQuickView>
+
+#define SUPER LoggerMain
+
+class NfcLogger: public SUPER
+{
+    Q_OBJECT
+
+public:
+    NfcLogger(int* aArgc, char** aArgv, QStringList aPackages);
+
+protected:
+    void setupView(QQuickView* aView) Q_DECL_OVERRIDE;
+};
+
+NfcLogger::NfcLogger(int* aArgc, char** aArgv, QStringList aPackages) :
+    SUPER(aArgc, aArgv, "org.sailfishos.nfc.daemon", aPackages, "nfc",
+    "qml/main.qml")
+{
+}
+
+void NfcLogger::setupView(QQuickView* aView)
+{
+    //: Settings page title (app name)
+    //% "NFC Logger"
+    aView->setTitle(qtTrId("openrepos-logger-nfc-app_name"));
+    SUPER::setupView(aView);
+}
+
 Q_DECL_EXPORT int main(int argc, char* argv[])
 {
     QStringList packages;
@@ -42,6 +71,7 @@ Q_DECL_EXPORT int main(int argc, char* argv[])
     packages.append("nfcd");
     packages.append("nfcd-binder-plugin");
     packages.append("pn54x-binder-plugin");
-    return LoggerMain(&argc, argv, "org.sailfishos.nfc.daemon", packages,
-        "nfc", "qml/main.qml").run();
+    return NfcLogger(&argc, argv, packages).run();
 }
+
+#include "main.moc"
