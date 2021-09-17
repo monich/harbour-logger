@@ -5,3 +5,6 @@ Name[ru]=Журнал NFC
 X-Nemo-Application-Type=silica-qt5
 Icon=harbour-logger-nfc
 Exec=harbour-logger-nfc
+
+[X-HarbourBackup]
+BackupConfigList=/apps/harbour-logger-nfc/

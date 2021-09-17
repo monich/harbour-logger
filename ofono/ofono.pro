@@ -51,7 +51,7 @@ LIBS += \
 
 OTHER_FILES += \
   icons/harbour-$${NAME}.svg \
-  harbour-$${NAME}.desktop \
+  *.desktop \
   qml/*.qml \
   privileges/* \
   translations/*.ts
@@ -115,12 +115,6 @@ app_settings {
 privileges.files = privileges/$${PREFIX}-logger-ofono
 privileges.path = /usr/share/mapplauncherd/privileges.d/
 INSTALLS += privileges
-
-# Desktop file
-openrepos {
-    desktop.extra = sed s/harbour/openrepos/g harbour-$${NAME}.desktop > $${TARGET}.desktop
-    desktop.CONFIG += no_check_exist
-}
 
 # Icons
 ICON_SIZES = 86 108 128 172 256

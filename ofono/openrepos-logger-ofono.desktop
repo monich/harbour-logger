@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Ofono Log
+Name[ru]=Журнал ofono
+X-Nemo-Application-Type=silica-qt5
+Icon=openrepos-logger-ofono
+Exec=openrepos-logger-ofono
+
+[X-HarbourBackup]
+BackupConfigList=/apps/openrepos-logger-ofono/
+
+[X-Sailjail]
+Sandboxing=Disabled
