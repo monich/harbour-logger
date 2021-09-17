@@ -81,7 +81,7 @@ desktop-file-install --delete-original \
 * Sat Aug 26 2017 Slava Monich <slava.monich@jolla.com> 1.0.11
 - Run as nemo:privileged
 
-* Sat Aug 20 2017 Slava Monich <slava.monich@jolla.com> 1.0.10
+* Sun Aug 20 2017 Slava Monich <slava.monich@jolla.com> 1.0.10
 - Filter for categories
 - Polish translations
 
