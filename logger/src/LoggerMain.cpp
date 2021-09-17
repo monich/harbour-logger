@@ -50,9 +50,10 @@
 #include <QtQuick>
 #include <QtQml>
 
-#include <fcntl.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <sys/fsuid.h>
 
 #undef signals
@@ -124,6 +125,7 @@ bool LoggerMain::saveOutput(const char* aExe, const char* const aArgv[],
             dup2(fd, STDOUT_FILENO);
             dup2(fd, STDERR_FILENO);
             execvp(aExe, (char**)aArgv);
+            abort();
         }
         close(fd);
         HDEBUG(pid << qPrintable(aOut));
