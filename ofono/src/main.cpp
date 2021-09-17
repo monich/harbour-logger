@@ -262,6 +262,8 @@ Q_DECL_EXPORT int main(int argc, char* argv[])
     packages.append("libgrilio");
     packages.append("libgrilio-binder");
     packages.append("ofono");
+    packages.append("ofono-binder-plugin");
+    packages.append("ofono-ril-plugin");
     packages.append("ofono-ril-binder-plugin");
     return OfonoLogger(&argc, argv, packages).run();
 }
