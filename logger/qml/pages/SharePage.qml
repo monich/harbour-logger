@@ -44,7 +44,7 @@ Page {
     property var logSaver: LogSaver
     property var shareModel: TransferMethodsModel // Context property
     readonly property string _sharingApiVersion: SystemInfo.packageVersion("declarative-transferengine-qt5")
-    readonly property bool _sharingBroken: SystemInfo.compareVersions(_sharingApiVersion, "0.4.0") >= 0 // QML API break
+    readonly property bool _sharingBroken: !_sharingApiVersion || SystemInfo.compareVersions(_sharingApiVersion, "0.4.0") >= 0 // QML API break
     readonly property bool _readyToShare: !logSaver.packing && !logSaver.saving && !minWaitTimer.running
 
     // For the page slide animation to kick in, the initial value of
