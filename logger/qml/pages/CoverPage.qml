@@ -32,11 +32,15 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+
 import "logger.js" as Logger
+import "../harbour"
 
 CoverBackground {
     id: cover
+
     allowResize: true
+    readonly property bool _privileged: ProcessState.privileged
 
     Label {
         id: title
@@ -55,6 +59,8 @@ CoverBackground {
     }
     ListView {
         id: list
+
+        visible: _privileged
         anchors {
             top: title.bottom
             left: parent.left
@@ -97,7 +103,18 @@ CoverBackground {
         offset: 1 - 1 / slope
     }
 
+    HarbourHighlightIcon {
+        visible: !_privileged
+        x: Theme.paddingLarge
+        anchors.verticalCenter: parent.verticalCenter
+        source: "images/shrug.svg"
+        sourceSize.width: cover.width - 2 * x
+        highlightColor: Theme.highlightColor
+        smooth: true
+    }
+
     CoverActionList {
+        enabled: _privileged
         CoverAction {
             iconSource: "image://theme/icon-cover-cancel"
             onTriggered: list.model.clear()
