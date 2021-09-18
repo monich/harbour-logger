@@ -1,6 +1,6 @@
 Name:       harbour-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.19
+Version:    1.0.20
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -55,6 +55,10 @@ desktop-file-install --delete-original \
 %{privileges_dir}/%{name}
 
 %changelog
+* Sat Sep 18 2021 Slava Monich <slava.monich@jolla.com> 1.0.20
+- Copy log entry to clipboard on long tap
+- Improved sandbox behavior
+
 * Fri Sep 17 2021 Slava Monich <slava.monich@jolla.com> 1.0.19
 - Complain about not being privileged
 - Tweaked settings page
