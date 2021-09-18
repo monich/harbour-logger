@@ -11,6 +11,11 @@
         <source>Swipe left to configure log categories</source>
         <translation>Swipe left to configure log categories</translation>
     </message>
+    <message id="logger-notification-copied_to_clipboard">
+        <source>Copied to clipboard</source>
+        <extracomment>Pop-up notification</extracomment>
+        <translation>Copied to clipboard</translation>
+    </message>
     <message id="ofono-logger-pm-fix-mobile-data">
         <source>Fix mobile data</source>
         <extracomment>Pull-down menu item</extracomment>

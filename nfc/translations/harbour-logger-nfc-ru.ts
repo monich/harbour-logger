@@ -11,6 +11,11 @@
         <source>Swipe left to configure log categories</source>
         <translation>Там справа что-то есть</translation>
     </message>
+    <message id="logger-notification-copied_to_clipboard">
+        <source>Copied to clipboard</source>
+        <extracomment>Pop-up notification</extracomment>
+        <translation>Скопировано в буфер обмена</translation>
+    </message>
     <message id="logger-logpage-pm-clear-log">
         <source>Clear log</source>
         <translation>Очистить журнал</translation>

@@ -9,7 +9,12 @@
     </message>
     <message id="logger-mainpage-swipe-left-hint">
         <source>Swipe left to configure log categories</source>
-        <translation>Swipe left to configure log categories</translation>
+        <translation type="unfinished">Veeg naar links om logcategorieën te configureren</translation>
+    </message>
+    <message id="logger-notification-copied_to_clipboard">
+        <source>Copied to clipboard</source>
+        <extracomment>Pop-up notification</extracomment>
+        <translation type="unfinished">Gekopieerd naar het klembord</translation>
     </message>
     <message id="ofono-logger-pm-fix-mobile-data">
         <source>Fix mobile data</source>

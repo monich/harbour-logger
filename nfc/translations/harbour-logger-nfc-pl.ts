@@ -11,6 +11,11 @@
         <source>Swipe left to configure log categories</source>
         <translation>Przesuń w lewo aby skonfigurować kategorie logów</translation>
     </message>
+    <message id="logger-notification-copied_to_clipboard">
+        <source>Copied to clipboard</source>
+        <extracomment>Pop-up notification</extracomment>
+        <translation>Skopiowane do schowka</translation>
+    </message>
     <message id="logger-logpage-pm-clear-log">
         <source>Clear log</source>
         <translation>Wyczyść logi</translation>

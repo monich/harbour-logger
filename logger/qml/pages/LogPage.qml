@@ -32,6 +32,8 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import org.nemomobile.notifications 1.0
+
 import "logger.js" as Logger
 import "../harbour"
 
@@ -53,6 +55,20 @@ SilicaFlickable {
     Component {
         id: sharePageComponent
         SharePage {}
+    }
+
+    Notification {
+        id: clipboardNotification
+
+        //: Pop-up notification
+        //% "Copied to clipboard"
+        previewBody: qsTrId("logger-notification-copied_to_clipboard")
+        expireTimeout: 2000
+        Component.onCompleted: {
+            if ("icon" in clipboardNotification) {
+                clipboardNotification.icon = "icon-s-clipboard"
+            }
+        }
     }
 
     function connected() {
@@ -152,9 +168,10 @@ SilicaFlickable {
             }
         }
 
-        delegate: Item {
+        delegate: BackgroundItem {
             width: parent.width
             height: textLabel.height
+            enabled: timeLabel.text.length > 0 || textLabel.text.length > 0
             readonly property color textColor: Logger.textColor(messageType, messageLevel)
 
             Label {
@@ -184,6 +201,12 @@ SilicaFlickable {
                     leftMargin: Theme.horizontalPageMargin
                     rightMargin: Theme.horizontalPageMargin
                 }
+            }
+
+            onPressAndHold: {
+                Clipboard.text = (timeLabel.text.length > 0) ?
+                    (timeLabel.text + " " + textLabel.text) : textLabel.text
+                clipboardNotification.publish()
             }
         }
 
