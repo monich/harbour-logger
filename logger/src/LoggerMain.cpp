@@ -235,6 +235,7 @@ int LoggerMain::run()
     int ret = iApp->exec();
 
     if (logSettings->autoResetLogging()) {
+        categoryModel->restoreLogLevel();
         categoryModel->reset();
     }
 

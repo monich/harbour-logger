@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2017 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2021 Jolla Ltd.
+ * Copyright (C) 2016-2021 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -13,9 +13,9 @@
  *   2. Redistributions in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *   3. Neither the name of Jolla Ltd nor the names of its contributors may
- *      be used to endorse or promote products derived from this software
- *      without specific prior written permission.
+ *   3. Neither the names of the copyright holders nor the names of its
+ *      contributors may be used to endorse or promote products derived
+ *      from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -45,6 +45,7 @@ LoggerCategoryModel::LoggerCategoryModel(LoggerSettings* aSettings,
     DBusLogClient* aClient, QObject* aParent) : SUPER(aParent),
     iSettings(aSettings),
     iClient(dbus_log_client_ref(aClient)),
+    iDefaultLevel(DBUSLOG_LEVEL_UNDEFINED),
     iHaveDefaults(false)
 {
     memset(iClientSignals, 0, sizeof(iClientSignals));
@@ -159,6 +160,13 @@ void LoggerCategoryModel::disableAll()
 {
     HDEBUG("disabling all categories");
     dbus_log_client_disable_pattern(iClient, "*", NULL, NULL);
+}
+
+void LoggerCategoryModel::restoreLogLevel() const
+{
+    if (iDefaultLevel != DBUSLOG_LEVEL_UNDEFINED) {
+        dbus_log_client_set_default_level(iClient, iDefaultLevel, NULL, NULL);
+    }
 }
 
 void LoggerCategoryModel::resetCategories(QList<LoggerCategory> aCategories)
@@ -281,6 +289,10 @@ void LoggerCategoryModel::handleConnected()
             iCategories.insert(cat->id, LoggerCategory(cat));
         }
         endResetModel();
+        // Save the log level so that we can restore it on exit
+        if (iDefaultLevel == DBUSLOG_LEVEL_UNDEFINED) {
+            iDefaultLevel = iClient->default_level;
+        }
         // Make sure that verbose logging is enabled. The default is often
         // DEBUG which turns off e.g. RIL data dump in ofono
         if (iClient->default_level < DBUSLOG_LEVEL_VERBOSE) {
