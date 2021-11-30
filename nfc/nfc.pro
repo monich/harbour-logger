@@ -20,16 +20,19 @@ PKGCONFIG += sailfishapp mlite5 gio-2.0 gio-unix-2.0 glib-2.0
 QT += dbus
 
 WARNINGS = -Wall -Wno-unused-parameter -Wno-deprecated-declarations
-QMAKE_CXXFLAGS += $$WARNINGS -Wno-psabi
-QMAKE_CFLAGS += $$WARNINGS
+EXTRA_CFLAGS = $$WARNINGS -fvisibility=hidden
+QMAKE_CXXFLAGS += $$EXTRA_CFLAGS
+QMAKE_CFLAGS += $$EXTRA_CFLAGS
 
 CONFIG(debug, debug|release) {
-  QMAKE_CXXFLAGS_DEBUG *= -O0
-  QMAKE_CFLAGS_DEBUG *= -O0
-}
-
-CONFIG(debug, debug|release) {
-  DEFINES += HARBOUR_DEBUG=1
+    QMAKE_CXXFLAGS_DEBUG *= -O0
+    QMAKE_CFLAGS_DEBUG *= -O0
+    DEFINES += DEBUG HARBOUR_DEBUG
+} else {
+    EXTRA_RELEASE_CFLAGS = -fPIC -flto -ffat-lto-objects
+    QMAKE_CXXFLAGS += $$EXTRA_RELEASE_CFLAGS
+    QMAKE_CFLAGS += $$EXTRA_RELEASE_CFLAGS
+    QMAKE_LFLAGS += -fPIC -flto
 }
 
 # Directories
@@ -102,11 +105,14 @@ ICON_SIZES = 86 108 128 172 256
 for(s, ICON_SIZES) {
     icon_target = icon$${s}
     icon_dir = icons/$${s}x$${s}
-    $${icon_target}.files = $${icon_dir}/$${TARGET}.png
     $${icon_target}.path = /usr/share/icons/hicolor/$${s}x$${s}/apps
     openrepos {
-        $${icon_target}.extra = cp $${icon_dir}/harbour-$${NAME}.png $$eval($${icon_target}.files)
         $${icon_target}.CONFIG += no_check_exist
+        $${icon_target}.files = $${OUT_PWD}/$${icon_dir}/$${TARGET}.png
+        $${icon_target}.extra = mkdir -p \"$${OUT_PWD}/$${icon_dir}\" && \
+            cp \"$${_PRO_FILE_PWD_}/$${icon_dir}/harbour-$${NAME}.png\" \"$${OUT_PWD}/$${icon_dir}/$${TARGET}.png\"
+    } else {
+        $${icon_target}.files = $${icon_dir}/$${TARGET}.png
     }
     INSTALLS += $${icon_target}
 }

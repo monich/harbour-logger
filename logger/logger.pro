@@ -5,8 +5,10 @@ QT += dbus gui
 CONFIG += sailfishapp link_pkgconfig
 PKGCONFIG += mlite5 gio-2.0 gio-unix-2.0 glib-2.0
 
-QMAKE_CXXFLAGS += -Wno-unused-parameter -Wno-psabi
-QMAKE_CFLAGS += -Wno-unused-parameter
+WARNINGS = -Wall -Wno-unused-parameter -Wno-deprecated-declarations
+EXTRA_CFLAGS = $$WARNINGS -fvisibility=hidden
+QMAKE_CXXFLAGS += $$EXTRA_CFLAGS
+QMAKE_CFLAGS += $$EXTRA_CFLAGS
 
 HARBOUR_LIB_DIR = $$_PRO_FILE_PWD_/../harbour-lib
 HARBOUR_LIB_SRC = $${HARBOUR_LIB_DIR}/src
@@ -26,8 +28,13 @@ LIBDBUSLOG_CLIENT_SRC = $${LIBDBUSLOG_CLIENT}/src
 LIBDBUSLOG_CLIENT_INCLUDE = $${LIBDBUSLOG_CLIENT}/include
 
 CONFIG(debug, debug|release) {
-  DEFINES += HARBOUR_DEBUG=1
-  DEFINES += DEBUG=1
+    QMAKE_CXXFLAGS_DEBUG *= -O0
+    QMAKE_CFLAGS_DEBUG *= -O0
+    DEFINES += DEBUG HARBOUR_DEBUG
+} else {
+    EXTRA_RELEASE_CFLAGS = -fPIC -flto -ffat-lto-objects
+    QMAKE_CXXFLAGS += $$EXTRA_RELEASE_CFLAGS
+    QMAKE_CFLAGS += $$EXTRA_RELEASE_CFLAGS
 }
 
 openrepos {
