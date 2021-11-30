@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016 Jolla Ltd.
- * Contact: Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2021 Jolla Ltd.
+ * Copyright (C) 2016-2021 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -13,9 +13,9 @@
  *   2. Redistributions in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *   3. Neither the name of Jolla Ltd nor the names of its contributors may
- *      be used to endorse or promote products derived from this software
- *      without specific prior written permission.
+ *   3. Neither the names of the copyright holders nor the names of its
+ *      contributors may be used to endorse or promote products derived
+ *      from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -39,7 +39,6 @@ import "../harbour"
 CoverBackground {
     id: cover
 
-    allowResize: true
     readonly property bool _privileged: ProcessState.privileged
 
     Label {
@@ -65,14 +64,13 @@ CoverBackground {
             top: title.bottom
             left: parent.left
             right: parent.right
-            bottom: parent.bottom
             leftMargin: Theme.paddingMedium
             rightMargin: Theme.paddingSmall
-            bottomMargin: Theme.itemSizeSmall
         }
+        height: Math.min(contentHeight, parent.height - y - Theme.itemSizeSmall/cover.parent.scale)
+        verticalLayoutDirection: ListView.BottomToTop
         model: LogModel
-        onCountChanged: positioner.start()
-        onHeightChanged: scrollToEnd()
+        clip: true
         delegate: Label {
             text: messageText
             width: parent.width
@@ -80,22 +78,10 @@ CoverBackground {
             truncationMode: TruncationMode.Fade
             font.pixelSize: Theme.fontSizeTiny
         }
-        function scrollToEnd() {
-            if (count > 1) {
-                // FsIoLog model has one extra item at the end
-                positionViewAtIndex(count - 2, ListView.End)
-            }
-        }
-        Timer {
-            // positionViewAtXxx() doesn't work directly from onCountChanged
-            id: positioner
-            interval: 0
-            onTriggered: list.scrollToEnd()
-        }
     }
 
     OpacityRampEffect {
-        enabled: !list.atYBeginning
+        enabled: list.contentHeight > list.height
         sourceItem: list
         parent: cover
         direction: OpacityRamp.BottomToTop
