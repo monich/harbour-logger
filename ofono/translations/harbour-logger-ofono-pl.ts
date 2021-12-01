@@ -41,7 +41,7 @@
     <message id="logger-logpage-msg-unprivileged">
         <source>This application must be run in a privileged mode but apparently it&apos;s not. Sandboxing is the most likely reason for that, albeit not the only one. Whatever the reason is, logs will be unavailable. Sorry for the inconvenience!</source>
         <extracomment>Log entry</extracomment>
-        <translation type="unfinished">Ta aplikacja powinna działać w trybie uprzywilejowanym, ale wydaje się, że tak nie jest. Najprawdopodobniej problem tkwi w piaskownicy, chociaż mogą być inne przyczyny.
+        <translation>Ta aplikacja powinna działać w trybie uprzywilejowanym, ale wydaje się, że tak nie jest. Najprawdopodobniej problem tkwi w piaskownicy, chociaż mogą być inne przyczyny.
 
 W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie :(
 </translation>
@@ -66,7 +66,7 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
     <message id="logger-logpage-hint-jump_to_bottom">
         <source>Jump to the end of the log to see the most recent messages and follow new messages in real time</source>
         <extracomment>Hint text, displayed on long tap</extracomment>
-        <translation type="unfinished">Przejdź do ostatniej wiadomości i śledź nowe w czasie rzeczywistym</translation>
+        <translation>Przejdź do ostatniej wiadomości i śledź nowe w czasie rzeczywistym</translation>
     </message>
     <message id="logger-categories-title">
         <source>Log categories</source>
@@ -134,7 +134,7 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
     <message id="logger-sharepage-broken">
         <source>In-app sharing is not available in this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
         <extracomment>Info label displayed instead of sharing method list</extracomment>
-        <translation type="unfinished">Niestety w tej wersji Sailfish OS nic tak łatwego do udostępnienia nie zadziała. Możesz zapisać plik tar w dokumentach, a następnie sam wymyślić, co z nim zrobić.</translation>
+        <translation>Udostęnianie nie jest dostępne w tej wersji Sailfish OS. Użyj pulley menu, aby zapisać plik tar w dokumentach.</translation>
     </message>
     <message id="openrepos-logger-ofono-app_name">
         <source>Ofono Log</source>
