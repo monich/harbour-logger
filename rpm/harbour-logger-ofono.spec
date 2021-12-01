@@ -1,6 +1,6 @@
 Name:       harbour-logger-ofono
 Summary:    Ofono logger
-Version:    1.0.20
+Version:    1.0.21
 Release:    1
 Group:      Applications/System
 License:    BSD
@@ -55,6 +55,10 @@ desktop-file-install --delete-original \
 %{privileges_dir}/%{name}
 
 %changelog
+* Wed Dec 01 2021 Slava Monich <slava.monich@jolla.com> 1.0.21
+- Restore log level on exit
+- Fixed cover log and allow cover scaling
+
 * Sat Sep 18 2021 Slava Monich <slava.monich@jolla.com> 1.0.20
 - Copy log entry to clipboard on long tap
 - Improved sandbox behavior
