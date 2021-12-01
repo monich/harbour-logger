@@ -31,7 +31,7 @@
     <message id="logger-logpage-msg-unprivileged">
         <source>This application must be run in a privileged mode but apparently it&apos;s not. Sandboxing is the most likely reason for that, albeit not the only one. Whatever the reason is, logs will be unavailable. Sorry for the inconvenience!</source>
         <extracomment>Log entry</extracomment>
-        <translation type="unfinished">Ta aplikacja powinna działać w trybie uprzywilejowanym, ale wydaje się, że tak nie jest. Najprawdopodobniej problem tkwi w piaskownicy, chociaż mogą być inne przyczyny.
+        <translation>Ta aplikacja powinna działać w trybie uprzywilejowanym, ale wydaje się, że tak nie jest. Najprawdopodobniej problem tkwi w piaskownicy, chociaż mogą być inne przyczyny.
 
 W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie :(
 </translation>
@@ -43,7 +43,7 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
     </message>
     <message id="logger-logpage-msg-connect-error">
         <source>We are having trouble connecting to the service.</source>
-        <translation>Problem z połączeniem się z usługą.</translation>
+        <translation>Mamy problemy z połączenie z usługami.</translation>
     </message>
     <message id="logger-logpage-msg-disconnected">
         <source>Connection lost.</source>
@@ -56,7 +56,7 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
     <message id="logger-logpage-hint-jump_to_bottom">
         <source>Jump to the end of the log to see the most recent messages and follow new messages in real time</source>
         <extracomment>Hint text, displayed on long tap</extracomment>
-        <translation>Przejdź do ostatniej wiadomości i śledź nowe wiadomości w czasie rzeczywistym</translation>
+        <translation>Przejdź do ostatniej wiadomości i śledź nowe w czasie rzeczywistym</translation>
     </message>
     <message id="logger-categories-title">
         <source>Log categories</source>
@@ -64,15 +64,15 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
     </message>
     <message id="logger-categories-pm-enable-all">
         <source>Enable all</source>
-        <translation>Włącz wszystkie</translation>
+        <translation>Włącz wszystko</translation>
     </message>
     <message id="logger-categories-pm-disable-all">
         <source>Disable all</source>
-        <translation>Wyłącz wszystkie</translation>
+        <translation>Wyłącz wszystko</translation>
     </message>
     <message id="logger-categories-pm-default">
         <source>Reset to default</source>
-        <translation>Wróć do domyślnych ustawień</translation>
+        <translation>Przywróć do wartości fabrycznych</translation>
     </message>
     <message id="logger-categories-select-placeholder">
         <source>Select categories</source>
@@ -89,7 +89,7 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
     </message>
     <message id="logger-sharepage-save-ok">
         <source>Saved %1</source>
-        <translation>Zapisano</translation>
+        <translation>Zapisano %1</translation>
     </message>
     <message id="logger-sharepage-save-error">
         <source>Failed to save %1</source>
@@ -115,7 +115,7 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
     </message>
     <message id="logger-sharepage-warning">
         <source>Keep in mind that some of the information contained in this archive may be considered private. If you would like to check what you are about to send, please consider sending it to yourself and checking its contents first.</source>
-        <translation>Pamiętaj, że niektóre informacje zawarte w tym archiwum można uznać za prywatne. Jeśli chcesz sprawdzić, co zamierzasz wysłać, rozważ przesłanie go do siebie i sprawdzenie jego zawartości.</translation>
+        <translation>Miej na uwadze, że część informacji zawartych w tym archiwum może być prywatna. Jeśli chcesz sprawdzić co wysyłasz, proszę rozważ wysłanie logów, w pierwszej kolejności, do siebie i sprawdzź ich zawartość. </translation>
     </message>
     <message id="logger-sharepage-please-wait">
         <source>Please wait</source>
@@ -124,7 +124,7 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
     <message id="logger-sharepage-broken">
         <source>In-app sharing is not available in this version of Sailfish OS. Use the pulley menu to save tarball to the documents folder.</source>
         <extracomment>Info label displayed instead of sharing method list</extracomment>
-        <translation>Niestety w tej wersji Sailfish OS udostępnianie nie działa. Użyj menu wysuwanego, aby zapisać plik tar w katalogu dokumenty.</translation>
+        <translation>Udostęnianie nie jest dostępne w tej wersji Sailfish OS. Użyj pulley menu, aby zapisać plik tar w dokumentach.</translation>
     </message>
     <message id="openrepos-logger-nfc-app_name">
         <source>NFC Logger</source>
@@ -139,19 +139,19 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
     <message id="logger-settings-section-header-display">
         <source>Display</source>
         <extracomment>Section header</extracomment>
-        <translation>Wyświetlanie</translation>
+        <translation>Wyświetl</translation>
     </message>
     <message id="logger-settings-logsizelimit">
         <source>Screen buffer size</source>
-        <translation>Rozmiar buforu ekranu</translation>
+        <translation>Rozmiar bufora ekranu</translation>
     </message>
     <message id="logger-settings-logsizelimit-description">
         <source>Don&apos;t worry, everything will be written to the log file regardless of the screen buffer size.</source>
-        <translation>Nie martw się, wszystko zostanie zapisane w pliku dziennika bez względu na rozmiar bufora ekranu.</translation>
+        <translation>Nie martw się, wszystko zostanie zapisane do pliku logów, bez względu na rozmiar buforu ekranu.</translation>
     </message>
     <message id="logger-settings-logsizelimit-unlimited">
         <source>Unlimited</source>
-        <translation>Nielimitowany</translation>
+        <translation>Nieograniczone</translation>
     </message>
     <message id="logger-settings-fontsize-label">
         <source>Font size</source>
@@ -170,17 +170,17 @@ W każdym razie aplikacja najprawdopodobniej nie będzie działać w tej formie 
     <message id="logger-settings-autoenable_logging-switch-description">
         <source>Enable all logging categories when the application starts.</source>
         <extracomment>Text switch description</extracomment>
-        <translation>Włącz wszytskie kategorie logowania podczas uruchamiania aplikacji.</translation>
+        <translation>Włącz wszystkie kategorie logowania podczas startu aplikacji.</translation>
     </message>
     <message id="logger-settings-autoreset_logging-switch-label">
         <source>Automatically reset logging on exit</source>
         <extracomment>Text switch label</extracomment>
-        <translation>Automatycznie reseuj logowanie podczas wyjścia z aplikacji</translation>
+        <translation>Automatycznie zresetuj logi na wyjściu</translation>
     </message>
     <message id="logger-settings-autoreset_logging-switch-description">
         <source>Reset all logging categories to their default values when the application is exiting. Otherwise logging would continue in the background, wasting the system resources and eating up your battery.</source>
         <extracomment>Text switch description</extracomment>
-        <translation>Zresetuj wszystkie kategorie logowania do ich wartości domyślnych podczas zamykania aplikacji. W przeciwnym razie rejestrowanie będzie kontynuowane w tle, marnując zasoby systemowe i zużywając baterię.</translation>
+        <translation>Zresetuj wszystkie kategorie logowania do wartości domyślnych podczas opuszczania aplikacji. W innym przypadku logowanie będzie kontynuowane w tle, zużywając zasoby i rozładowując baterię.</translation>
     </message>
 </context>
 </TS>
