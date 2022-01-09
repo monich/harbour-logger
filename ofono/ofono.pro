@@ -146,6 +146,7 @@ TRANSLATION_SOURCES = \
 
 TRANSLATION_FILES = \
   $${NAME} \
+  $${NAME}-fr \
   $${NAME}-nl \
   $${NAME}-pl \
   $${NAME}-ru \
