@@ -41,25 +41,24 @@ CONFIG(debug, debug|release) {
 # Directories
 HARBOUR_LIB_DIR = $$_PRO_FILE_PWD_/../harbour-lib
 LOGGER_LIB_DIR = $$_PRO_FILE_PWD_/../logger
-LIBGLIBUTIL = $$_PRO_FILE_PWD_/../libglibutil
 
 # Libraries
 LOGGER_LIB = $$OUT_PWD/../logger/liblogger.a
 
 PRE_TARGETDEPS += \
-  $$LOGGER_LIB \
-  $$HARBOUR_LIB
+    $$LOGGER_LIB \
+    $$HARBOUR_LIB
 
 LIBS += \
-  $$LOGGER_LIB \
-  $$HARBOUR_LIB
+    $$LOGGER_LIB \
+    $$HARBOUR_LIB
 
 OTHER_FILES += \
-  icons/harbour-$${NAME}.svg \
-  *.desktop \
-  qml/*.qml \
-  privileges/* \
-  translations/*.ts
+    icons/harbour-$${NAME}.svg \
+    *.desktop \
+    qml/*.qml \
+    privileges/* \
+    translations/*.ts
 
 TARGET_DATA_DIR = /usr/share/$${TARGET}
 TARGET_ICON_ROOT = /usr/share/icons/hicolor
@@ -69,26 +68,26 @@ logger_qml.path = $${TARGET_DATA_DIR}/qml
 INSTALLS += logger_qml
 
 INCLUDEPATH += \
-  src \
-  $${LOGGER_LIB_DIR}/include \
-  $${HARBOUR_LIB_DIR}/include
+    src \
+    $${LOGGER_LIB_DIR}/include \
+    $${HARBOUR_LIB_DIR}/include
 
 SOURCES += \
-  src/main.cpp
+    src/main.cpp
 
 # libglibutil
 
+LIBGLIBUTIL = $${LOGGER_LIB_DIR}/src/libglibutil
 LIBGLIBUTIL_SRC = $${LIBGLIBUTIL}/src
-LIBGLIBUTIL_INCLUDE = $${LIBGLIBUTIL}/include
 
 INCLUDEPATH += \
-  $${LIBGLIBUTIL_INCLUDE}
+    $${LIBGLIBUTIL}/include
 
 SOURCES += \
-  $${LIBGLIBUTIL_SRC}/gutil_log.c \
-  $${LIBGLIBUTIL_SRC}/gutil_misc.c \
-  $${LIBGLIBUTIL_SRC}/gutil_ring.c \
-  $${LIBGLIBUTIL_SRC}/gutil_strv.c
+    $${LIBGLIBUTIL_SRC}/gutil_log.c \
+    $${LIBGLIBUTIL_SRC}/gutil_misc.c \
+    $${LIBGLIBUTIL_SRC}/gutil_ring.c \
+    $${LIBGLIBUTIL_SRC}/gutil_strv.c
 
 # harbour-lib QML components
 
@@ -138,15 +137,15 @@ for(s, ICON_SIZES) {
 # Translations
 TRANSLATION_IDBASED=-idbased
 TRANSLATION_SOURCES = \
-  $${_PRO_FILE_PWD_}/src \
-  $${_PRO_FILE_PWD_}/qml \
-  $${LOGGER_LIB_DIR}/qml \
-  $${LOGGER_LIB_DIR}/settings
+    $${_PRO_FILE_PWD_}/src \
+    $${_PRO_FILE_PWD_}/qml \
+    $${LOGGER_LIB_DIR}/qml \
+    $${LOGGER_LIB_DIR}/settings
 
 TRANSLATION_FILES = \
-  $${NAME} \
-  $${NAME}-pl \
-  $${NAME}-ru
+    $${NAME} \
+    $${NAME}-pl \
+    $${NAME}-ru
 
 for(t, TRANSLATION_FILES) {
     suffix = $$replace(t,-,_)

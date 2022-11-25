@@ -3,7 +3,7 @@ CONFIG += static
 TARGET = logger
 QT += dbus gui
 CONFIG += sailfishapp link_pkgconfig
-PKGCONFIG += mlite5 gio-2.0 gio-unix-2.0 glib-2.0 libglibutil
+PKGCONFIG += mlite5 gio-2.0 gio-unix-2.0 glib-2.0
 
 WARNINGS = -Wall -Wno-unused-parameter -Wno-deprecated-declarations
 EXTRA_CFLAGS = $$WARNINGS -fvisibility=hidden
@@ -13,6 +13,8 @@ QMAKE_CFLAGS += $$EXTRA_CFLAGS
 HARBOUR_LIB_DIR = $$_PRO_FILE_PWD_/../harbour-lib
 HARBOUR_LIB_SRC = $${HARBOUR_LIB_DIR}/src
 HARBOUR_LIB_INCLUDE = $${HARBOUR_LIB_DIR}/include
+
+LIBGLIBUTIL = src/libglibutil
 
 LIBDBUSLOG = src/libdbuslog
 LIBDBUSLOG_COMMON = $${LIBDBUSLOG}/common
@@ -62,18 +64,18 @@ HEADERS += \
     src/LoggerSettings.h
 
 SOURCES += \
-  $${HARBOUR_LIB_SRC}/HarbourProcessState.cpp \
-  $${HARBOUR_LIB_SRC}/HarbourSigChildHandler.cpp \
-  $${HARBOUR_LIB_SRC}/HarbourSystemInfo.cpp \
-  $${HARBOUR_LIB_SRC}/HarbourTransferMethodInfo.cpp \
-  $${HARBOUR_LIB_SRC}/HarbourTransferMethodsModel.cpp
+    $${HARBOUR_LIB_SRC}/HarbourProcessState.cpp \
+    $${HARBOUR_LIB_SRC}/HarbourSigChildHandler.cpp \
+    $${HARBOUR_LIB_SRC}/HarbourSystemInfo.cpp \
+    $${HARBOUR_LIB_SRC}/HarbourTransferMethodInfo.cpp \
+    $${HARBOUR_LIB_SRC}/HarbourTransferMethodsModel.cpp
 
 HEADERS += \
-  $${HARBOUR_LIB_INCLUDE}/HarbourProcessState.h \
-  $${HARBOUR_LIB_INCLUDE}/HarbourSigChildHandler.h \
-  $${HARBOUR_LIB_INCLUDE}/HarbourSystemInfo.h \
-  $${HARBOUR_LIB_INCLUDE}/HarbourTransferMethodInfo.h \
-  $${HARBOUR_LIB_INCLUDE}/HarbourTransferMethodsModel.h
+    $${HARBOUR_LIB_INCLUDE}/HarbourProcessState.h \
+    $${HARBOUR_LIB_INCLUDE}/HarbourSigChildHandler.h \
+    $${HARBOUR_LIB_INCLUDE}/HarbourSystemInfo.h \
+    $${HARBOUR_LIB_INCLUDE}/HarbourTransferMethodInfo.h \
+    $${HARBOUR_LIB_INCLUDE}/HarbourTransferMethodsModel.h
 
 SOURCES += \
     $${LIBDBUSLOG_COMMON_SRC}/dbuslog_category.c \
@@ -87,19 +89,20 @@ INCLUDEPATH += \
     include \
     $${HARBOUR_LIB_INCLUDE} \
     $${LIBDBUSLOG_COMMON_INCLUDE} \
-    $${LIBDBUSLOG_CLIENT_INCLUDE}
+    $${LIBDBUSLOG_CLIENT_INCLUDE} \
+    $${LIBGLIBUTIL}/include
 
 OTHER_FILES += \
-  qml/pages/*.js \
-  qml/pages/*.qml \
-  qml/pages/images/*.svg \
-  settings/*.qml \
-  settings/*.json
+    qml/pages/*.js \
+    qml/pages/*.qml \
+    qml/pages/images/*.svg \
+    settings/*.qml \
+    settings/*.json
 
 DBUS_SPEC_DIR = $$_PRO_FILE_PWD_/src/libdbuslog/spec
 
 OTHER_FILES += \
-  $${DBUS_SPEC_DIR}/org.nemomobile.Logger.xml
+    $${DBUS_SPEC_DIR}/org.nemomobile.Logger.xml
 
 # org.nemomobile.Logger
 DBUSLOGGER_XML = $${DBUS_SPEC_DIR}/org.nemomobile.Logger.xml
