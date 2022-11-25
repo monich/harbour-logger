@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2019 Jolla Ltd.
- * Copyright (C) 2016-2019 Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2022 Jolla Ltd.
+ * Copyright (C) 2016-2022 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -45,7 +45,8 @@ class LoggerMain : public QObject {
 
 public:
     LoggerMain(int* aArgc, char** aArgv, const char* aService,
-        QStringList aRpmPackages, QString aAppSuffix, QString aQmlPath);
+        QStringList aRpmPackages, QString aAppPrefix, QString aAppSuffix,
+        QString aQmlPath, QString aTransDir);
     virtual ~LoggerMain();
 
     int run();
@@ -67,13 +68,13 @@ protected:
 
 protected:
     QGuiApplication* iApp;
-    QString iService;
-    QStringList iRpmPackages;
-    QString iAppSuffix;
-    QString iQmlPath;
+    const QString iService;
+    const QStringList iRpmPackages;
+    const QString iFullAppName;
+    const QString iAppSuffix;
+    const QString iQmlPath;
+    const QString iTransDir;
     struct dbus_log_client* iClient;
-    QString iFullAppName;
-    QString iTransDir;
 };
 
 #endif // LOGGER_MAIN_H

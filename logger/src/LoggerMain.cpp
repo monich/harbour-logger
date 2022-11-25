@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2021 Jolla Ltd.
- * Copyright (C) 2016-2021 Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2022 Jolla Ltd.
+ * Copyright (C) 2016-2022 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -65,21 +65,17 @@ static void register_types(const char* uri, int v1 = 1, int v2 = 0)
 }
 
 LoggerMain::LoggerMain(int* aArgc, char** aArgv, const char* aService,
-    QStringList aRpmPackages, QString aAppSuffix, QString aQmlPath) :
+    QStringList aRpmPackages, QString aAppPrefix, QString aAppSuffix,
+    QString aQmlPath, QString aTransDir) :
     iApp(SailfishApp::application(*aArgc, aArgv)),
     iService(aService),
     iRpmPackages(aRpmPackages),
+    iFullAppName(aAppPrefix + QString("-") + aAppSuffix),
     iAppSuffix(aAppSuffix),
     iQmlPath(aQmlPath),
+    iTransDir(aTransDir),
     iClient(dbus_log_client_new(G_BUS_TYPE_SYSTEM, aService, "/",
-        DBUSLOG_CLIENT_FLAG_AUTOSTART)),
-#ifdef OPENREPOS
-    iFullAppName(QString("openrepos-logger-") + aAppSuffix),
-    iTransDir("/usr/share/translations")
-#else
-    iFullAppName(QString("harbour-logger-") + aAppSuffix),
-    iTransDir(SailfishApp::pathTo("translations").toLocalFile())
-#endif
+        DBUSLOG_CLIENT_FLAG_AUTOSTART))
 {
     QString pluginPrefix(QString("harbour.logger.") + aAppSuffix);
     register_types(qPrintable(pluginPrefix));

@@ -1,7 +1,6 @@
-PREFIX = harbour-logger
 sailfish-log-viewer {
     PREFIX = sailfish-log-viewer
-    DEFINES += OPENREPOS
+    DEFINES += OPENREPOS SAILFISH_LOG_VIEWER
 }
 openrepos {
     PREFIX = openrepos-logger
@@ -9,8 +8,8 @@ openrepos {
 }
 !sailfish-log-viewer:!openrepos {
     CONFIG += harbour
+    PREFIX = harbour-logger
 }
-
 
 NAME = ofono
 TARGET = $${PREFIX}-$${NAME}
@@ -18,8 +17,10 @@ TARGET = $${PREFIX}-$${NAME}
 app_settings {
     # This path is hardcoded in jolla-settings
     TRANSLATIONS_PATH = /usr/share/translations
+    DEFINES += APP_TRANSLATIONS_PATH=$${TRANSLATIONS_PATH}
 } else {
     TRANSLATIONS_PATH = /usr/share/$${TARGET}/translations
+    # Let the app figure it out at run time
 }
 
 CONFIG += sailfishapp link_pkgconfig
@@ -28,11 +29,11 @@ QT += dbus
 
 WARNINGS = -Wall -Wno-unused-parameter -Wno-deprecated-declarations
 EXTRA_CFLAGS = $$WARNINGS -fvisibility=hidden
-DEFINES += QOFONOEXT_EXPORT=Q_DECL_HIDDEN
+DEFINES += QOFONOEXT_EXPORT=Q_DECL_HIDDEN APP_PREFIX=$${PREFIX}
 QMAKE_CXXFLAGS += $$EXTRA_CFLAGS
 QMAKE_CFLAGS += $$EXTRA_CFLAGS
 
-CONFIG(debug, debug|release) {
+debug {
     QMAKE_CXXFLAGS_DEBUG *= -O0
     QMAKE_CFLAGS_DEBUG *= -O0
     DEFINES += DEBUG HARBOUR_DEBUG
@@ -40,7 +41,7 @@ CONFIG(debug, debug|release) {
     EXTRA_RELEASE_CFLAGS = -fPIC -flto -ffat-lto-objects
     QMAKE_CXXFLAGS += $$EXTRA_RELEASE_CFLAGS
     QMAKE_CFLAGS += $$EXTRA_RELEASE_CFLAGS
-    QMAKE_LFLAGS += -fPIC -flto
+    QMAKE_LFLAGS += -fpie -flto
 }
 
 # Directories
@@ -162,7 +163,7 @@ TRANSLATION_FILES = \
 
 for(t, TRANSLATION_FILES) {
     suffix = $$replace(t,-,_)
-    in = $${_PRO_FILE_PWD_}/translations/harbour-$${t}
+    in = $${_PRO_FILE_PWD_}/translations/harbour-logger-$${t}
     out = $${OUT_PWD}/translations/$${PREFIX}-$${t}
 
     lupdate_target = lupdate_$$suffix

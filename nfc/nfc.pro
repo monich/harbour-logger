@@ -1,24 +1,27 @@
 openrepos {
-    PREFIX = openrepos
+    PREFIX = openrepos-logger
     DEFINES += OPENREPOS
 } else {
-    PREFIX = harbour
+    PREFIX = harbour-logger
 }
 
-NAME = logger-nfc
+NAME = nfc
 TARGET = $${PREFIX}-$${NAME}
 
 app_settings {
     # This path is hardcoded in jolla-settings
     TRANSLATIONS_PATH = /usr/share/translations
+    DEFINES += APP_TRANSLATIONS_PATH=$${TRANSLATIONS_PATH}
 } else {
     TRANSLATIONS_PATH = /usr/share/$${TARGET}/translations
+    # Let the app figure it out at run time
 }
 
 CONFIG += sailfishapp link_pkgconfig
 PKGCONFIG += sailfishapp mlite5 gio-2.0 gio-unix-2.0 glib-2.0
 QT += dbus
 
+DEFINES += APP_PREFIX=$${PREFIX}
 WARNINGS = -Wall -Wno-unused-parameter -Wno-deprecated-declarations
 EXTRA_CFLAGS = $$WARNINGS -fvisibility=hidden
 QMAKE_CXXFLAGS += $$EXTRA_CFLAGS
@@ -32,7 +35,7 @@ CONFIG(debug, debug|release) {
     EXTRA_RELEASE_CFLAGS = -fPIC -flto -ffat-lto-objects
     QMAKE_CXXFLAGS += $$EXTRA_RELEASE_CFLAGS
     QMAKE_CFLAGS += $$EXTRA_RELEASE_CFLAGS
-    QMAKE_LFLAGS += -fPIC -flto
+    QMAKE_LFLAGS += -fpie -flto
 }
 
 # Directories
@@ -96,7 +99,7 @@ app_settings {
 }
 
 # Priveleges
-privileges.files = privileges/$${PREFIX}-logger-nfc
+privileges.files = privileges/$${PREFIX}-nfc
 privileges.path = /usr/share/mapplauncherd/privileges.d/
 INSTALLS += privileges
 
@@ -110,7 +113,7 @@ for(s, ICON_SIZES) {
         $${icon_target}.CONFIG += no_check_exist
         $${icon_target}.files = $${OUT_PWD}/$${icon_dir}/$${TARGET}.png
         $${icon_target}.extra = mkdir -p \"$${OUT_PWD}/$${icon_dir}\" && \
-            cp \"$${_PRO_FILE_PWD_}/$${icon_dir}/harbour-$${NAME}.png\" \"$${OUT_PWD}/$${icon_dir}/$${TARGET}.png\"
+            cp \"$${_PRO_FILE_PWD_}/$${icon_dir}/harbour-logger-$${NAME}.png\" \"$${OUT_PWD}/$${icon_dir}/$${TARGET}.png\"
     } else {
         $${icon_target}.files = $${icon_dir}/$${TARGET}.png
     }
@@ -132,7 +135,7 @@ TRANSLATION_FILES = \
 
 for(t, TRANSLATION_FILES) {
     suffix = $$replace(t,-,_)
-    in = $${_PRO_FILE_PWD_}/translations/harbour-$${t}
+    in = $${_PRO_FILE_PWD_}/translations/harbour-logger-$${t}
     out = $${OUT_PWD}/translations/$${PREFIX}-$${t}
 
     lupdate_target = lupdate_$$suffix

@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2019-2021 Jolla Ltd.
- * Copyright (C) 2019-2021 Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2019-2022 Jolla Ltd.
+ * Copyright (C) 2019-2022 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -32,9 +32,25 @@
 
 #include "LoggerMain.h"
 
+#include <sailfishapp.h>
+
 #include <QQuickView>
 
 #define SUPER LoggerMain
+
+#ifdef APP_TRANSLATIONS_PATH
+#  define APP_TRANS_DIR QT_STRINGIFY(APP_TRANSLATIONS_PATH)
+#  pragma message("Translations dir: " APP_TRANS_DIR)
+#else
+#  define APP_TRANS_DIR SailfishApp::pathTo("translations").toLocalFile()
+#endif
+
+#ifdef APP_PREFIX
+#  define APP_NAME_PREFIX QT_STRINGIFY(APP_PREFIX)
+#  pragma message("App prefix: " APP_NAME_PREFIX)
+#else
+#  define APP_NAME_PREFIX "harbour-logger"
+#endif
 
 class NfcLogger: public SUPER
 {
@@ -48,8 +64,8 @@ protected:
 };
 
 NfcLogger::NfcLogger(int* aArgc, char** aArgv, QStringList aPackages) :
-    SUPER(aArgc, aArgv, "org.sailfishos.nfc.daemon", aPackages, "nfc",
-    "qml/main.qml")
+    SUPER(aArgc, aArgv, "org.sailfishos.nfc.daemon", aPackages,
+    APP_NAME_PREFIX, "nfc", "qml/main.qml", APP_TRANS_DIR)
 {
 }
 

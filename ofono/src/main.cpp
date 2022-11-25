@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2016-2021 Jolla Ltd.
- * Copyright (C) 2016-2021 Slava Monich <slava.monich@jolla.com>
+ * Copyright (C) 2016-2022 Jolla Ltd.
+ * Copyright (C) 2016-2022 Slava Monich <slava.monich@jolla.com>
  *
  * You may use this file under the terms of BSD license as follows:
  *
@@ -36,6 +36,8 @@
 #include "qofonoextmodemmanager.h"
 #include "networktechnology.h"
 
+#include <sailfishapp.h>
+
 #include <QQuickView>
 #include <QQmlContext>
 
@@ -45,6 +47,20 @@
 #define CELLULAR_TECHNOLOGY_PATH "/net/connman/technology/cellular"
 
 #define SUPER LoggerMain
+
+#ifdef APP_TRANSLATIONS_PATH
+#  define APP_TRANS_DIR QT_STRINGIFY(APP_TRANSLATIONS_PATH)
+#  pragma message("Translations dir: " APP_TRANS_DIR)
+#else
+#  define APP_TRANS_DIR SailfishApp::pathTo("translations").toLocalFile()
+#endif
+
+#ifdef APP_PREFIX
+#  define APP_NAME_PREFIX QT_STRINGIFY(APP_PREFIX)
+#  pragma message("App prefix: " APP_NAME_PREFIX)
+#else
+#  define APP_NAME_PREFIX "harbour-logger"
+#endif
 
 class OfonoLogger: public SUPER
 {
@@ -94,7 +110,8 @@ private:
 const QString OfonoLogger::AUTO("auto");
 
 OfonoLogger::OfonoLogger(int* aArgc, char** aArgv, QStringList aPackages) :
-    SUPER(aArgc, aArgv, "org.ofono", aPackages, "ofono", "qml/main.qml"),
+    SUPER(aArgc, aArgv, "org.ofono", aPackages, APP_NAME_PREFIX, "ofono",
+    "qml/main.qml", APP_TRANS_DIR),
     iModemManager(QOfonoExtModemManager::instance()),
     iNetworkTechnology(new NetworkTechnology(this)),
     iFilesSaved(false),
