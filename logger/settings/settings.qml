@@ -48,7 +48,7 @@ Page {
         var parts = Qt.resolvedUrl("dummy").split('/')
         if (parts.length > 2) {
             var name = parts[parts.length-3]
-            if (name.indexOf("-logger") >= 0) {
+            if (name.indexOf("-log") >= 0) {
                 return name
             }
         }
