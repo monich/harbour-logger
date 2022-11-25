@@ -16,6 +16,7 @@ BuildRequires: pkgconfig(mlite5)
 BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(gio-2.0)
 BuildRequires: pkgconfig(gio-unix-2.0)
+BuildRequires: pkgconfig(qofonoext)
 BuildRequires: desktop-file-utils
 BuildRequires: qt5-qttools-linguist
 
@@ -47,7 +48,6 @@ rm -rf %{buildroot}
 desktop-file-install --delete-original \
   --dir %{buildroot}%{_datadir}/applications \
    %{buildroot}%{_datadir}/applications/*.desktop
-
 
 %files ofono
 %global privileges_dir %{_datarootdir}/mapplauncherd/privileges.d

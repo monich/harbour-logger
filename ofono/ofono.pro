@@ -29,7 +29,7 @@ QT += dbus
 
 WARNINGS = -Wall -Wno-unused-parameter -Wno-deprecated-declarations
 EXTRA_CFLAGS = $$WARNINGS -fvisibility=hidden
-DEFINES += QOFONOEXT_EXPORT=Q_DECL_HIDDEN APP_PREFIX=$${PREFIX}
+DEFINES += APP_PREFIX=$${PREFIX}
 QMAKE_CXXFLAGS += $$EXTRA_CFLAGS
 QMAKE_CFLAGS += $$EXTRA_CFLAGS
 
@@ -47,7 +47,6 @@ debug {
 # Directories
 HARBOUR_LIB_DIR = $$_PRO_FILE_PWD_/../harbour-lib
 LOGGER_LIB_DIR = $$_PRO_FILE_PWD_/../logger
-QOFONOEXT_LIB_DIR = $$_PRO_FILE_PWD_/src/libqofonoext
 QCONNMAN_LIB_DIR = $$_PRO_FILE_PWD_/../libconnman-qt
 
 # Libraries
@@ -62,7 +61,7 @@ LIBS += \
   $$HARBOUR_LIB
 
 OTHER_FILES += \
-  icons/harbour-$${NAME}.svg \
+  icons/harbour-logger-$${NAME}.svg \
   *.desktop \
   qml/*.qml \
   privileges/* \
@@ -79,18 +78,34 @@ INCLUDEPATH += \
   src \
   $${LOGGER_LIB_DIR}/include \
   $${HARBOUR_LIB_DIR}/include \
-  $${QOFONOEXT_LIB_DIR}/src \
   $${QCONNMAN_LIB_DIR}/libconnman-qt
 
 HEADERS += \
-  $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.h \
   $${QCONNMAN_LIB_DIR}/libconnman-qt/networktechnology.h
 
 SOURCES += \
   src/main.cpp \
-  $${QOFONOEXT_LIB_DIR}/src/qofonoext.cpp \
-  $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.cpp \
   $${QCONNMAN_LIB_DIR}/libconnman-qt/networktechnology.cpp
+
+# sailfish-log-viewer can link with libqofonoext
+
+sailfish-log-viewer {
+  PKGCONFIG += qofonoext
+} else {
+
+DEFINES += QOFONOEXT_EXPORT=Q_DECL_HIDDEN
+QOFONOEXT_LIB_DIR = $$_PRO_FILE_PWD_/src/libqofonoext
+
+INCLUDEPATH += \
+  $${QOFONOEXT_LIB_DIR}/src
+
+HEADERS += \
+  $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.h \
+
+SOURCES += \
+  $${QOFONOEXT_LIB_DIR}/src/qofonoext.cpp \
+  $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.cpp
+}
 
 # harbour-lib QML components
 
