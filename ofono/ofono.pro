@@ -1,11 +1,18 @@
-openrepos {
-    PREFIX = openrepos
+PREFIX = harbour-logger
+sailfish-log-viewer {
+    PREFIX = sailfish-log-viewer
     DEFINES += OPENREPOS
-} else {
-    PREFIX = harbour
+}
+openrepos {
+    PREFIX = openrepos-logger
+    DEFINES += OPENREPOS
+}
+!sailfish-log-viewer:!openrepos {
+    CONFIG += harbour
 }
 
-NAME = logger-ofono
+
+NAME = ofono
 TARGET = $${PREFIX}-$${NAME}
 
 app_settings {
@@ -115,7 +122,7 @@ app_settings {
 }
 
 # Priveleges
-privileges.files = privileges/$${PREFIX}-logger-ofono
+privileges.files = privileges/$${PREFIX}-ofono
 privileges.path = /usr/share/mapplauncherd/privileges.d/
 INSTALLS += privileges
 
@@ -125,11 +132,11 @@ for(s, ICON_SIZES) {
     icon_target = icon$${s}
     icon_dir = icons/$${s}x$${s}
     $${icon_target}.path = /usr/share/icons/hicolor/$${s}x$${s}/apps
-    openrepos {
+    !harbour {
         $${icon_target}.CONFIG += no_check_exist
         $${icon_target}.files = $${OUT_PWD}/$${icon_dir}/$${TARGET}.png
         $${icon_target}.extra = mkdir -p \"$${OUT_PWD}/$${icon_dir}\" && \
-            cp \"$${_PRO_FILE_PWD_}/$${icon_dir}/harbour-$${NAME}.png\" \"$${OUT_PWD}/$${icon_dir}/$${TARGET}.png\"
+            cp \"$${_PRO_FILE_PWD_}/$${icon_dir}/harbour-logger-$${NAME}.png\" \"$${OUT_PWD}/$${icon_dir}/$${TARGET}.png\"
     } else {
         $${icon_target}.files = $${icon_dir}/$${TARGET}.png
     }
