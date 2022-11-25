@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Ofono Log
+X-Nemo-Application-Type=silica-qt5
+Icon=sailfish-log-viewer-ofono
+Exec=sailfish-log-viewer-ofono
+
+[X-HarbourBackup]
+BackupConfigList=/apps/sailfish-log-viewer-ofono/
+
+[X-Sailjail]
+Sandboxing=Disabled
