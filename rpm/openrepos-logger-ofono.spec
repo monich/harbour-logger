@@ -18,6 +18,7 @@ BuildRequires: pkgconfig(mlite5)
 BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(gio-2.0)
 BuildRequires: pkgconfig(gio-unix-2.0)
+BuildRequires: pkgconfig(libglibutil)
 BuildRequires: desktop-file-utils
 BuildRequires: qt5-qttools-linguist
 

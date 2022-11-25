@@ -87,24 +87,33 @@ SOURCES += \
   src/main.cpp \
   $${QCONNMAN_LIB_DIR}/libconnman-qt/networktechnology.cpp
 
-# sailfish-log-viewer can link with libqofonoext
+# sailfish-log-viewer can link with libqofonoext and libglibutil
 
 sailfish-log-viewer {
-  PKGCONFIG += qofonoext
+  PKGCONFIG += qofonoext libglibutil
 } else {
 
-DEFINES += QOFONOEXT_EXPORT=Q_DECL_HIDDEN
-QOFONOEXT_LIB_DIR = $$_PRO_FILE_PWD_/src/libqofonoext
+  DEFINES += QOFONOEXT_EXPORT=Q_DECL_HIDDEN
 
-INCLUDEPATH += \
-  $${QOFONOEXT_LIB_DIR}/src
+  QOFONOEXT_LIB_DIR = $$_PRO_FILE_PWD_/src/libqofonoext
+  LIBGLIBUTIL = $$_PRO_FILE_PWD_/../libglibutil
+  LIBGLIBUTIL_SRC = $${LIBGLIBUTIL}/src
+  LIBGLIBUTIL_INCLUDE = $${LIBGLIBUTIL}/include
 
-HEADERS += \
-  $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.h \
+  INCLUDEPATH += \
+    $${QOFONOEXT_LIB_DIR}/src \
+    $${LIBGLIBUTIL_INCLUDE}
 
-SOURCES += \
-  $${QOFONOEXT_LIB_DIR}/src/qofonoext.cpp \
-  $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.cpp
+  HEADERS += \
+    $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.h \
+
+  SOURCES += \
+    $${QOFONOEXT_LIB_DIR}/src/qofonoext.cpp \
+    $${QOFONOEXT_LIB_DIR}/src/qofonoextmodemmanager.cpp \
+    $${LIBGLIBUTIL_SRC}/gutil_log.c \
+    $${LIBGLIBUTIL_SRC}/gutil_misc.c \
+    $${LIBGLIBUTIL_SRC}/gutil_ring.c \
+    $${LIBGLIBUTIL_SRC}/gutil_strv.c
 }
 
 # harbour-lib QML components

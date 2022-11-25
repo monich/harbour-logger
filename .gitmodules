@@ -5,7 +5,7 @@
 	path = logger/src/libdbuslog
 	url = https://github.com/monich/libdbuslog.git
 [submodule "libglibutil"]
-	path = logger/src/libglibutil
+	path = libglibutil
 	url = https://github.com/monich/libglibutil.git
 [submodule "libqofonoext"]
 	path = ofono/src/libqofonoext

@@ -41,6 +41,7 @@ CONFIG(debug, debug|release) {
 # Directories
 HARBOUR_LIB_DIR = $$_PRO_FILE_PWD_/../harbour-lib
 LOGGER_LIB_DIR = $$_PRO_FILE_PWD_/../logger
+LIBGLIBUTIL = $$_PRO_FILE_PWD_/../libglibutil
 
 # Libraries
 LOGGER_LIB = $$OUT_PWD/../logger/liblogger.a
@@ -74,6 +75,20 @@ INCLUDEPATH += \
 
 SOURCES += \
   src/main.cpp
+
+# libglibutil
+
+LIBGLIBUTIL_SRC = $${LIBGLIBUTIL}/src
+LIBGLIBUTIL_INCLUDE = $${LIBGLIBUTIL}/include
+
+INCLUDEPATH += \
+  $${LIBGLIBUTIL_INCLUDE}
+
+SOURCES += \
+  $${LIBGLIBUTIL_SRC}/gutil_log.c \
+  $${LIBGLIBUTIL_SRC}/gutil_misc.c \
+  $${LIBGLIBUTIL_SRC}/gutil_ring.c \
+  $${LIBGLIBUTIL_SRC}/gutil_strv.c
 
 # harbour-lib QML components
 
