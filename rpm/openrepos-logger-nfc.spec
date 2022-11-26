@@ -1,6 +1,6 @@
 Name:       openrepos-logger-nfc
 Summary:    NFC logger
-Version:    1.0.21
+Version:    1.0.22
 Release:    1
 Group:      Applications/System
 License:    BSD
