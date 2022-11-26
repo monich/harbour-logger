@@ -28,6 +28,19 @@ Application for gathering NFC logs on Sailfish OS
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 
+%if "%{?vendor}" == "chum"
+Categories:
+ - Utility
+Icon: https://raw.githubusercontent.com/monich/harbour-logger/master/nfc/icons/harbour-logger-nfc.svg
+Screenshots:
+- https://home.monich.net/chum/openrepos-logger-nfc/screenshots/screenshot-001.png
+- https://home.monich.net/chum/openrepos-logger-nfc/screenshots/screenshot-002.png
+- https://home.monich.net/chum/openrepos-logger-nfc/screenshots/screenshot-003.png
+- https://home.monich.net/chum/openrepos-logger-nfc/screenshots/screenshot-004.png
+Url:
+  Homepage: https://openrepos.net/content/slava/nfc-logger
+%endif
+
 %prep
 %setup -q -n %{name}-%{version}
 
@@ -55,40 +68,3 @@ desktop-file-install --delete-original \
 %{_datadir}/translations/%{name}*.qm
 %{_datadir}/jolla-settings/entries/%{name}.json
 %{privileges_dir}/%{name}
-
-%changelog
-* Wed Dec 01 2021 Slava Monich <slava.monich@jolla.com> 1.0.21
-- Restore log level on exit
-- Fixed cover log and allow cover scaling
-
-* Sat Sep 18 2021 Slava Monich <slava.monich@jolla.com> 1.0.20
-- Copy log entry to clipboard on long tap
-- Improved sandbox behavior
-
-* Fri Sep 17 2021 Slava Monich <slava.monich@jolla.com> 1.0.19
-- Opt out of sandboxing
-- Tweaked settings page
-
-* Mon Jul 19 2021 Slava Monich <slava.monich@jolla.com> 1.0.18
-- Updated Polish translation
-
-* Sun Jul 18 2021 Slava Monich <slava.monich@jolla.com> 1.0.17
-- Disable broken in-app sharing
-- Added Polish translation
-
-* Sat Dec 12 2020 Slava Monich <slava.monich@jolla.com> 1.0.16
-- Show page header when scrolling
-- Added "Jump to bottom" button
-- Fixed email sharing with latest Sailfish OS
-- Fixed build of translations with newer Qt
-
-* Sat Dec 14 2019 Slava Monich <slava.monich@jolla.com> 1.0.15
-- Fixed settings icon name
-- Updated list of NFC related packages
-- Updated submodules
-
-* Sun Mar 10 2019 Slava Monich <slava.monich@jolla.com> 1.0.14
-- Dump versions of plugins and related libraries
-
-* Sat Mar 9 2019 Slava Monich <slava.monich@jolla.com> 1.0.13
-- Added NFC logger
